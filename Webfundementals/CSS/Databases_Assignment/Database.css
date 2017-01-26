@@ -1,18 +1,16 @@
-* {padding:0px;
-margin: 0px}
+* {padding: 0px;margin: 0 1px 0 0;}
 html, body{
   height: 100%;
 }
 .container{
   width: 960px;
-  height: 96%;
+  height: 910px;
   background-color: #F8F8F7;
   margin: 0px 0 0 0;
   padding: 0px 0 0 0;
 }
 header{
-  height:150px;
-  border: 2px solid black;
+  height: 125px;
 }
 header div{
   height: 100%;
