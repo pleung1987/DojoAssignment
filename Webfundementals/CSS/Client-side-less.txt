@@ -1,0 +1,13 @@
+Client-side Usage
+
+Client-side is the easiest way to get started and good for developing with LESS, but in production, when performance and reliability are important, we recommend pre-compiling using node.js or one of the many third-party tools available (you'll learn later in the bootcamp how to pre-compile LESS/SASS using Node.js or Rails).
+
+To start off, link your   .less stylesheets with the rel attribute set to "stylesheet/less":
+
+<link rel="stylesheet/less" type="text/css" href="styles.less" />
+Next,  download less.js and include it in a <script></script> tag in the <head> element of your page:
+
+<script src="less.js" type="text/javascript"></script>
+Or the CDN, here:
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js"></script>
