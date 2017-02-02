@@ -1,0 +1,80 @@
+<!Doctype Html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style type="text/css">
+      body{
+        width: 1000px;
+        height: 100%;
+
+      }
+      .form_area{
+        width: 40%;
+        height: 100%;
+        display: inline-block;
+        vertical-align: top;
+
+      }
+      .card-area{
+        width: 40%;
+        height: 280px;
+        display: inline-block;
+      }
+      form{
+        margin: 0px 10px;
+      }
+      form button{
+        display: block;
+      }
+
+      .contact{
+        display: block;
+        color: blue;
+        height: 80px;
+        width: 60%;
+        background: yellow;
+        border: 1px solid black;
+        margin: 10px;
+        text-align: center;
+        padding: 40px 0px 0px 0px;
+        font-size: 20px;
+      }
+      .contact p{
+        font-size: 10px;
+      }
+      .discription{
+        text-align: center;
+        vertical-align: top;
+      }
+  </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('.btn_submit').click(function(){
+          $('.card-area').append("<div class='contact'><div id='names'>" + $('#first_name').val() + "  " + $('#last_name').val() +"<p>Click for more information</p>" + "</div><div class='description'>" + $('#description-input').val() +"</div></div>");
+            $('.description').hide();
+              return false;
+        });
+        $(document).on('click','.contact',function(){
+          $(this).children().toggle();
+        });
+    });
+
+    </script>
+    <title></title>
+  </head>
+  <body>
+    <div class="form_area">
+      <form>
+          <p>First Name: <input id="first_name" type="text" name="First_Name" value="First Name"/></p>
+          <p>Last Name: <input id="last_name" type="text" name="Last_Name" value="Last Name" /></p>
+          <p>description: </p>
+          <textarea rows="8" cols="50" id="description-input" name="description"></textarea>
+          <button class="btn_submit">Add User</button>
+      </form>
+    </div>
+    <div class="card-area">
+      <!-- append cards will be put here -->
+    </div>
+  </body>
+</html>
