@@ -1,0 +1,43 @@
+<!Doctype Html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style type="text/css">
+    div {
+      display: inline-block;
+      margin: auto;
+    }
+    img {
+      display: block;
+      margin: 5px 0px;
+    }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        for(var i= 0; i<=4;i++){
+        $('div').append("<img src=\'images/ninja"+i+".png\' alt=\'images/cat"+i+".png\'/>")
+        }
+      $("img").click(function() {
+        // create click function to manipulate source
+        var temp= $(this).attr('alt');
+        // create and store a temporary alternative when click on (this) part to variable temp.
+        $(this).fadeOut(300, function() {
+          // manipulates the effect
+          $(this).attr("alt",$(this).attr("src"));
+          // change from alternative data source back to source when click on this
+          $(this).fadeIn(100);
+          // manipulates the effect
+          $(this).attr('src',temp);
+          // change source back to temp (which is the alternative source) when click function is made
+        });
+      });
+    });
+
+    </script>
+    <title></title>
+  </head>
+  <body>
+<div> <!--this is where the JQuery image will be at --></div>
+  </body>
+</html>
