@@ -1,0 +1,46 @@
+Regular Expressions
+- Regular expressions, commonly known as regex, are a set of rules for identifying or matching strings.
+-that regex use can lead to some performance issues with large data sets, so they should be used sparingly,
+and optimized in cases where they are the best option.
+
+- Common uses include searching string inputs from users.
+
+practical uses for regex:
+- validating a user email format in Flask
+- recognizing url patterns in our Django apps.
+-strings we build for comparison in regex are known as [patterns]
+Some Characters have special meaning, the common ones are:
+
+    .	Matches any character except a new line.
+    \w 	Matches any letter or digit.
+    +	The pattern before it can appear 1 or more times.
+    *	The pattern can appear any number of times, including none.
+    \d	matches any digit
+    \s	matches any whitespace character, include spaces, newlines and tabs
+    Note: as a rule, the same expression, but with a capital letter will match the opposite of that expression. 
+        Ex: \W matches any non-alpha-numeric character.
+
+*Note that in Python regexes are usually raw strings (like r"this", with an “r” at the start);
+  tells Python to treat the string exactly as you entered it, rather than applying its normal substitutions
+   (like changing “\n” to the new-line character.)
+
+- re.search(pattern, string) is a function that scans a string for a specific regex pattern and
+returns a match object.
+
+    Common use to make this part of an if Statement:
+
+                if re.search(r"a.*a"):
+                  print("That string had at least two 'a's in it!")
+                else:
+                  print("No more than one 'a' found!")
+
+  Simple Searching Assignment (Go to Simple_Searching.py)
+  # All words that contain a “v”
+  # All words that contain a double-“s”
+  # All words that end with an “e”
+  # All words that contain an “b”, any character, then another “b”
+  # All words that contain an “b”, at least one character, then another “b”
+  # All words that contain an “b”, any number of characters (including zero), then another “b”
+  # All words that include all five vowels in order
+  # All words that only use the letters in “regular expression” (each letter can appear any number of times)
+  # All words that contain a double letter
