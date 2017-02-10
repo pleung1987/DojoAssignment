@@ -16,7 +16,7 @@ SELECT LOWER(first_name) AS first_lower case FROM clients;
 SELECT first_name from clients;
 - lowercase all your values for you.
 
-Date fuction
+Date function
 HOUR()
 SELECT HOUR(joined_datetime) AS date_hour, joined_datetime FROM clients;
 - givers the 24 hour date time from where they join
@@ -34,7 +34,7 @@ SELECT NOW() AS right_now
 - used for created at and updated at
 
 DATE_FORMAT
-- got to w3school for DATE_FORMAL for SQL
+- go to w3school for DATE_FORMAL for SQL
 ie. WEDNESDAY of the date of the year
     SELECT DATE_FORMAT(joined_datetime,'%W %M %e, %Y') FROM clients;
 
@@ -47,7 +47,7 @@ When calling a function on a column, make sure that column is the appropriate Da
 JOINING TABLE ~
 
 examples of joining tables:
-1)Find all the cliens(first and last name)billing amounts and charge date:
+1)Find all the clients(first and last name)billing amounts and charge date:
 ERD - match client with billing
 command:
     SELECT clients.first_name, clients.last_name, billing.amount, billing.charged_datetime
@@ -76,9 +76,9 @@ command:
 command:
     SELECT client.first_name, clients.last_name, sites.domain_name
     FROM clients
-    LEFT JOIN site ON clients.id - sites.clients_id
+    LEFT JOIN site ON clients.id = sites.clients_id
 * display everything on the left table even if it doesn't exist in the right table.
-* if you change LEFT to RIGHT, vice versa. (usually don't happen if site will exist withou client information, so mostly uses LEFT JOIN)
+* if you change LEFT to RIGHT, vice versa. (usually don't happen if site will exist without client information, so mostly uses LEFT JOIN)
 
 5) Group BY
 * Find all the clients (first and last name) and their total billing amounts
@@ -130,8 +130,7 @@ LEFT Join ~
 1. What query would you run to get all tweets from the user id of 1?
         SELECT *
         FROM users
-        LEFT JOIN tweets
-        ON users.id = tweets.user_id
+        LEFT JOIN tweets ON users.id = tweets.user_id
         WHERE users.id = 1;
         Copy
 
@@ -139,16 +138,14 @@ You can just grab the tweets by:
 
         SELECT tweets.tweet
         FROM users
-        LEFT JOIN tweets
-        ON users.id = tweets.user_id
+        LEFT JOIN tweets ON users.id = tweets.user_id
         WHERE users.id = 1;
 
 Or rename the output column that you want as kobe_tweets by modifying the statement to look like the following:
 
         SELECT tweets.tweet as kobe_tweets
         FROM users
-        LEFT JOIN tweets
-        ON users.id = tweets.user_id
+        LEFT JOIN tweets ON users.id = tweets.user_id
         WHERE users.id = 1;
         Copy
 
@@ -156,19 +153,15 @@ Or rename the output column that you want as kobe_tweets by modifying the statem
 
         SELECT first_name, tweet
         FROM users
-        LEFT JOIN faves
-        ON users.id = faves.user_id
-        LEFT JOIN tweets
-        ON faves.tweet_id = tweets.id
+        LEFT JOIN faves ON users.id = faves.user_id
+        LEFT JOIN tweets ON faves.tweet_id = tweets.id
         WHERE users.id = 2;
 
 3. What query would you run to get all the tweets that user with id 2, or user with id 1, has tagged as favorites?
         SELECT first_name, tweet
         FROM users
-        LEFT JOIN faves
-        ON users.id = faves.user_id
-        LEFT JOIN tweets
-        ON faves.tweet_id = tweets.id
+        LEFT JOIN faves ON users.id = faves.user_id
+        LEFT JOIN tweets ON faves.tweet_id = tweets.id
         WHERE users.id = 1 OR users.id = 2;
 
 4.What query would you run to get all the users that are following the user with id 1?
@@ -177,10 +170,8 @@ Or rename the output column that you want as kobe_tweets by modifying the statem
 
         SELECT users.first_name as followed, users2.first_name as follower
         FROM users
-        LEFT JOIN follows
-        ON users.id = follows.followed_id
-        LEFT JOIN users as users2
-        ON users2.id = follows.follower_id
+        LEFT JOIN follows ON users.id = follows.followed_id
+        LEFT JOIN users AS users2 ON users2.id = follows.follower_id
         WHERE users.id = 1;
 
 5. What query would you run to get all users that are not following the user with id of 2?
@@ -198,10 +189,8 @@ This requires nested queries, which you can learn about at http://sqlzoo.net/wik
 
         SELECT users.first_name as user, COUNT(users2.first_name) as follower_count
         FROM users
-        LEFT JOIN follows
-        ON users.id = follows.followed_id
-        LEFT JOIN users as users2
-        ON users2.id = follows.follower_id
+        LEFT JOIN follows ON users.id = follows.followed_id
+        LEFT JOIN users as users2 ON users2.id = follows.follower_id
         WHERE users.id = 1
         GROUP BY users.id
 
@@ -211,8 +200,7 @@ Left Join vs. Join
 ie.
         SELECT first_name, tweet
         FROM users
-        LEFT JOIN tweets
-        ON users.id = tweets.user_id
+        LEFT JOIN tweets ON users.id = tweets.user_id
 
 Now if we change the LEFT JOIN command to the JOIN command, the output will be as follows:
 

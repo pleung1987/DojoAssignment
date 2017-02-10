@@ -30,4 +30,5 @@ SQL Command:
 Deleting Records
 The SQL command pattern for deleting/removing records is as follows:
 
-            DELETE FROM table_name WHERE condition(s)
+            DELETE FROM table_name
+            WHERE condition(s)

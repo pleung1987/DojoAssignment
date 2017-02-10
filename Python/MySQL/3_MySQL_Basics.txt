@@ -13,7 +13,7 @@ SQL: SQL is the language we use to manipulate the data as per the relationships 
 
 Why ERD?
     - ERD is a process of laying out your tables and establishing relationships between them, making your data relational.
-    -there is rational and non-rational database"
+    - there is rational and non-rational database
         - non-relational databases where everything is stored in a single table.
 
 Main Topics for Database Design
@@ -88,20 +88,3 @@ Third Form~
         You cannot have a non-key column that is dependent on another non-key column.
         ie. If you have a books table with columns publisher_name and publisher_address, the publisher_address and
         publisher_name should be separated into a separate table and linked to books with a foreign key.
-
-SELECT w/ Sorting
-
-Descending order:
-
-SELECT *SELECT name, language, percentage
-FROM countries, languages
-WHERE countries.id= languages.country_id AND languages.language = "Slovene";
-
-FROM users
-ORDER BY birthday DESC;
-
-Order by asscending
-
-SELECT *
-FROM users
-ORDER BY birthday ASC;
