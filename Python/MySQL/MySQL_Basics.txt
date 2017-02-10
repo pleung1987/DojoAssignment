@@ -1,0 +1,107 @@
+Why MySQL and Database Design?
+- Databases are merely collections of organized information that can easily be accessed, managed, and updated.
+- As a full-stack developer, you need to be familiar with building your database and designing the rules by which it stores data!
+* most important things about database design is organizing your data to minimize repetition.
+
+Relational database models and different ways to relate data using them:
+ERD: short for 'Entity Relationship Diagram'.
+    - are essentially visual blueprints for how your database looks and behaves.
+    - ERDs and SQL work together very intimately.
+    - An ERD is a map of the structure of how we want to store our data
+
+SQL: SQL is the language we use to manipulate the data as per the relationships we defined in our ERD.
+
+Why ERD?
+    - ERD is a process of laying out your tables and establishing relationships between them, making your data relational.
+    -there is rational and non-rational database"
+        - non-relational databases where everything is stored in a single table.
+
+Main Topics for Database Design
+    * one very simple concept: Don't Repeat Data
+    Terminologies to remember:
+        - Database Relationships
+            One to One
+            One to Many
+            Many to Many
+        - Three (3) Forms of Normalization
+        - MySQL Workbench
+        - Data Types
+
+     - When we normalize our tables, we don't repeat data. =>  we can use our storage space more efficiently.
+     - Using SQL, we can manipulate our tables and create the customized table that we need for the job at hand.
+     - This means that we can create our own customized tables depending on the task at hand using SQL.
+
+One to One Relationships
+    - Consider the following table customers:
+        - Although each customer can only have one address, it would seem more fitting and better
+        organized if we separate out the address and put it in its own table
+        - Since each address that we have can only belong to a single customer and each customer can only have one address,
+         we call this a [One to One Relationship.]
+        - Even though we split up our tables into two different tables, we can combine them into one using SQL.
+    Examples of One-to-One:
+        * Customers and Credit Cards - Every Customer has one Credit Card, every Credit Card belongs to one Customer.
+        * User and Email - Every User has one Email Address, every Email Address has one User.
+        * Product and Image - Every Product has an Image, every Image is of a Product.
+
+One to Many Relationships
+    - occurs most often.
+    - Example of one customer with multiple orders:
+        -Since one customer can have many orders for any given user we call this a One to Many Relationship.
+    - Notice how the foreign key and the id of the table that we want to combine act as the glue.
+
+    Example of one to many:
+        * Messages and Comments - One Comment belongs to one Message, but one Message can have many Comments.
+        * States and Cities - One City is only in one State, but one State can have many Cities.
+        * Customers and Orders - One Order only has one Customer, but one Customer can have many Orders.
+
+Many to Many Relationships
+    - We have a table that keeps track of each of the orders the customer placed but we haven't
+      created a way to keep track of the items they are ordering.
+    - Since each order can have many different items and those same items can show up in many different orders,
+      we have to use a different type of relationship to connect orders to items.
+    - Orders can have many items and items can have many orders.
+    - In a Many to Many relationship, we create a connector table that has both the order_id and the item_id
+      so that we can determine all the items in a particular order.
+
+* anytime you have a Many-to-Many, it will require some sort of joining table!
+Examples:
+    * Users and Interests - One User can have many Interests, one Interest can be applied to many Users.
+    * Actresses and Movies - One Movie can have many Actresses, one Actress can be in many Movies.
+    * Businesses and Cities - One Business can be spread across many Cities, one City can be home to many Businesses.
+
+Normalization
+- Database normalization is simply a convention for splitting large tables of data into smaller separate tables
+  with the primary goal being to not repeat data.
+
+Example:
+    * If we want to store a user's email address, we'd want to store it in only one place.
+      Then, if we ever need to refer to it again, we'd simply use the id.
+    * id will never change, so even if we update the user's email address, none of the other connections we defined in our database will be damaged.
+
+Below are the three main rules of database normalization:
+First Form~
+        Each Column in your table can only have 1 value.
+Second Form~
+        Each Column in your table that is not a key (primary or foreign) must have unique values.
+        ie. If you have a movies table with a categories column, you should not have a category repeated more than once.
+Third Form~
+        You cannot have a non-key column that is dependent on another non-key column.
+        ie. If you have a books table with columns publisher_name and publisher_address, the publisher_address and
+        publisher_name should be separated into a separate table and linked to books with a foreign key.
+
+SELECT w/ Sorting
+
+Descending order:
+
+SELECT *SELECT name, language, percentage
+FROM countries, languages
+WHERE countries.id= languages.country_id AND languages.language = "Slovene";
+
+FROM users
+ORDER BY birthday DESC;
+
+Order by asscending
+
+SELECT *
+FROM users
+ORDER BY birthday ASC;

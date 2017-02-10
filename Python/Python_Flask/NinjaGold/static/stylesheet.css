@@ -1,0 +1,59 @@
+.container{
+    height: 900px;
+    width: 980px;
+}
+.YourGold{
+    height: 8%;
+    width: 100%;
+    vertical-align: top;
+}
+.YourGold div{
+    display:inline-block;
+    margin: 10px;
+    vertical-align: top;
+    text-align: top;
+}
+.YourGold h3{
+    border: 2px solid black;
+    height: 20px;
+    width: 70px;
+    margin: 12px 0 0 -10px;
+    text-align: center;
+    padding: 11px;
+}
+.resetbutton{
+    margin: 0px 0px 0px 10px;
+}
+.Places{
+    height: 28%;
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+.Places div{
+    height: 85%;
+    width: 23%;
+    border: 2px solid red;
+    display: inline-block;
+    margin: 5px;
+    text-align: center;
+}
+.actfont{
+    height: 3%;
+    margin: -40px 0 15px 0;
+}
+.Activities{
+    height: 40%;
+    width: 97%;
+    display: block;
+    border: 2px solid blue;
+    vertical-align: top;
+    text-indent: 10px;
+    padding: 0px 0px 0px 20px;
+    overflow-y: scroll;
+}
+.button{
+    font-size: 20px;
+    background: gray;
+    border-radius: 5px;
+}

@@ -1,0 +1,45 @@
+Flask Fundementals
+
+Flask:  -Flask is a micro-framework that you will use to learn the "main components of building web applications".
+
+What should concentrate through this Chapter:
+    - Rendering Templates
+    - Redirecting
+    - Form data
+    - GET & POST requests
+    - Session
+
+Virtualenv (python virtual environment)
+
+- virtual environments are a tool for creating unique conditions for your application to run in (e.g a sandbox).
+- Virtualenv helps us stay organized and flexible when working on multiple projects that have drastically
+    different dependencies.
+- Virtual environments are not single use, if you get loaded up with another project that has the same dependencies as
+    Project 1, use the virtual environment you already have
+- DO NOT, make a new virtual environment for each project, pip install needed dependencies into already existing
+    virtual environments
+- AGAIN: We should only have a few virtual environments. These environments help us regulate version control,
+    e.g. let’s say a new version of Flask comes out Flask 0.2, we might make a new virtualenv at this point and then be able to
+    run our Flask projects in 0.11 or 0.2.
+
+* To work another project, we reactivate our virtual environment if the new project has the same dependencies.
+Make sure the virtual environment is active when running your project or you may have some unexpected errors.
+* With the virtual environment of your current project active.
+
+when it works:
+(py2FlaskEnv) Patricks-MacBook-Pro-2:hello_flask Paddie$ python hello.py
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit) -> #shows the url that it is hosting on
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger pin code: 238-041-426
+127.0.0.1 - - [08/Feb/2017 05:22:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [08/Feb/2017 05:22:25] "GET /favicon.ico HTTP/1.1" 404 -  --># Shows who enter the local host
+
+We did a couple of important things in the code above:
+
+- We imported the Flask module that is used to create our "app" variable. You will need this line in every application you build with Flask.
+- We used the flask module to create an "app" variable which represents our web application. We will be using this variable to attach routing
+ rules for our application. You will need this line in every application you build with Flask.
+- We set up a routing rule using the "@" symbol and running the app.route function. The @ symbol specifies that the function that follows this
+ rule will be triggered any time that route is triggered. In this case, we are attaching the hello_world function to the '/' route.
+- Finally, we ran the app! This takes all of our routing rules that we set up and actually starts up the server.

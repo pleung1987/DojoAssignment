@@ -1,0 +1,72 @@
+Advanced Form Validation
+
+* Another common validation that needs to be performed is checking whether an email address is valid.
+    ( Use Regex to achieve this )
+
+The Python regex for matching an email address based on the above criteria looks something like this:
+    ie.
+                    r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$'
+
+Basic Html example for Validation:
+
+                                <html>
+                                <head>
+                                    <title>Advanced Validation Example</title>
+                                </head>
+                                <body>
+                                    <h1>Enter a Valid(Any) Email!</h1>
+                                    {% with messages = get_flashed_messages() %}
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                                <p>{{message}}</p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+                                    <form action='/process' method='POST'>
+                                        Email:<input type="text" name="email">
+                                        <input type="submit" value="Submit">
+                                    </form>
+                                </body>
+                                </html>
+Sample of server.py:
+
+                            # import Flask
+                            from flask import Flask, render_template, redirect, request, session, flash
+                            # the "re" module will let us perform some regular expression operations
+                            import re
+                            # create a regular expression object that we can use run operations on
+                            EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+                            app = Flask(__name__)
+                            app.secret_key = "ThisIsSecret!"
+                            @app.route('/', methods=['GET'])
+                            def index():
+                              return render_template("index.html")
+                            @app.route('/process', methods=['POST'])
+                            def submit():
+                                if len(request.form['email']) < 1:
+                                    flash("Email cannot be blank!")
+                                # else if email doesn't match regular expression display an "invalid email address" message
+                                else:
+                                    flash("Success!")
+                                return redirect('/')
+                            app.run(debug=True)
+
+Validation Conditional for invalid email:
+
+                            @app.route('/process', methods=['POST'])
+                            def submit():
+                            if len(request.form['email']) < 1:
+                                flash("Email cannot be blank!")
+                            elif not EMAIL_REGEX.match(request.form['email']):
+                                flash("Invalid Email Address!")
+                            else:
+                                flash("Success!")
+                            return redirect('/')
+
+* We are using if/else statements just like we did before to perform validations
+* We are using the EMAIL_REGEX object that we created and running the "match" method that will return a boolean indicating whether
+    the argument matches the regular expression or not.
+
+Other Useful Validation Tools:
+* str.isalpha() -- Returns a boolean that shows whether a string contains only alphabetic characters.
+* time.strptime(string, format) -- Changes a string to a time using the given format.

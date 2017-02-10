@@ -1,0 +1,116 @@
+Sessions:
+- we will learn how to pass data between routes
+
+Add the following route to your server.py file:
+
+@app.route('/show')
+def show_user():
+  return render_template('user.html', name='Jay', email='kpatel@codingdojo.com')
+
+HTML:
+    <html>
+      <head>
+        <title>Form Test Show</title>
+      </head>
+      <body>
+        <h1>User:</h1>
+        <h3>{{name}}</h3>
+        <h3>{{email}}</h3>
+      </body>
+    </html>
+
+*navigating to localhost:5000/show
+
+Why is it important:
+- Users navigates to countless pages in a url.
+- sites make use of persistent data storage!
+- Persistent data storage can come in many forms, like a database, which you will learn about soon enough.
+  It can also come simply in the form of writing to a file, and that's what session does!
+- given HTTP request/response can be stateless, but in the scope of a given req/res cycle, we can read certain
+  pieces of data that we stored in previous cycles, and write certain valuable pieces of data for use in future cycles.
+
+* State allows our site to "know" a lot of useful information. Information like:
+
+                    -  Is there a logged in user currently?
+                    -  Who is the current logged in user?
+                    -  What links a user has viewed previously
+                    -  Any other data point we deem necessary
+
+** Session is a tool for you, the developer, to use to your advantage.
+- persistent data storage, like session, helps us bridge the gap between a stateless protocol
+ like HTTP with the stateful data generated through it.
+
+
+ Persistent storage type Lifespan	                           Common example
+ Database	Permanent until manually deleted
+                                                            (encrypted) Passwords
+                                                            (encrypted) Credit Card Info
+                                                            Photos
+ Session	Set using application configuration value,
+            i.e. number of seconds or a particular date and time
+                                                             Logged in user ID
+                                                             IDs of items in a shopping cart
+ Cookies	Set per browser settings
+                                                            User selected language
+
+* Cookies- storing data in your user browser.
+* Session a tool to store information of your data from your browser
+
+Using session in your app (How server.py looks like):
+
+                            from flask import Flask, render_template, request, redirect, session
+                            app = Flask(__name__)
+                            @app.route('/')
+                            def index():
+                              return render_template("index.html")
+                            @app.route('/users', methods=['POST'])
+                            def create_user():
+                               print "Got Post Info"
+
+                               name = request.form['name']
+                               email = request.form['email']
+                               return redirect('/')
+                            @app.route('/show')
+                            def show_user():
+                              return render_template('user.html', name='Jay', email='kpatel@codingdojo.com')
+                            app.run(debug=True)
+
+Sessions also require a secret key to run so you'll have to set a secret key in your server.py as follows:
+
+    from flask import Flask, render_template, request, redirect, session
+    app = Flask(__name__)
+    app.secret_key = 'ThisIsSecret'         # you need to set a secret key for security purposes
+    # routing rules and rest of server.py below
+
+
+
+Now change your create_user function to use session:
+
+    @app.route('/users', methods=['POST'])
+    def create_user():
+       print "Got Post Info"
+                                                # here we add two properties to session to store the name and email
+       session['name'] = request.form['name']
+       session['email'] = request.form['email']
+       return redirect('/show')                  # noticed that we changed where we redirect to so that we can go to the page that displays the name and email!
+
+
+*Previously show_user function there isn't all the access of variables from the form Submission.
+- Let's modify our show_user function to use session instead of hard coding the data:
+
+    @app.route('/show')
+    def show_user():
+      return render_template('user.html', name=session['name'], email=session['email'])
+
+1) Submitting the form takes you to the POST /users route which is handled by the create_user function where we store the POST
+  data in session
+
+2) The create_user function then redirects you to the GET /show route which is handled by the show_user function where we
+  render the user.html template passing along the necessary information to the view
+
+  - Session is a way to store information unique to a particular client on the server side
+  - Session uses cookies to identify the client whose session we are interacting with
+  - When you want to access and modify data over multiple redirects use session
+  - You can use session in both your server.py file as well as your templates.
+  - Even though you have access to the session, you should not abuse the amount of information you store in it.
+    Store only what you need in the session.

@@ -1,0 +1,121 @@
+HTTP Methods
+-  focus on the two most common for now: GET and POST
+
+The GET Method
+
+- If you've ever typed the domain of a website you wanted to go to in your browser, you've used the HTTP GET Method!
+- GET method is used to request (or get) information from a server.
+- We can also use GET requests with forms when we want to pass insensitive information to a server through the URL
+- Using a GET was fine for this search and is useful when we want to either bookmark or save our search in our browser history.
+
+The POST Method
+
+- Imagine you were signing into your email and we used a GET method.
+    - How horrible would it be if you submitted the login form and your username and password were
+      displayed in your URL - anyone could see it!
+- To protect this information, we'll use a POST request which passes data behind the scenes in the HTTP request message body.
+- These requests are never cached, not saved in your history, can't be bookmarked and aren't limited to how much data
+  that can be sent.
+ - Majority of forms you'll be dealing with will use POST requests to send data.
+
+More Routing
+
+- You can think of routing as the traffic control of your applications.
+- When a request comes in, the routing of your application will determine where the request will go and how to generate
+  the response.
+
+Creating a request for forms, server.py should look like this:
+
+                                    /form_test/server.py
+                                    from flask import Flask, render_template, request, redirect
+                                    app = Flask(__name__)
+# our index route will handle rendering our form
+                                    @app.route('/')
+                                    def index():
+                                      return render_template("index.html")
+# this route will handle our form submission
+# notice how we defined which HTTP methods are allowed by this route
+                                    @app.route('/users', methods=['POST'])
+                                    def create_user():
+                                       print "Got Post Info"
+# we'll talk about the following two lines after we learn a little more
+# about forms
+                                       name = request.form['name']
+                                       email = request.form['email']
+# redirects back to the '/' route
+                                       return redirect('/')
+                                    app.run(debug=True) # run our server
+
+
+Our HTML~ /form_test/templates/index.html :
+                        <html>
+                            <head>
+                                <title>Form Test Index</title>
+                            </head>
+                            <body>
+                                <h1>Index Page</h1>
+                                <h3>Create a User</h3>
+                                <form action='/users' method='post'>
+                                    Name: <input type='text' name='name'>
+                                    Email: <input type='text' name='email'>
+                                    <input type='submit' value='create user'>
+                                </form>
+                            </body>
+                        </html>
+
+- How does the user manage to get his or her data to the page??  One word:  forms.
+
+The action attribute
+- The form's action attribute will be set equal to the route where the information, contained within the form, will be sent to.
+- send the information to  '/users'. So that means all of our code that will handle this form data will be contained
+  in the '/users' route.
+- Note:  /users is just a route name. You can send your form to whatever file name you like.
+
+Method Attribute:
+- The method attribute specifies the type of HTTP request by how you, as the developer, want to have your form information transferred.
+  If your form data contains password data, credit card numbers, SSNs, etc, please use POST!
+- If the information is like a library search or something insensitive, it's OK to use GET as your method.
+- Once you have selected all the input elements you want to include in your form;, you must give each of them a name attribute
+  if you want each input to be recognized by your server-side code.
+
+Handling the POST request on the Server
+
+This route corresponds to the action and method of our form:
+                            @app.route('/users', methods=['POST'])
+                            def create_user():
+                                print "Got Post Info"
+
+                                name = request.form['name']
+                                email = request.form['email']
+                                return redirect('/')                # redirects back to the '/' route
+
+The possible values we could include to the methods array are:
+            GET
+            POST
+            PUT
+            PATCH
+            DELETE
+Our route is waiting to receive a POST request to the route because we specified the valid method types with:
+
+                                        methods=['POST']
+
+Accessing Data
+We can access form data with this syntax:
+                            request.form['name_of_input']
+- The name we gave to each HTML input was significant. On the server-side, we can access data that was input into a field from a user through
+  the request.form dictionary by providing the name of the input as the key.
+
+-  We could then store that data:
+                        my_data = request.form['name_of_input']
+* note that the type of anything that comes in through request.form will be "String" no matter what.
+If you want that value to be identified as an actual number you'll have to convert it.
+
+Redirecting
+- POST route we used the redirect method to send a new request to the '/' route:
+                        return redirect('/route_goes_here')
+
+* Best Practice Alert* Always redirect after handling POST data to avoid data being handled more than once!
+
+Last Notes
+For now, we've simply sent our POST information to a server but didn't put it to use. Very soon, we will learn how to store
+that information in the database, retrieve it, and output it to other pages :)

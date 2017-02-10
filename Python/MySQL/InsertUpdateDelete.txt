@@ -1,0 +1,33 @@
+Insert Basics ~
+SQL Statement:
+            INSERT INTO tweets (tweet, user_id, createdPat, updated_at)
+            VALUES ("hellooo", 1, NOw(), NOW())
+
+Inserting Records
+
+The SQL command pattern for INSERTing records is as follows:
+            INSERT INTO table_name (column_name1, column_name2)
+            VALUES('column1_value', 'column2_value');
+
+UPDATE Basics
+            SQL Command:
+            UPDATE users Set
+            first_name- "Kobe"
+            Where id= 1;
+
+Updating Records~
+
+The SQL command pattern for updating/editing records is as follows:
+            UPDATE table_name SET column_name1 = 'some_value', column_name2='another_value' WHERE condition(s)
+
+* IMPORTANT: if WHERE condition is not added to the UPDATE statement, the changes will be applied to every record in the table.
+
+Delete Basics ~
+SQL Command:
+            DELETE FROM tweets
+            WHERE id = 14;
+
+Deleting Records
+The SQL command pattern for deleting/removing records is as follows:
+
+            DELETE FROM table_name WHERE condition(s)

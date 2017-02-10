@@ -1,0 +1,90 @@
+SQL (Basics)
+- SQL stands for Structured Query Language
+- language designed for managing data in relational databases
+- can SELECT data, SELECT data WHERE some conditions are true, INSERT data, UPDATE data, DELETE data, and JOIN different tables together.
+-  learning a domain-specific language, unrelated to languages you may have previously seen.
+- We will use MAMP (or WAMP) along with MySQL Workbench to interact with our database
+
+MAMP plays an important role by setting up two different servers:
+    - the web server (called Apache)
+    - database server (running MySQL Server)
+
+Importing Data:
+- There are two main ways to import data into your MySQL Workbench. If you have an SQL file, you can just copy and
+    paste the commands into the editor and click run.
+- If you have an ERD diagram, you can forward engineer into MySQL workbench.
+
+Commands:
+- users :
+            SELECT *
+            FROM users;
+- faves :
+            SELECT *
+            FROM faves;
+- follows:
+            SELECT *
+            FROM follows;
+- tweets:
+            SELECT *
+            FROM tweets;
+
+What query would you run to only get the first names of all of the users?
+            SELECT first_name
+            FROM users;
+
+What query would you run to only get the first and last names of all of the users?
+            SELECT first_name, last_name
+            FROM users;
+
+SELECT w/ Conditionals~
+
+What query would you run to only get the first name of users with id of 2?
+            SELECT first_name
+            FROM users
+            WHERE id = 2;
+
+What query would you run to get the last names of users with id of 2 or 3?
+            SELECT last_name
+            FROM users
+            WHERE id = 2 OR id = 3;
+What query would you run to get all of the users with id greater than 2?
+            SELECT *
+            FROM users
+            WHERE id > 2;
+
+What query would you run to get all of the users with id less than or equal to 3?
+            SELECT *
+            FROM users
+            WHERE id <= 3;
+
+What query would you run to get all of the users with first names ending in "e"?
+            SELECT *
+            FROM users
+            WHERE first_name LIKE "%e";
+
+What query would you run to get all of the users with first names starting in "K"?
+            SELECT *
+            FROM users
+            WHERE first_name LIKE "K%"
+
+SELECT w/ Sorting
+What query would you run to get all of the users with the youngest users at the top of the table?
+            SELECT *
+            FROM users
+            ORDER BY birthday DESC;
+
+What query would you run to get all of the users with the oldest users at the top of the table?
+            SELECT *
+            FROM users
+            ORDER BY birthday ASC;
+
+What query would you run to get all of the users with the first name that ends with "e" with the youngest users at the top of the table?
+            SELECT *
+            FROM users
+            WHERE first_name LIKE "%e"
+            ORDER BY birthday DESC;
+
+What query would you run to get only the first names of all of the users in alphabetical order?
+            SELECT first_name
+            FROM users
+            ORDER BY first_name;

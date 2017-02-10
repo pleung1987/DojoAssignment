@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Ninja Gold</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='stylesheet.css')}}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="YourGold">
+                <div><h2>Your Gold</h2></div>
+                <div><h3>{{session['gold']}}</h3></div>
+            </div>
+            <div class="resetbutton">
+                <form action="/process_money" method="post">
+                    <input class="button" type="submit" name="button" value="reset">
+                    <input type="hidden" name="btn" value="reset">
+                </form>
+            </div>
+            <div class="Places">
+                <div class="Farm">
+                    <h1>Farm</h1>
+                    <h3>(earns 10-20 golds)</h3>
+                    <form class="bfarm" action="/process_money" method="post">
+                        <input class="button" type="submit" name="button" value="Find Gold!">
+                        <input type="hidden" name="btn" value="farm">
+                    </form>
+                </div>
+                <div class="Cave">
+                    <h1>Cave</h1>
+                    <h3>(earns 5-10 golds)</h3>
+                    <form class="bcave" action="/process_money" method="post">
+                        <input class="button" type="submit" name="button" value="Find Gold!">
+                        <input type="hidden" name="btn" value="cave">
+                    </form>
+                </div>
+                <div class="House">
+                    <h1>House</h1>
+                    <h3>(earns 2-5 golds)</h3>
+                    <form class="bhouse" action="/process_money" method="post">
+                        <input class="button" type="submit" name="button" value="Find Gold!">
+                        <input type="hidden" name="btn" value="house">
+                    </form>
+                </div>
+                <div class="Casino">
+                    <h1>Casino</h1>
+                    <h3>(earns/lose 0-50 golds)</h3>
+                    <form class="bcasino" action="/process_money" method="post">
+                        <input class="button" type="submit" name="button" value="Find Gold!">
+                        <input type="hidden" name="btn" value="casino">
+                    </form>
+                </div>
+            </div>
+            <div class="actfont">
+                <h1>Activities</h1>
+            </div>
+            <div class="Activities">
+                <p>{{session['log'] | safe }}</p>
+            </div>
+        </div>
+    </body>
+</html>

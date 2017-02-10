@@ -1,0 +1,12 @@
+div{
+    display: block;
+}
+.button{
+    font-size: 40px;
+    display: block;
+}
+.button2{
+    font-size: 40px;
+    display: block;
+    align-content: center;
+}

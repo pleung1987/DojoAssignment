@@ -1,0 +1,39 @@
+Hidden Inputs
+- Hidden input fields are form fields that are hidden from the user.
+- Used to transfer information between different pages.
+- No visual representation in the rendered HTML, but the form element IS usable by the method where the form is sent.
+
+In HTML:
+            <input type="hidden" name="action" value="register">
+
+Say in Form:
+    Form 1:
+            <form method="post" action="/process">
+                <input type="hidden" name="action" value="register">
+                <input type="text" name="first_name">
+                <input type="text" name="last_name">
+                <input type="text" name="email">
+                <input type="password" name="password">
+                <input type="submit" value="Register">
+            </form>
+    Form 2:
+            <form method="post" action="/process">
+                <input type="hidden" name="action" value="login">
+                <input type="text" name="email">
+                <input type="password" name="password">
+                <input type="submit" value="Login">
+            </form>
+
+- Set difference with 'Action'
+  In the POST /process route, make sure that you have an if statement that checks what form is being submitted:
+            if request.form['action'] == 'register':
+                                                        //do registration process
+            elif request.form['action'] == 'login':
+                                                        //do login process
+
+Important Notes:
+* By using the hidden input fields we set up on the index page, we can be sure that only the codes
+  related to the form being submitted are going to be executed.
+* Even though hidden inputs are invisible to the user, it is actually very visible in the page's source
+* So be very careful in choosing what data you store in there as value, and set appropriate actions
+ if a user tries to change or remove it.

@@ -1,0 +1,122 @@
+Basic Form Validation
+-  Validation is more of a logical challenge than a whole bunch of new code to learn.
+
+Most important concept of validation:
+- Logic: what data do we want to validate?
+- Checking if the data is present
+- Making sure the data is in the correct format
+- Sending the user to the correct destination whether their data is valid or not
+- Alerting the user of their errors (if they exist)
+
+Get Started
+- The most important validation tool is the if/else statement.
+ie. IF we have clean data we want to do something or ELSE, we need to do something different!
+
+- Form validation centers around using if statements combined with functions that return
+  TRUE or FALSE depending on if the data we give them is valid.
+
+Inside server.py:
+                                from flask import Flask, render_template, redirect, request, session
+                                app = Flask(__name__)
+                                app.secret_key = 'KeepItSecretKeepItSafe'
+                                @app.route('/')
+                                    def index():
+                                    return render_template('index.html')
+                                @app.route('/process', methods=['Post'])
+                                    def process():
+                                                                        #do some validations here!
+                                    return redirect('/')
+                                app.run(debug=True)
+
+Inside index.html:
+                                <html>
+                                <head>
+                                  <title>Basic Validation Example</title>
+                                </head>
+                                <body>
+                                  <h1>Enter a Valid(Any) Name!</h1>
+                                  <form action='/process' method='POST'>
+                                    Name:<input type="text" name="name">
+                                    <input type="submit" value="Submit">
+                                  </form>
+                                </body>
+                                </html>
+* Based on the information above we need our index.html file to have a form that submits to /process with the method of POST.
+*  Our goal will be to validate whether the name was valid (not blank) and display a success message if it was.
+    If there was no name submitted we will display a validation error.
+
+Validation Step 1 -- Conditionals
+*  Every validation is conditional!
+ie.
+                            If the name field in the POST data is empty:
+                                    Display validation error
+                            Else:
+                                    Display success
+
+* Use len() function to check if inputs are empty.
+    ie.
+                print len("") # will print 0
+            print len("hello") # will print 5
+
+function into our conditional:
+                                    @app.route('/process', methods=['POST'])
+                                    def process():
+                                        if len(request.form['name']) < 1:
+                                                                                # display validation errors
+                                        else:
+                                                                                # display success message
+                                        return redirect('/')
+                                                            # either way the application should return to the index and display the message
+
+Validation Step 2 -- Flash Messages on the Server:
+- Flash messages are strings that exist for one redirect cycle.
+    * embedded python tags {{}} & {%%} on the views and display them to the user.
+- This makes flash messages perfect for validations where we only need to display the error or message temporarily!
+
+* add flash into our input Flask syntax:
+    ie. from flask import Flask, render_template, redirect, request, session, flash
+
+example:
+                                @app.route('/process', methods=['POST'])
+                                def process():
+                                    if len(request.form['name']) < 1:
+                                    flash("Name cannot be empty!")                      # just pass a string to the flash function
+                                    else:
+                                    flash("Success! Your name is {}".format(request.form['name']))
+                                                                                        # just pass a string to the flash function
+                                    return redirect('/')      # either way the application should return to the index and display the message
+
+Validation Step 3 -- Flash Messages on the Client
+* Use Flash function on html to call data to the html page:
+- This function is "get_flashed_messages()" Let's see this in action.
+ie.
+                                    <html>
+                                        <head>
+                                            <title>Basic Validation Example</title>
+                                        </head>
+                                        <body>
+                                            <h1>Enter a Valid(Any) Name!</h1>
+                                            {% with messages = get_flashed_messages() %}
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                            <p>{{message}}</p>
+                                            {% endfor %}
+                                            {% endif %}
+                                            {% endwith %}
+                                            <form action='/process' method='POST'>
+                                                Name:<input type="text" name="name">
+                                                <input type="submit" value="Submit">
+                                            </form>
+                                        </body>
+                                    </html>
+
+A lot is happening in the code that we added. Let's go over it line by line
+
+- {% with messages = get_flashed_messages() %}
+  The with messages here helps us declare a variable in our template that we can use within a specific scope.
+- {% if messages %}
+  Check if there are even any messages that came back from the get_flashed_messages() function
+- {% for message in messages %}
+ Loop through all messages
+- <p>{{message}}</p>
+  Print the messages one by one each in a paragraph tag

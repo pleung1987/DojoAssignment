@@ -1,0 +1,230 @@
+Functions ~
+
+Text functions examples:
+CONCAT()
+SELECT CONCAT('Mr.', first_name,' ', last_name) AS full_name FROM clients;
+- can concat the details by adding the ' ' before the dataset.
+- use As Full_name, deletes all the space in between.
+- can add email AS to find email with search.
+- CONCAT_WS will put a space in between the first name and last name.
+
+LENGTH()
+SELECT LENGTH(last_name) AS last_len FROM clients;
+
+LOWER()
+SELECT LOWER(first_name) AS first_lower case FROM clients;
+SELECT first_name from clients;
+- lowercase all your values for you.
+
+Date fuction
+HOUR()
+SELECT HOUR(joined_datetime) AS date_hour, joined_datetime FROM clients;
+- givers the 24 hour date time from where they join
+
+DAYNAME()
+SELECT DAYNAME(joined_date) AS date_hour, joined_datetime FROM clients;
+- shows the day when they join
+
+MONTH()
+SELECT MONTH(joined_date) AS month_number, joined_datetime FROM clients;
+- shows the month when client joined
+
+NOW()
+SELECT NOW() AS right_now
+- used for created at and updated at
+
+DATE_FORMAT
+- got to w3school for DATE_FORMAL for SQL
+ie. WEDNESDAY of the date of the year
+    SELECT DATE_FORMAT(joined_datetime,'%W %M %e, %Y') FROM clients;
+
+When calling a function on a column, make sure that column is the appropriate Data Type for that function.
+                * Text Functions Data Types (VARCHAR, TEXT, CHAR etc.)
+                * Numeric Functions Data Types (INT, BIGINT, FLOAT etc.)
+                * Date and Time Functions Data Types (DATETIME)
+                * SELECT FUNCTION (column) FROM table_name
+
+JOINING TABLE ~
+
+examples of joining tables:
+1)Find all the cliens(first and last name)billing amounts and charge date:
+ERD - match client with billing
+command:
+    SELECT clients.first_name, clients.last_name, billing.amount, billing.charged_datetime
+    FROM clients
+    JOIN billing ON clients.id = billing.clients_id;
+
+2) list all the domain names and lead (first and last name) for each site
+ERD - join sites with leads
+command:
+    SELECT site.domain_name, leads.first_name, leads.last_name
+    FROM sites
+    Join leads ON sites.id - leads.sites_id;
+
+3) Join Multiple Tables Together
+* Get the names of clients, their domain names and the first names of all the leads generated from those sites;
+command:
+    SELECT clients.first_name AS client_first, clients.last_name, sites.domain_name, leads.first_name AS leads_first
+    FROM clients
+    JOIN sites ON clients.id = sites.clients_id
+    JOIN leads ON sites.id - leads.sites_id
+- make sure find relationship and joining them clearly. * make sure the first name is clearified with the AS 'category'_first function.
+
+4) Left and Right JOIN
+- want something that doesn't really match with the right table
+* List all the clients and the sites each client has, even if the client hasn't landed a site yet.
+command:
+    SELECT client.first_name, clients.last_name, sites.domain_name
+    FROM clients
+    LEFT JOIN site ON clients.id - sites.clients_id
+* display everything on the left table even if it doesn't exist in the right table.
+* if you change LEFT to RIGHT, vice versa. (usually don't happen if site will exist withou client information, so mostly uses LEFT JOIN)
+
+5) Group BY
+* Find all the clients (first and last name) and their total billing amounts
+command:
+    SELECT clients.first_name, clients.last_name, SUM(billing.amount)
+    FROM clients
+    JOIN billing ON clients.id = billing.clients_id;
+- say you want to sum up the total billing that one user has bought:
+    GROUP BY clients.id;
+    * Can use SUM as Min, Max, AVG etc.
+- With GROUP BY, we will group multiple rows together, by performing a function to combine the values of those rows
+
+6) Can also use CONCAT for groups:
+    * List all the domain names associated with each client:
+Command:
+    SELECT GROUP_CONCAT(' ',sites.domain_name) AS domains, clients.first_name, clients.last_name
+    FROM clients
+    JOIN sites ON clients.id = sites.clients_id
+    GROUP BY clients.id
+
+7)  Function
+* find the total number of leads for each site.
+command:
+    SELECT COUNT(leads.id), sites.domain_name
+    FROM sites
+    JOIN leads ON sites.id = leads.sites_id
+    GROUP BY sites.id:
+- just counting the rows from leads.id
+- has single domain names with the leads.
+
+SCENEREOS:
+One to One
+SELECT * FROM customers
+JOIN addresses ON addresses.id = customers.address_id;
+
+One to Many
+SELECT * FROM orders
+JOIN customers ON customers.id = orders.customer_id;
+
+Many to Many
+SELECT * FROM orders
+JOIN items_orders ON orders.id = items_orders.order_id
+JOIN items ON items.id = items_orders.item_id;
+
+LEFT Join ~
+- you can make any web application using only JOIN and LEFT JOIN
+- we are joining the tables, starting from left to right, gluing each table based on the primary id and foreign key.
+
+1. What query would you run to get all tweets from the user id of 1?
+        SELECT *
+        FROM users
+        LEFT JOIN tweets
+        ON users.id = tweets.user_id
+        WHERE users.id = 1;
+        Copy
+
+You can just grab the tweets by:
+
+        SELECT tweets.tweet
+        FROM users
+        LEFT JOIN tweets
+        ON users.id = tweets.user_id
+        WHERE users.id = 1;
+
+Or rename the output column that you want as kobe_tweets by modifying the statement to look like the following:
+
+        SELECT tweets.tweet as kobe_tweets
+        FROM users
+        LEFT JOIN tweets
+        ON users.id = tweets.user_id
+        WHERE users.id = 1;
+        Copy
+
+2. What query would return all the tweets that the user with id 2 has tagged as favorites?
+
+        SELECT first_name, tweet
+        FROM users
+        LEFT JOIN faves
+        ON users.id = faves.user_id
+        LEFT JOIN tweets
+        ON faves.tweet_id = tweets.id
+        WHERE users.id = 2;
+
+3. What query would you run to get all the tweets that user with id 2, or user with id 1, has tagged as favorites?
+        SELECT first_name, tweet
+        FROM users
+        LEFT JOIN faves
+        ON users.id = faves.user_id
+        LEFT JOIN tweets
+        ON faves.tweet_id = tweets.id
+        WHERE users.id = 1 OR users.id = 2;
+
+4.What query would you run to get all the users that are following the user with id 1?
+* The key word to remember is the word "AS" because it lets us join the same table twice by providing SQL with another
+  variable to reference the table that is getting joined again.
+
+        SELECT users.first_name as followed, users2.first_name as follower
+        FROM users
+        LEFT JOIN follows
+        ON users.id = follows.followed_id
+        LEFT JOIN users as users2
+        ON users2.id = follows.follower_id
+        WHERE users.id = 1;
+
+5. What query would you run to get all users that are not following the user with id of 2?
+This requires nested queries, which you can learn about at http://sqlzoo.net/wiki/SELECT_within_SELECT_Tutorial.
+
+        SELECT *
+        FROM users
+        WHERE users.id NOT IN (
+        SELECT follower_id
+        FROM follows
+        WHERE followed_id = 2
+        ) AND users.id != 2;
+        Copy
+* We can run functions on specific columns and often times it is paired up with the GROUP BY statement.
+
+        SELECT users.first_name as user, COUNT(users2.first_name) as follower_count
+        FROM users
+        LEFT JOIN follows
+        ON users.id = follows.followed_id
+        LEFT JOIN users as users2
+        ON users2.id = follows.follower_id
+        WHERE users.id = 1
+        GROUP BY users.id
+
+Left Join vs. Join
+* There is a difference in the output that they provide,
+  specifically in the cases where a record in one table has no matching record in the joining table.
+ie.
+        SELECT first_name, tweet
+        FROM users
+        LEFT JOIN tweets
+        ON users.id = tweets.user_id
+
+Now if we change the LEFT JOIN command to the JOIN command, the output will be as follows:
+
+        SELECT first_name, tweet
+        FROM users
+        JOIN tweets
+        ON users.id = tweets.user_id
+
+* When SQL uses the keyword JOIN, it only includes those records that have matches on both sides. It will omit any records that don't have a 'partner'.
+* On the other hand, LEFT JOIN will include all the records from the first table.
+
+Summary:
+* JOIN will only include the intersection of the two tables, whereas LEFT JOIN will include all records from the first table,
+    plus the records from the second table that correspond.
+* Join = Inner Join, Left Join = outer Join

@@ -1,0 +1,78 @@
+MySQL Workbench:
+- a Graphical User Interface (GUI) for us to interact with MySQL, one of the most popular relational databases in the world.
+Why Use?
+- We use MySQL Workbench when we are interacting with our databases because it will help us run some SQL queries.
+
+Conventions (Highly recommend to follow):
+Why Follow?
+- Developers can have a better understanding of your database if you are using a set of industry standards.
+- Developers can create software to automate a lot of the queries if some assumptions can be made.
+- Will use at Object Relational Mappers (ORM):
+            -which are programs that other developers use to make database queries easier by providing some handy functions.
+
+Guidelines that we feel are best for this course:
+- make the table name plural and ALL lowercase
+- use "id" as the primary key - name it id (also make it auto-incremented).
+- name foreign keys with singular_table_name_id
+    ie. (ex. user_id, lead_id, site_id, client_id, chapter_id, course_id, module_id).
+- use created_at and updated_at as columns for the timestamp in EVERY table you create. (Important during ORM or Ruby on Rails!)
+
+Data Types (simple data types):
+* VARCHAR(number of characters)
+    - Used to store non-numeric values that can be up to 255 characters.
+    - can store a variable number of characters and will only use the space required for each record that is stored in the database.
+    - used for values with different character lengths like an email, first_name, or last_name.
+* CHAR(number of characters)
+    - Also used to store non-numeric values , however, it will use up all space for the set number of characters regardless of what value is added.
+    ie.  if I set CHAR(15)-  it will use up the equivalent of 15 characters (even if you store words that are 6 characters long)
+    - Char would work well for something like a state_abreviation.
+* INT
+    - Used to store integers.
+    - Find mostly using the INT are things like a unique identifier for each table
+    - INT is good to use for most normal number values like a phone_number or a zip_code.
+    * unsigned (positive numbers only) - can store numerical values from 0 up to 4294967295
+    * signed (positive and negative numbers)
+* BIGINT
+    - BIGINT would be used for columns that would need to store huge numbers
+    ie. if you wanted to store something like a Facebook id when using Facebook's API,
+        since they have over a billion users the id will need to be a data type of BIGINT.
+    Also uses:
+    * unsigned (positive numbers only) - can store numerical values from 0 up to 4294967295
+    * signed (positive and negative numbers)
+* TINYINT
+    - TINYINT would be good to use for numbers that will be relatively small.
+    ie. A good example of something that would use a TINYINT is user level identifier (0 - inactive user, 1 - active user, 9 - admin).
+* FLOAT
+    - Used to store floating point numbers (numbers that need to have decimal places).
+     ie. used for item cost samples.
+* TEXT
+    - Used to store a large amount of text, like a description, message, or comment.
+    - Use this for any text that VARCHAR() is too small to handle.
+* DATETIME
+    - used to store a date and time in the format YYYY-MM-DD hh:mm:ss
+
+Example Simple Blog
+- Best example to learn how to map out tables.
+    - Study the wireframe below and then watch the video to see one way we could have laid out our ERD.
+* One User may have many Post, One Post may have many comment (click start point for the many & click last for the one that has many.)
+* One Post may have many comment
+
+Example Likes
+Step 1: Look at the wireframe and determine what database tables you need to be able to come up with the app.
+Step 2: Set up the relationships and make sure you rename your foreign keys to be singular.
+- Many to Many relationship: one users may can like many post, many post can be liked by many users.
+* remember to change he id to singular (take out the "s" in the Id)
+
+Example Food Reviews
+- One User can not have many restaurant and vice versa.
+- One User may have many review, and one Restaurant may have many review.
+
+Example of Amazon (E-commerce)
+- One category can have many products and vice versa (Many to Many Relationship)
+- Categorization, the link of categories and products. Create link table of both categories and products.
+    - category||products to categories is one to Many.
+
+Example of Code Categorization (Coding Dojo)
+- display users and how many belts they have per user.
+- One users can have many belt and one belt can have many users (Many to Many)
+    * Create a new table for many to many! -create a belt certification table.
