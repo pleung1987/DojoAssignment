@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheet.css')}}" />
+        <title>Success</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="topbar">
+                <h2>Welcome to the Wall!</h2>
+                <h3>How are you doing {{username}}</h3>
+                <form class="logout" action="/logout" method="post">
+                    <input type="submit" name="logout" value="Log OUT">
+                </form>
+            </div>
+            <h1>Welcome to the Wall!</h1>
+            <div class="row">
+                <form class="" action="/create_message" method="post">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea name="message" rows="5" cols="80"></textarea>
+                            <label for="message"></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Post a message!</button>
+                </form>
+            </div>
+            <div class="showmessages">
+                {% for msg in msgs %}
+                <h5 class= "messenger">{{msg.first_name}} {{msg.last_name}} - {{msg.created_at}}</h5>
+                <h4 class="textmessages">{{msg.message}}</h4>
+                <div class="showcomments">
+                    <!-- go through all comments belong to message and display -->
+                {% for comment in comments %}
+                {% if comment.message_id == msg.id %}
+                <p class="commenter">
+                    {{comment.first_name}} {{comment.last_name}} - {{comment.created_at}}
+                </p>
+                <h5 class="textcomments">{{comment.comment}}</h5>
+                {% endif %}
+                {% endfor %}
+                </div>
+                <div class="row">
+                    <form class="col s10 offset-s2" action="/create_comment" method="post">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea name="comment" rows="3" cols="80"></textarea>
+                                <label for="message"></label>
+                            </div>
+                        </div>
+                        <input type="hidden" name="msgid" value="{{msg.id}}"/>
+                        <button type="submit" class="btn">Post a comment!</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>

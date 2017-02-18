@@ -1,0 +1,66 @@
+1) Deleting quotations on local host:
+
+    File "server.py", line 6, in <module>
+      mysql = MySQLConnector(app, 'flasksql')
+    File "/Users/Paddie/Desktop/DojoAssignments/Python/Flask_MySQL/flask_mysql/mysqlconnection.py", line 40, in MySQLConnector
+      return MySQLConnection(app, db)
+    File "/Users/Paddie/Desktop/DojoAssignments/Python/Flask_MySQL/flask_mysql/mysqlconnection.py", line 8, in __init__
+      'host': localhost,
+    NameError: global name 'localhost' is not defined
+    (py2FlaskEnv) Patricks-MacBook-Pro-2:flask_mysql Paddie$
+
+* Anything that is missing a quotation will show error name 'element' is not defined.
+
+2) If port number isn't set according to MAMP SQL port
+
+    File "/usr/local/lib/python2.7/site-packages/MySQLdb/connections.py", line 193, in __init__
+      super(Connection, self).__init__(*args, **kwargs2)
+    sqlalchemy.exc.OperationalError: (_mysql_exceptions.OperationalError) (2003, "Can't connect to MySQL server on '127.0.0.1' (61)")
+
+* Anything port number or ports that are not the same as your MAMP/WAMP SQL port number will show:
+                (2003, "Can't connect to MySQL server on '127.0.0.1' (61)")
+- Make sure you check your port on MySQL WorkBench and see if your MySQL Connector file's @ Manage Server connection has the port number
+needed for changes.
+
+3)  Changing User name other that 'root':
+
+    sqlalchemy.exc.OperationalError: (_mysql_exceptions.OperationalError)
+    (1045, "Access denied for user '*****'@'localhost' (using password: YES)")
+
+- anything created outside of the name of root will show the following error representing ***** part.
+
+4) @ rate the path to connect to your sql database
+        DATABASE_URI = "mysql://{}:{}@127.0.0.1:
+        Changing the IP address to something outside of your ip say:@127.0.0.0:
+* it will go into your server mode but now show that:
+                                        * Debugger is active!
+                                        * Debugger pin code: 297-974-343
+                ! BE CAREFUL NOT TO BE FOOLED THAT SERVER WORKS!
+
+5)Updating Records
+Say we wanted to update a specific record, we could create another page and add a form that would submit to the following route:
+
+@app.route('/update_friend/<friend_id>', methods=['POST'])
+def update(friend_id):
+    query = "UPDATE friends
+             SET first_name = :first_name, last_name = :last_name, occupation = :occupation
+             WHERE id = :id"
+    data = {
+             'first_name': request.form['first_name'],
+             'last_name':  request.form['last_name'],
+             'occupation': request.form['occupation'],
+             'id': friend_id
+           }
+    mysql.query_db(query, data)
+    return redirect('/')
+
+Nothing fancy, just posting to a route with a URL parameter - friend_id and using that friend_id in our update query.
+
+6) Deleting Records
+@app.route('/remove_friend/<friend_id>', methods=['POST'])
+def delete(friend_id):
+    query = "DELETE FROM friends WHERE id = :id"
+    data = {'id': friend_id}
+    mysql.query_db(query, data)
+    return redirect('/')Copy
+Now you know how to interact with the database using the mysqlconnection.py file!

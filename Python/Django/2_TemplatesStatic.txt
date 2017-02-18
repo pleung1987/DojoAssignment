@@ -1,0 +1,44 @@
+Templates  and Static Files Review:
+
+Here's a review of all the steps and corresponding folders and files involved:
+
+1) Create the Django project Foldeer
+2) create the apps directory
+3) create the 'dunder' file "__init__.py"
+4) create the Django App -> called first_app
+5) create the route file in the Django App(first_app) name it urls.py
+6) create the view file in the Django APP(first_app) name it views.py
+7) create the "View/Templates directories and files"-> templates -> Django App(first_app) -> index.html and ->show_users.html(depending on what is in your index)
+
+* the directory main (same level as your manage.py) contains your settings.py file which must be updated to include your app!
+
+* In our views file, Django knows to look in the templates folder first for whatever path we pass to our render method:
+
+                # views.py
+                ...
+                def index(request):
+                    return render(request, "ourApp/index.html")
+
+* The behavior for static files is very similar: Django’s template rendering system knows (if it's told)
+    to look in the static and then at the path for the specific file relative to that folder!
+
+What this looks like in HTML is:
+
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title></title>
+            {% load staticfiles %}
+                                                              # how to connect your css to Django project
+          <link rel="stylesheet" href="{% static 'ourApp/css/main.css' %}"media="screen" title="no title"  charset="utf-8">
+          </head>
+        <body>
+        </body>
+      </html>
+
+* In other words, loading static files, whether it's CSS or JavaScript or an image will start the search path inside
+    of our app’s static folder, and after that, the rest of that path is up to us!
+
+*  A good habit to get into is separating our JavaScript, CSS, and images into three folders
+    (and specifying which app we are retrieving these files from, as outlined in the structure at the top of this tab!

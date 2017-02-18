@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='stylesheet.css')}}" />
+        <title>Users</title>
+    </head>
+    <body>
+        <h2>Submitted Info</h2>
+        <p>Email:     {{ email }} </p>
+        <p>First Name:     {{ first_name }} </p>
+        <p>Last Name:     {{last_name}}</p>
+        <p>Password:     {{password}}</p>
+        <form action="/"><input type="submit" value="Go Back"></form>
+    </body>
+</html>

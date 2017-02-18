@@ -1,6 +1,6 @@
 Insert Basics ~
 SQL Statement:
-            INSERT INTO tweets (tweet, user_id, createdPat, updated_at)
+            INSERT INTO tweets (tweet, user_id, created_at, updated_at)
             VALUES ("hellooo", 1, NOw(), NOW())
 
 Inserting Records

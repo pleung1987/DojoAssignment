@@ -1,0 +1,209 @@
+Modules & Packages ~
+* Modules: Python files with the .py extension which implement a set of functions.
+- The first time a module is loaded into a running Python script, it is initialized by executing the code in the module once.
+- If another module in your code imports the same module again, it will not be loaded twice, but only once
+- local variables inside the module act as a "singleton" - they are initialized only once.
+
+* urllib module, which enables us to create read data from URLs.
+import the module:
+                                            # import the library
+                import urllib
+                                            # NOTE: there's a urllib version for each version of Python:
+                                            # Use urllib2 if you're using Python 2
+                                            # Use urllib3 for Python 3
+
+                                            # Finally, use it...
+                urllib.urlopen(...)
+
+* sed urllib as a variable to refer to our module and then we called the functions using dot notation.
+
+Creating Your Own Modules:
+* To create a module, we first create a new .py file with the module name in the same directory as the file that will import the module.
+* Then we import it using the import command and the Python file name (without the .py extension)
+
+For example, let's create a module of arithmetic operations:
+
+                                #file name: arithmetic.py
+                def add(x, y):
+                    return x + y
+                def multiply(x, y):
+                    return x * y
+                def subtract(x, y):
+                     return x - y
+
+We can import arithmetic module and run the functions by doing this...
+
+                import arithmetic
+                print arithmetic.add(5, 8)
+                print arithmetic.subtract(10, 5)
+                print arithmetic.multiply(12, 6)
+
+* Note: just make sure that the module and the file importing the module are in the same folder/directory.
+
+Standard (Built-In) Modules ~
+- Python comes with a library of standard modules.
+- Some modules are built into the interpreter;
+        - these provide access to operations that are not part of the core of the language but are nevertheless built-in.
+        - either for efficiency or to provide access to operating system primitives such as system calls.
+- The set of such modules is a configuration option which also depends on the underlying platform
+    ie.  One particular module deserves special mention: sys, which is built into every Python interpreter.
+
+Now we can use the built-in random module in our Human class. In order to attack and be successful, our human needs a certain amount of luck:
+
+                import random                           # import the random module
+                class Human(object):
+                  def __init__(self, clan=None):
+                    print 'New Human!!!'
+                    self.health = 100
+                    self.clan = clan
+                    self.strength = 3
+                    self.intelligence = 3
+                    self.stealth = 3
+                  def taunt(self):
+                    print "You want a piece of me?"
+                                                        # inserted a new function so our Human instances can attack
+                  def attack(self):
+                    self.taunt()
+                                                        # use the random module to generate a number when we attack
+                    luck = round(random.random() * 100)
+                    if(luck > 50):
+                      if(luck * self.stealth > 150):
+                        print 'attacking!'
+                        return True
+                      else:
+                        print 'attack failed'
+                        return False
+                    else:
+                      self.health -= self.strength
+                      print "attack failed"
+                      return False
+
+Exploring two important functions:
+ 1) the dir: look for which functions are implemented in each module
+ 2) help functions.
+
+example:
+>>> import urllib
+>>> dir(urllib)
+['ContentTooShortError', 'FancyURLopener', 'MAXFTPCACHE', 'URLopener', '__all__', '__builtins__', '__doc__', '__file__', '__name__', '__package__', '__version__', '_ftperrors', '_get_proxies', '_get_proxy_settings', '_have_ssl', '_hexdig', '_hextochr', '_hostprog', '_is_unicode', '_localhost', '_noheaders', '_nportprog', '_passwdprog', ...
+>>> help(urllib)                                         # will return a list of information on the given module
+
+* Module is a single file (or files) that are imported under one import
+* Package is a collection of modules in directories that give a package hierarchy.
+
+example:
+                from my_package.subdirectory import my_functions
+
+* Packages are namespaces which contain multiple packages and modules themselves.(Directories with a twist)
+
+sample_project
+     |_____ python_file.py
+     |_____ my_modules
+               |_____ __init__.py
+               |_____ test_module.py
+               |_____ another_module.py
+               |_____ third_module.py
+
+               * the package name is my_modules.
+               * MUST contain a special file called  __init__.py
+
+How to import:
+            import my_modules.test_module
+                OR
+            from my_modules import test_module
+
+The  __init__.py file can also decide which modules this package will export as an API, while keeping other modules internal,
+by overriding the __all__ variable, like so:
+
+                __init__.py:
+                __all__ = ["test_module"]
+
+Inheritance ~
+* Inheritance is simply forming new classes using classes that have already been defined.
+    - It allows one class to take on some or even all of its attributes and methods from a parent class
+    - The benefits of inheritance are code reuse and reduction of complexity of a program
+
+* Example of using Human: creating 3 different classes in the Human Race (Wizard, Ninja, Samurai)
+- Creating subclasses is useful when you want to create a more specialized version of a current class that you have.
+- It means that the current functionality will mostly remain the same except for some minor adjustments.
+* Class inheritance, we don't have to repeat ourselves
+
+create our new classes in a file called new_classes.py:
+
+Example:
+        from human import Human
+            class Wizard(Human):
+                def heal(self):
+                    self.health += 10
+            class Ninja(Human):
+                def steal(self):
+                    self.stealth += 5
+            class Samurai(Human):
+                def sacrifice(self):
+                    self.health -= 5
+                                            # create new instance of Wizard, Ninja, and Samurai
+            harry = Wizard()
+            rain = Ninja()
+            tom = Samurai()
+                                            # all instances still have human properties because its
+                                            # class inherits from the Human class
+            print harry.health
+            print rain.health
+            print tom.health
+                                            # yet they are subclasses which mean they can extend the current functionality of Human class
+                                            # instances of the Wizard class can perform the heal method
+            harry.heal()
+            print harry.health
+                                            # instances of the Ninja class can perform the steal method
+            rain.steal()
+            print rain.stealth
+                                            # instances of the Samurai class can perform the sacrifice method
+            tom.sacrifice()
+            print tom.health
+            print tom.stealth
+
+* implicit inheritance which allows us to use inherited attributes and methods of the Human(parent) class in our new subclasses.
+
+Example:
+            class Parent(object): # inherits from the object class
+              # parent methods and attributes here
+            class Child(Parent): #inherits from Parent class so we define Parent as the first parameter
+              # parent methods and attributes are implicitly inherited
+              # child methods and attributes
+
+Super ~
+* create updated versions of methods that are defined in the parent class
+    - In addition to your custom code you want specifically to call the parent implementation of that method as well (or instead).
+    - This is where Super comes in.
+
+ie.
+         super(ChildClassName, self).parent_method()'.
+
+Parent __init__ :
+* One thing we may want to do is call the Parent class's __init__ method,
+    but also have our Child class change attributes defined by its Parent class.
+
+Example:
+            from human import Human
+            class Wizard(Human):
+                def __init__(self):
+                    super(Wizard, self).__init__()   # use super to call the Human __init__ method
+                    self.intelligence = 10           # every wizard starts off with 10 intelligence
+                def heal(self):
+                    self.health += 10
+            class Ninja(Human):
+                def __init__(self):
+                    super(Ninja, self).__init__()    # use super to call the Human __init__ method
+                    self.stealth = 10                # every Ninja starts off with 10 stealth
+                def steal(self):
+                    self.stealth += 5
+            class Samurai(Human):
+                def __init__(self):
+                    super(Samurai, self).__init__()  # use super to call the Human __init__ method
+                    self.strength = 10               # every Samurai starts off with 10 strength
+                def sacrifice(self):
+                    self.health -= 5
+
+* Notice how we call the __init__ method of the super(parent)
+-  we create instances of each, we'll see that they have the same attributes as the typical Human (the parent class),
+ but they also have beefed up attributes depending on which subclass we instantiated!

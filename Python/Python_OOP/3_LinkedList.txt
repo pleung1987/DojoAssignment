@@ -1,0 +1,79 @@
+Linked List ~
+What is a data structure?
+- A data structure is simply a container that holds values.
+-  Data structures can organize large quantities of data and make certain operations much faster.
+
+* data structure called the Array:
+- Arrays keep track of multiple values and are optimized for random access
+- For keeping values in a specific order, and for directly accessing them in arbitrary order, Arrays are a good choice.
+
+* Linked List is another data structure that stores values in sequential order:
+- Linked Lists have other strengths that make them more suited for many problems -> optimized for Quick Insertion and Deletion.
+
+Weakness of Array:
+- let’s say we want to add Ben to our contacts list:
+    -> If we follow the alphabetical order of a contact list, Ben should show up right between Alice and Chad.
+    -> This is where one weakness of Arrays arises.
+- Not only must you identify the location of where the name should be inserted.
+    -> you also have to shift another value out of the way so you can insert the name in that position.
+
+Advantages of Linked List ~
+Linked Lists are made up of nodes :
+* A Node is an object that has a number of attributes that are stored.
+
+Only two attributes are mandatory for an Object to be a Node:
+1) value attribute: stores exactly value such as a string or a number.
+2) pointer attribute:  a reference to the following node object -- the next kid in line.
+-> what is a pointer?
+    -  It’s like a mailing address: it knows where to find the next Node, but nothing else about that Node.
+    -  You can define a Node to have within it many different attributes/values,
+        or it could have very little depending on what you want to store.
+            ->  It can have a pointer named next, and maybe even another pointer named previous (or prev).
+    - When a Node has only next pointers, then we would call a Linked List of these nodes a SINGLY Linked List
+    - If the nodes contain both next and previous pointers, then a Linked List of this type would be a DOUBLY Linked List.
+
+* Linked List Object itself only has two attributes, the head and the tail of the Linked List.
+    -> head is a pointer to the first node in a List
+    ->  tail is a pointer to the last node in this List. -> he tail's next will always be null meaning there are no nodes following the last node in this List.
+
+Example add contact in phone:
+-> We start at Head’s current value, to check whether this new Node should go at the very start of our List
+-> If not, then we should continue onward through the various nodes to determine where we should insert this new Node.
+
+If all we have was the Head pointer, then how do we look at the value of the second Node in our list?
+-> We access this by referring to head.next. If we print(Head) we'll get the whole object of Alice
+    -> Likewise, if we print(Head.next) we get the whole object containing the value of "Chad".
+
+What if we only want to see the value inside of the next node as opposed to the whole object?
+-> To do that, you would print(head.next.value) which would give us 'Chad'.
+-> If we wanted to get the value of 'Eric' we would have to print(head.next.next.next.value).
+
+* great address-keeper called the next pointer:
+-> We can change the “Alice” Node’s next to point somewhere else (say, to point to our new “Ben” Node object),
+->then connect our new “Ben” Node’s next to point to where the “Alice” Node’s next pointer used to point ('Chad').
+
+That's all it takes for adding a new Node to our Linked List. Now we can write the actual functions for this Linked List Object.
+Start first by writing the Node Object:
+
+                    class Node(object):
+                     def __init__(self, value):
+                      self.value = value
+                      self.next = None
+
+* Each new node's next is null until we specify what it should point to.
+
+* Next, we will create the Singly Linked List Object.
+
+                    class SinglyLinkedList(object):
+                        def __init__(self):
+                            self.head = None
+                            self.tail = None
+
+* Each new list is empty (contains zero nodes) until we add them to the list.
+
+Now we can run the following code…
+
+                        list = SinglyLinkedList()
+                        list.head = Node('Alice')
+                        list.head.next = Node('Chad')
+                        list.head.next.next = Node('Debra')

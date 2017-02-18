@@ -1,0 +1,138 @@
+Models in the MVC Structure
+* Models in the MVC architecture are the workhorses of data manipulation
+* control which data are released to the controllers.
+* Phrase skinny controllers and fat models is often used, and is an important design principle:
+    - Any heavy logic including database queries is the purview of a Model.
+    - if a Controller (in Django's case, a View) needs to perform logic or get information from a database, it should use a Model method to do so.
+
+* We want our views (controllers in MVC parlance) to call simple, clearly named methods of our models that can receive and return data in an organized way.
+
+Across web frameworks such as the MEAN stack, Rails, and Django, the models file does two things:
+    * Gives information about what's inside the relevant SQL table
+    * Provides a location for the sort of validations we just talked about
+
+Building models in Django:
+* controller makes call that clear, and models return data that makes sense to the controller.
+* controller should be thin. Models should be fat
+* Django makes the tables for us, like ERD. When me migrate, it will have the tables.
+
+Start:  Make project from scratch and follow cheat sheet first.
+_ Models are classes. Create class first
+    ie.
+    from django.db import models
+        class People(models.Model):
+        first_name = models.CharField(max_length=38)
+        last_name = models.CharField(max_length= 38)
+        created_at = models.DateTimeField(auto_now_add=True)
+        updated_at = models.DateTimeField(auto_now=True)
+                                                            # put this in your Django models.py. Make sure you reference how datetime looks like.
+- go back to views to see models:
+    from .models import People (anything you see in models)
+
+                                                            #in views.py
+    from django.shortcuts import render
+                                                            #look inside models.py for people class
+    from .models import People
+
+    def index(request):
+        People.objects.create(first_name="Mike", last_name- "Hannon")        # By using SQLite, dont need to generate ERD yourself.
+        people = people.objects.all()
+        print people
+        return render(request, "third_app/index.html")
+
+- use console:
+    * python manage.py makemigrations (Look and see if there have been any changes to the models files in our apps. If so,
+                                        create the code (using built-in Django methods) that represents those changes.)
+    * python manage.py migrate (Forward engineer those changes into our database! ~
+                                (I.e. turn the code generated inside a migration file into SQL commands and run those commands in local memory)
+    * python manage.py runserver
+        -> localhost/8000
+            -> should see People: people(object) and ,PeopleL people object> appear in terminal.
+
+Remember:
+* Never delete migration files, and always makemigrations and migrate anytime you change something in your models.py files
+    – that's what updates the actual database so it reflects what's in your models.
+
+SQLite - a prepackaged SQL database that has much of the functionality of MySQL (but not all of it) and is stored as local memory.
+
+Django Models ~
+1. How we define the column types
+2. The different types a column can take on.
+
+Column Structure
+Inside our model class:
+
+  from django.db import models
+  class ModelThing(models.Model):
+                                                    #  column_name = models.Column_Type(optional_params)
+    first_name = models.CharField(max_length=30)
+                                                    # we specified (CharField), and provided an optional parameter (max_length=30)
+
+Important Documentation DJango Tables:
+* CharField
+    - Any text that a user may enter. This has one additional required parameter,
+    max_length, that (unsurprisingly) is the maximum length of text that can be saved.
+* TextField
+    - Like a CharField, but with no maximum length. Your user could copy the entire text of Atlas Shrugged into the field,
+     and it would save in the database correctly.
+* IntegerField, BooleanField
+     Holds integers or booleans, respectively.
+* DateTimeField
+     Used for date and times, such as timestamps or when a flight is scheduled to depart.
+     - auto_now_add=True, which adds the current date/time when object is created
+     - auto_now=True, which automatically updates any time the object is modified.
+* ForeignKey, ManyToManyField, OneToOneField
+    - Used to indicate a relationship between models (anything that would require a JOIN statement in SQL)
+    - ForeignKey is for one-to-many relationships and goes in the model on the "many" side,
+        just as the foreign key column goes in the SQL table on the "many" side.
+
+Django Models as ERD's ~
+
+* Using migrations to generate the Django Models,
+    let's look at how we would approach a few different databases, and what the ERD would look like:
+
+Example:
+* We might have a NAME column that is a CharField, a description that is a TextField, and Created_at and Updated_at fields that are DateField's.
+Now how would we transfer this into a Django Model? We might write something like the following:
+
+                                                                        # Inside models.py
+              from django.db import models
+              class Course(models.Model):
+                 name = models.CharField(max_length=255)
+                 description = models.TextField()
+                 created_at = models.DateTimeField(auto_now_add=True)
+                 updated_at = models.DateTimeField(auto_now=True)
+
+* Pretty straightforward. To reiterate: We created a name column and a description column, one with the Column_Type as a CharField and the other as a TextField.
+ But notice how there isn't an ID column... This gets created by Django on our behalf.
+
+ * Notice the many_to_one relationship:
+
+                                                                            # Inside models.py
+                         from __future__ import unicode_literals
+                         from django.db import models
+                                                                            # Create your models here.
+                         class User(models.Model):
+                             first_name = models.CharField(max_length=45)
+                             last_name = models.CharField(max_length=45)
+                             password = models.CharField(max_length=100)
+                             created_at = models.DateTimeField(auto_now_add = True)
+                             updated_at = models.DateTimeField(auto_now = True)
+                         class Post(models.Model):
+                             title = models.CharField(max_length=45)
+                             message = models.TextField(max_length=1000)
+                                                                            # Notice the association made with ForeignKey for a one-to-many relationship
+                             user_id = models.ForeignKey(User)              # Reference to User
+                             created_at = models.DateTimeField(auto_now_add = True)
+                             updated_at = models.DateTimeField(auto_now = True)
+
+        * That ForeignKey statement is the equivalent of the one-to-many relationship shown in the ERD diagram.
+
+* RememberL ADD Django Extensions to build relationships in your settings.py to get the one to many relationships to work
+
+* After Migration is done , copy: python manage.pygraph_models -a -o myapp_models.png and run it in terminal to run your erd
+    (install extra extensions like grabviz and dot to get bonus)
+    -. new file  in myapp_models at the main folder to see.
+
+Important:
+* Using ForeignKey to establish one-to-many relationships between Message + User, Comment + User and Comment + Message.

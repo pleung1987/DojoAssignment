@@ -1,0 +1,277 @@
+Overview:
+* OOP (Object Oriented Programming) is something that has revolutionized the way programming is done today.
+    - Help you to avoid repeating code that solves the same simple problem, making code maintenance easy and effective.
+    - Understanding object-oriented programming principles is the key to making your code more organized and modular.
+
+ What is OOP (example of Age of Empires):
+ ie. Barracks (aka. instances/object)
+    Have:         -x Health
+    (Attributes)  -y
+
+    Do:          - create soldiers
+    (Methods)      - move
+                 - Destroy
+    Farm
+    Have:        - Health
+    (Attributes) -Capacity
+
+    Do:      - Move
+    Methods) - Destroy
+
+* each instance has their own x and y coordinates.
+* instances can be public or private.
+* constructor: method that the program will run whenever a new instance is constructed (depends on different languages for how constructed)
+* destructor: the method run when the object is destroyed or deleted from the memory
+* if Barrack can upgrade: adds attibutes and methods
+    - create Barrack A, can inherit the what the attribute and methods that the parent has.
+    - private method, wouldn't be inherited to the parents.
+* protected: allow the private methods and attributes but allow your children class to inherit it.
+
+As developers, we are artists! As we learn more concepts.
+    - we can code and create anything we can think of simply using the terminal and a text editor.
+
+Example of creating Humans as a race
+This is the finalized code of the class Human that we are going to write incrementally throughout the following tabs:
+
+    import random
+    class Human(object):
+      def __init__(self, clan=None):
+        print 'New Human!!!'
+        self.health = 100
+        self.clan = clan
+        self.strength = 3
+        self.intelligence = 3
+        self.stealth = 3
+      def taunt(self):
+        print "You want a piece of me?"
+      def attack(self):
+        self.taunt()
+        luck = round(random.random() * 100)
+        if(luck > 50):
+          if((luck * self.stealth) > 150):
+            print 'attacking!'
+            return True
+          else:
+            print 'attack failed'
+            return False
+        else:
+          self.health -= self.strength
+          print "attack failed"
+          return False
+
+Class Structure ~
+
+* You can easily create a class in Python by typing the keyword class followed by the name of your class and (object).
+ie.
+            class Human(object):
+            pass
+* Parameter for a class is object it simply means that this class inherits from the object class.
+* the keyword pass in the body - it is used to tell Python we want an empty block.
+ie.
+            class ClassName(object):
+              //attributes and methods here
+
+* the class as a blueprint for creating something, Once, we've finished our blueprint we can create instances of this class.
+example in creating instance for our human class:
+            michael = Human()
+            jimmy = Human()
+* prints in instance called : <__main__.Human ...>
+    - Basically, the output gives you information about what class your object belongs to and where it is stored in memory.
+
+Debugging a Class Definition ~
+
+ * we get a simple  SyntaxError on the first line:
+    - we have misspelled class, left off an
+                ( or )
+    - omitted the ":" that begins the suite of statements that defines the class.
+* If we get a syntax error further in the class definition, then our method functions aren’t defined correctly.
+    - Be sure to indent the  def once (so it nests inside the class.
+    -  Be sure to indent the suite of statements inside the def twice.
+
+Debugging Object Construction ~
+* Three things that can go wrong when attempting to construct an object of that class:
+    - The class name is spelled incorrectly.
+    - You’ve omitted the () after the class name
+        ie.  my_object= MyClass, we've assigned the class object, MyClass, to the variable of my_object.
+            - my_object= MyClass() to use the class name as a factory and create an instance of a class.
+    - You’ve got incorrect argument values for the parameters of the __init__().
+
+Debugging Class vs. Object Issues
+* Biggest Newbie Mistake: attempting to exercise the method functions of a class instead of a specific object.
+    -  CAN'T SAY: MyClass.my_function() -> you’ll get the cryptic TypeError: unbound method error message.
+    -  the phrase “unbound method” means that no instance was being used.
+* When you say  x= MyClass(), you are creating an instance.
+    - When you see x.my_function(), then you are asking that specific object to do its my_function() operation.
+
+Methods ~
+*  For any blueprint, we're going to need to describe whatever it is we are making a blueprint for.
+    - way we could describe the object/thing is by defining what it can do:
+
+                    def my_function(self):
+                        print "This is a message inside the class."
+
+* Methods : functions contained inside a class that we use to describe what each instance of your class can do.
+    -  You can declare methods in the same way you declare a stand-alone function by also passing the self keyword as a parameter
+ie.
+                    class Human(object):
+                        def taunt(self):                          # note how we have a single parameter, 'self'
+                            print "You want a piece of me?"
+
+- we've created our class, we can then create a new instance of our class and then invoke our method:
+ie.
+                    michael = Human()
+                    michael.taunt()                                # when we invoke the function, notice how we didn't pass a parameter
+
+* self' in Methods :
+    - We defined our taunt function with one parameter but did not pass an argument when we invoked the function.
+    Reason:  chose to implement methods in such a way that makes the instance to which the method belongs be passed automatically
+             when you invoke the method, but not received automatically at method declaration.
+    - The first parameter of all methods is the instance that the method is being called on.
+    - However, you don't need to pass this as an argument when you invoke the method.
+    * We chose the word ,self, to name our parameter but this is just the recommended convention.
+
+Magic Methods :
+
+* the magic methods whose names start and end with double underscores.
+Here are some of the commonly-used magic methods:
+
+                    __init__()
+
+* In order to guarantee that all of the instance variables (to be covered in the next tab) exist during the entire life of the object,
+    it is best to initialize them by providing a method with the special name of  __init__().
+
+* The __init__() method is always called automatically by Python when the object is created;
+
+                    class Point(object):
+                        def __init__(self,x = 0,y = 0):
+                            print "Created a new point!"
+                            self.x = x
+                            self.y = y
+                        def distance(self):
+                                                                        #Find distance from origin
+                            return (self.x**2 + self.y**2) ** 0.5
+* In the above example, __init__() defines three parameters but we will only pass two (x and y) when we create a new Point instance.
+    -  self refers to the newly created object; in other class methods.
+    - In the __init__() method, self refers to the newly created object; in other class methods
+        it refers to the instance whose method was called.
+
+For Example:
+                    class Human(object):
+                        def __init__(self):
+                            print "New Human!!!"                         #when we create a new human, we'll get this as an output
+                        def taunt(self):
+                            print "You want a piece of me?"
+
+*  whenever you create a new instance of the Human class, the __init__() function will be executed
+    - we had the __init__() function print a message whenever we create a new human.
+
+ __init__()  vs  __new__()? :
+* difference between the __init__() method and constructor functions.
+- Constructors are methods which create new object instances, therefore,  __init__() is not a constructor.
+
+*  The __init__() method is called immediately after the object is created and then
+    initializes the defined variables inside our newly created object
+
+*  The constructor in Python is __new__():
+- __new__() overrides previous function.
+
+*    __init__() is used to initialize a newly created object
+                            while
+*    __new__() is used to control the way an object is created.
+
+1) Use of __new__(): to restrict the number of objects created from a class.
+2) Use __new__() to initialize attributes of an object:
+        - but logically it should be inside __init__().
+
+* the __new__() method will be used to create an instance of our class. This will be run under-the-hood.
+    -  Then the __init__() function will be run.
+
+__unicode__ :
+* This method defines your behavior when __unicode__() is called on an instance of your class
+    - __unicode__() is like str(), but it returns a Unicode string.
+Be Aware: If a client calls str() on an instance of your class and you've only defined __unicode__(), it won't work.
+
+** Always try to define __str__() as well in case someone doesn't have the luxury of using Unicode.
+
+Attributes ~
+* Attribute: The other alternative to describe something is to describe characteristics it might have.
+    -  Attributes can also be called instance variables.
+
+2 Ways of adding attributes to objects:
+    ie.
+
+        class Cat(object):
+            pass
+
+* add individual attributes to this instance and print the attributes:
+
+            garfield = Cat()
+            garfield.color = "orange"
+            garfield.type = "fat"
+            garfield.age = 5
+            print "Garfield's color:", garfield.color
+            print "Garfield's type:", garfield.type
+            print "Garfield's age:", garfield.age
+        # imagine if we made 100 more instances of Cat...
+
+Using __init__() to initialize attribute values
+- In order to guarantee that all of the instance variables exist during the entire life of the object...
+    - best to initialize them with the   __init__() method
+
+ie.
+            class Cat(object):
+            def __init__(self, color, type, age):
+            self.color = color
+            self.type = type
+            self.age = age
+
+Creating new cats, we don't have to add each attribute every time -- we simply pass in arguments when we create new instances:
+
+            garfield = Cat('orange', 'fat', 5)
+            print "Garfield's color:", garfield.color
+            print "Garfield's type:", garfield.type
+            print "Garfield's age:", garfield.age
+
+Apply to Human Example:
+
+            class Human(object):
+                def __init__(self, clan=None):
+                  print "New Human!!!"                     # when we create a new human, we'll get self as an output
+                                                            # initialize the clan instance variable by passing in a value
+                  self.clan = clan
+                                                            # initialize more attributes that will be the same for all humans
+                  self.health = 100
+                  self.strength = 3
+                  self.intelligence = 3
+                  self.stealth = 3
+                def taunt(self):
+                  print "You want a piece of me?"
+                                                            # create an instance of a human, pass in a clan name
+            michael = Human('CodingDojo')
+            jimmy = Human('CodingNinjas')
+
+* When we create a new human, we'll be notified with a printed message and will also set our attributes describing our human.
+* Other than the clan name, we want every new human to have the same values for health, strength, intelligence, and stealth!
+    -  If you print out the attributes of the two instances we created you'll see that the clans are different
+        but all the others are the same.
+
+Default Parameter Values:
+* Sometimes, when we are setting up our initialize function, we may want to have default values for certain parameters.
+ie.
+                class Test(object):
+                    def __init__(self, phrase='Nothing was passed'):        # set the default value for 'phrase' parameter
+                        print "This string was passed in: " + phrase
+                        self.phrase = phrase
+
+-> let's create two instances one with an argument and one without:
+
+                test1 = Test('Hello, World!')
+                test2 = Test()
+                print "Test 1 has phrase: '" + test1.phrase + "'"
+                print "Test 2 has phrase, '" + test2.phrase + "'"
+
+In terminal output:
+    This String was passed in: Hello World!
+    This String was passed in Nothing was passed
+    Test 1 has phrase: 'Hello World'
+    Test 2 has phrase: 'Nothing was passed'

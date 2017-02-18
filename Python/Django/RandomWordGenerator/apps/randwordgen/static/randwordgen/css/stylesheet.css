@@ -1,0 +1,31 @@
+.container{
+    height: 100%;
+    width: 980px;
+    padding: 50px;
+}
+
+h3{
+    color: blue;
+}
+
+.line{
+    height: 50px;
+    width: 640px;
+    border: 2px solid black;
+    padding: 0px 0px 30px 34px;
+    margin: 0 0 0 0;
+}
+.basic{
+    vertical-align:top;
+}
+.btn{
+    margin: 10px 0px 0 300px;
+    height: 30px;
+    width: 50px
+}
+.button{
+    height: 150px;
+    width: 120px;
+    font-size: 18px;
+    font-weight: bold;
+}

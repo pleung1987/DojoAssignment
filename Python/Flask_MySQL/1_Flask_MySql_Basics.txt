@@ -1,0 +1,72 @@
+Flask + MySQL ~
+* show you how you can put that information into your database and use session variables to log a user in!
+
+This Chapter:
+    * Connecting to MySQL
+    * Learn how to Import and Export MySQL Database
+    * Including files
+    * Database Communication
+    * Login and Registration
+    * MySQL Injection
+- Note: We will be mostly creating our own database/ERD and forward engineering into a database.
+
+Export:
+- Click the Data Export option on your Workbench and choose the database/schema you wish to export.
+- Choose the Export to Self-contained file option. Be sure to indicate file name (don't forget to add .sql as the file extension)
+ and specify the path to where you are saving the exported SQL file.
+- Then click Start Export. This will generate a .sql file which contains MySQL commands to duplicate the database you created.
+
+How to connect to MySQL by using a Python module named mysql-connector:
+1) The first step in connecting to the database is installing the mysql-connector-python module.
+    your terminal, with your project-specific virtual environment active,
+        run the following command:
+
+                pip install MySQL-python==1.2.5
+                pip install Flask-SQLAlchemy==2.1
+
+2) Now create a new project called "flask_mysql" and create a server.py file and a mysqlconnection.py file.
+mysqlconnection.py will be the file that connects to MySQL using the MySQL-python module we installed earlier
+
+Copy this into mysql connection.py:
+
+/flask_mysql/mysqlconnection.py
+""" import the necessary modules """
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import text
+# Create a class that will give us an object that we can use to connect to a database
+class MySQLConnection(object):
+    def __init__(self, app, db):
+        config = {
+                'host': 'localhost',
+                'database': db, # we got db as an argument
+                'user': 'root',
+                'password': 'root',
+                'port': '3306' # change the port to match the port your SQL server is running on
+        }
+                                        # this will use the above values to generate the path to connect to your sql database
+        DATABASE_URI = "mysql://{}:{}@127.0.0.1:{}/{}".format(config['user'], config['password'], config['port'], config['database'])
+        app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+        # establish the connection to database
+        self.db = SQLAlchemy(app)
+                                    # this is the method we will use to query the database
+    def query_db(self, query, data=None):
+        result = self.db.session.execute(text(query), data)
+        if query[0:6].lower() == 'select':
+                                    # if the query was a select
+                                    # convert the result to a list of dictionaries
+            list_result = [dict(r) for r in result]
+                                    # return the results as a list of dictionaries
+            return list_result
+        elif query[0:6].lower() == 'insert':
+                                    # if the query was an insert, return the id of the
+                                    # commit changes
+            self.db.session.commit()
+                                    # row that was inserted
+            return result.lastrowid
+        else:
+                                    # if the query was an update or delete, return nothing and commit changes
+            self.db.session.commit()
+                                    # This is the module method to be called by the user in server.py. Make sure to provide the db name!
+def MySQLConnector(app, db):
+    return MySQLConnection(app, db)

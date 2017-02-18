@@ -1,0 +1,192 @@
+Introducing Django as an MVC ~
+
+* MVC offers architectural benefits over  standard Javascript-
+    - Helps write better organized and more maintainable code.
+
+MVC is composed in three components:
+    - Controller : generate http request and caught by the controller, controller decides by either ~
+        1) Update the view.
+        2) Go to the model, to see if there is anything in the database needs to be updated.
+    - Model: generates all the database interaction, and does communication with  database
+    - View : what the clients will be seeing and interacting with
+
+Django ~
+- Deviates a bit from the typical MVC naming structure.
+- Django emphasizes the use of individual app, each of which has its own MVC structure.
+- MVC  describes whole web project, while Django has further modularized this (although each Django app can be its own site!)
+
+* In Flask, we’ve been combining everything into one large (potentially monster) file.
+    -  Using a Model-View-Controller architecture means splitting up different concerns
+    -  In general, routes are defined in their own file, usually called routes.py or urls.py
+    - routes are called out by a browser’s HTTP request and define the correct controller
+* Routes are called out by a browser’s HTTP request and define the correct controller -- and controller method -- to run
+
+In Django, a route file might look a bit like the following.
+* This urlpatterns list is the most important. You can see that Django uses regular expressions to match routes.
+     -> Django uses regular expressions to match routes:
+        ->  first pattern: r'^$' -- is the equivalent of '/'.
+    -> Our root route ('/') is directing our app to a method called index in our views.py files...
+
+                        from django.conf.urls import url
+                        from . import views
+                        urlpatterns = [
+                        url(r'^$', views.index),
+                        ]
+-> Much like in Flask, the pages that are going to be rendered are found in the templates folder.
+    -> put a secondary folder inside the templates folder with the name of our app.
+    -> putting our pages that get rendered inside a secondary folder helps us organize our code as we use/build more and more apps.
+
+* Django separates routing from the controller method that should run
+In an MVC (or, to use Django parlance, an MTV) structure, controller methods generally:
+    * Redirect to other routes
+    * Render specific templates
+    * Invoke methods attached to other pieces of our app that we characterize as models
+
+Making core Project
+
+* navigate to a location where you want to create your project after activating Django.
+ We need to do a little set-up work to get our Django project up and running:
+
+                    django-admin startproject main #main is just the name of the project, can name it anything
+
+* Navigate to the main directory that you just created. At this point, you could run "python manage.py runserver"
+    and take a look at what your development server delivers to the browser.
+
+                        > cd main
+                        # Make a new apps directory
+                        > mkdir apps
+                        # Navigate into apps
+                        > cd apps
+
+* create an __init__.py file.
+    - This lets Python know that this folder is viewable by Python so that other Python modules can look in here and access the code.
+
+                        # Bash: (Mac, Linux)
+                        > touch __init__.py
+                        # PCs: (Command Prompt)
+                        > nul> __init__.py
+
+* Notice that when you started a project a manage.py file was automatically created.
+    -> That file can be run with terminal commands passed in.
+    -> Let's do that from within the apps directory to start a new app.
+
+                      >python ../manage.py startapp first_app
+
+Routes and controller ~
+
+* once an HTTP request is made, the routing file ( urls.py) decides which controller/method runs
+* Instead of just printing text from inside apps/first_app/urls.py,
+    let’s change the contents to something similar to the code that lives in main/urls.py:
+    -> apps/first_app/urls.py
+            from django.conf.urls import url
+            def method_to_run(request):
+                print "Whatever route that was hit by an HTTP request (by the way) decided to invoke me!"
+                print "By the way, here's the request object that Django automatically passes us:", request
+                print "By the by, we still aren't delivering anything to the browser, so you should see 'ValueError at /'"
+            urlpatterns = [
+            url(r'^$', method_to_run)
+            ]
+
+* Recall that we previously learned that we can use IMPORT to bring in the contents of other source files.
+
+* Here’s an example of the first_app/urls.py file that is now modularized.
+    -> We mean that the function/method we invoke from routes no longer lives in urls.py.
+
+    At your: apps/first_app/urls.py
+
+                from django.conf.urls import url
+                from . import views           # This line is new!
+                urlpatterns = [
+                url(r'^$', views.index)     # This line has changed!
+                ]
+
+    * from django.conf.urls import url
+        -> This gives us access to the variable url (which points to a function)
+    * from . import views
+        -> This gives us access to everything in a views.py file that Django automatically created for us when we built our first_app
+    * url(r'^$', views.index)
+        -> Uses the url method in a way that’s very similar to the @app.route method in flask.
+            The 'r' after the ( identifies the following string to match as a regular expression pattern.
+        -> In this case, it will exactly match an empty string.
+            -> Means if you were to go to localhost:8000/, Django (after removing the '/' automatically) will check if anything matches.
+        -> An empty string is what r'^$' looks for.
+            ->  Pattern matches and we run the views.index method.
+        -> url() will eventually take another parameter, something like name='index', which we’ll introduce when we talk about named routes.
+
+* Unlike a flask route where there is an HTTP method (e.g. “GET” and/or “POST”), Django doesn’t care!
+
+*  Build an index method inside apps/first_app/views.py:
+    At apps/first_app/views.py...
+
+                from django.shortcuts import render, HttpResponse
+                                                                # Create your views here.
+                def index(request):
+                response = "Hello, I am your first request!"
+                return HttpResponse(response)
+
+    * Django automatically creates the request object for us that's passed into our method,
+        HttpResponse objects are our responsibility to create and return to the browser
+    * 'render' is a shortcut method that combines a given template with a given context dictionary
+        and returns an HttpResponse object with that rendered text. ( Can only render when you created any templates)
+
+MVC Overview :
+* the process to render a template (which belong in a templates directory)...
+
+    -> Our URL pattern should now look like this:
+
+                urlpatterns = [
+                url(r'^$', views.index)
+                ]
+    -> Head over to our views.py file now and create that index method:
+
+                def index(request):
+                print "*"*50
+                return render(request, 'first_app/index.html')
+
+    ->  This will help keep things organized and make getting to the index.html file an explicit procedure.
+
+                apps
+                    first_app
+                        templates
+                            first_app
+                                index.html
+                                    Edit the index.html file so that it displays a "Hello World" message
+
+
+The Real Views of Django ~
+* The following can’t be emphasized enough:
+    -> Django Models is the MODEL in MVC (easy enough)
+    -> Django Templates (living in templates directory) is the VIEW in MVC
+    -> Django Views (living in views.py) is the CONTROLLER in MVC
+
+MVT:
+	Model - Performs heavy logic, queries database
+    Template - 	Holds HTML (plus any Python code) that will be rendered and sent to browser
+    View -	Receives an HTTP request from routes.py and decides what to do (i.e. redirect, call a model method, render some HTML)
+
+Adding Views to App:
+* Remember, while it’s not required to put a directory with your app’s name inside your templates directory, it’s good practice.
+
+Important files to tweek  after you create your apps:
+    Views.py - which is your controller (has all the return render that directs where your apps will go and  anything with client interaction)
+    urls.py - which is your routes (tells you where to go from the urlPatterns= function through Regex showing view.index, and view.WHATEever routes)
+    templates- which are your views.(Django way to make in subfolder that HAS to be SAME as your apps name)
+
+Examples to jot down with example VinMyMVC walkthrough:
+
+    A new url pattern in ./vinmymvc/urls.py:
+
+        	urlpatterns = [
+        		url(r'^$', views.index),
+        		url(r'^users$', views.show)
+        	]
+
+    A couple of functions in ./vinmymvc/views.py:
+
+            def index(request):
+            	return render(request, 'vinmymvc/index.html')
+            def show(request):
+            	print request.method
+            	return return render(request, 'vinmymvc/showusers.html')
+
+* Now create the templates folder, the vinmymvc sub folder, and the two html templates we specified above, index.html and showusers.html.
