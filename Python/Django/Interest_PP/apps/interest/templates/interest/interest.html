@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Interests</title>
+        {% load staticfiles %}
+            <link rel="stylesheet" href="{% static 'interest/css/normalize.css'%}"media="screen" title="no title" charset="utf-8">
+            <link rel="stylesheet" href="{% static 'interest/css/skeleton.css'%}"media="screen" title="no title" charset="utf-8">
+            <link rel="stylesheet" href="{% static 'interest/css/stylesheet.css'%}"media="screen" title="no title" charset="utf-8">
+    </head>
+    <body>
+        <div class="container">
+            <a href="/success"><button class="button danger" type="button" name="button" value="View People">Back</button></a>
+            <h1>{{user.name}}'s Interest</h1>
+            <div class="table">
+                <table>
+                    <thead>
+                        <th><h3>Interest</h3></th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><h4>{{interest.interest}}</h4></td>
+                        </tr>
+                    </tbody>
+                </body>
+            </div>
+        </div>
+</html>

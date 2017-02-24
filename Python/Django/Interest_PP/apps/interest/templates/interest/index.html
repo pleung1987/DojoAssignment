@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Interest Submit</title>
+        {% load staticfiles %}
+            <link rel="stylesheet" href="{% static 'interest/css/normalize.css'%}"media="screen" title="no title" charset="utf-8">
+            <link rel="stylesheet" href="{% static 'interest/css/skeleton.css'%}"media="screen" title="no title" charset="utf-8">
+            <link rel="stylesheet" href="{% static 'interest/css/stylesheet.css'%}"media="screen" title="no title" charset="utf-8">
+    </head>
+    <body>
+        <h1>Interest List</h1>
+            {%if messages%}
+                <ul>
+             {%for msg in messages%}
+             <li>{{msg}}</li>
+             {%endfor%}
+           </ul>
+           {%endif%}
+        <div class="container">
+            <a href="/success"><button class="button danger" type="button" name="button" value="View People">View People</button></a>
+            <form class="intform" action="/process" method="POST">
+                        {% csrf_token %}
+                <table>
+                    <thead>
+                            <th>Name</th>
+                            <th>Interest</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" name="name"></td>
+                            <td><input type="text" name="interest"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" name="submit"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Success Page</title>
+    </head>
+    <body>
+        <h3>{% if messages %}
+            <ul class="list-group">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}</h3>
+
+        <h2 class="addresses">Email Address Entered:</h2>
+        <table>
+            {% for email in emails %}
+            <tr>
+                <td><h4>{{email.email}}</h4></td>
+                <td><h4>{{email.created_at}}</h4></td>
+                <td>
+                    <a href="/delete/{{email.id}}"><button class='button danger' type="button" name="button" value="Remove">Remove</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

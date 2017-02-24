@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Success</title>
+        {% load staticfiles %}
+            <link rel="stylesheet" href="{% static 'interest/css/normalize.css'%}"media="screen" title="no title" charset="utf-8">
+            <link rel="stylesheet" href="{% static 'interest/css/skeleton.css'%}"media="screen" title="no title" charset="utf-8">
+            <link rel="stylesheet" href="{% static 'interest/css/stylesheet.css'%}"media="screen" title="no title" charset="utf-8">
+    </head>
+    <body>
+        <h1>Name Page</h1>
+        <a href="/index"><button class="button danger" type="button" name="button" value="View People">Add User</button></a>
+        <table>
+            <thead>
+                    <th>Name</th>
+                    <th>Action</th>
+            </thead>
+            <tbody>
+                    {% for user in user%}
+                <tr>
+                    <td>
+                        <h4>{{user.name}}<a href="/show/{{user.id}}"><button type="button" name="button">Show</button></a>
+                        <form action="/remove/{{user.id}}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" name="button">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+
+    </body>
+</html>

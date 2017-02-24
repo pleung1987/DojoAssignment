@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Email Validation</title>
+    </head>
+    <body>
+        <h1>Hello, Welcome to Email Validation</h1>
+        <h1></h1>
+        <div class="flash">
+            {%if messages%}
+            <ul>
+              {%for msg in messages%}
+              <li>{{msg}}</li>
+              {%endfor%}
+            </ul>
+            {%endif%}
+        </div>
+        <div class="emailvalidate">
+            <h1>Register</h1>
+            <form action="/process" method="post">
+                 {% csrf_token %}
+                <tbody>
+                    <tr>
+                        <td><h1>Email: <input type="text" name="email" value=""></h1></td>
+                    </tr>
+                        <td><input type="submit" class="button" name="submit" value="Register"></td>
+                    </tr>
+                </tbody>
+            </form>
+        </div>
+    </body>
+</html>

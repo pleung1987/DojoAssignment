@@ -42,3 +42,13 @@ What this looks like in HTML is:
 
 *  A good habit to get into is separating our JavaScript, CSS, and images into three folders
     (and specifying which app we are retrieving these files from, as outlined in the structure at the top of this tab!
+
+
+Load images and JS into Django:
+
+Now, all we need to do to access static files (in this case, main.js and styles.css from template file index.html is to add the following to index.html:
+
+  <!-- Inside apps/first_app/templates/first_app/index.html -->
+  {% load staticfiles %}
+  <link rel="stylesheet" href="{% static 'first_app/css/styles.css' %}">
+  <script src="{% static 'first_app/js/main.js' %}" > </script>

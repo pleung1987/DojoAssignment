@@ -1,1 +1,67 @@
 Deployment Basics
+
+Why Should I Learn to Deploy?
+*  This set of tasks is often automated, meaning a developer or team of developers is tasked with
+    creating and managing internal tools that make deployment simple.
+*  This is a job in its own right, know as Dev Ops (development operations).
+Good reasons to learn to deploy:
+    * Your Portfolio - It is important to have a portfolio containing projects that can be shown to recruiters or interviewers.
+        - In order for potential employers to access and interact with your project, it has to be deployed to its own IP address.
+    * Working Knowledge - Often when we follow up with interviewers, one comment we've received in the past is that students
+        didn't have a solid understanding of deploying web applications.
+            - It is a highly desirable skill in case you end up being the only engineer at a young start-up
+    * The Extra Mile - After you've created all the client and server-side components,
+                        actually deploying your app is really the capstone to this process.
+
+Where and How do I Deploy?
+1) In the Cloud
+    *  Heard people talk about deploying apps to the cloud.
+        - Setting up your application on a remote machine that can be accessed by browsers sending requests to your server.
+    * We will be using Amazon Web Services (AWS)
+        - Amazon has servers all over the world consisting of many powerful computers.
+        - AWS allows us to rent out a small piece of that server for our use.
+        -  In order to access it, we will use a secure shell via the command line to open a window into our remote computer.
+        -  We will then install everything we need to build and run our app.
+
+Servers ~
+1) What is a server?
+* A server's sole purpose is to handle requests and send back some sort of response.
+* In order to do so, a server is designed with much more processing speed, storage, and RAM.
+* Once your request reaches the server, the server will respond by sending back files that can be interpreted by your browser.
+* Types of files that can be interpreted by any modern browser: HTML, CSS and JavaScript.
+
+Web Server Components ~
+1) Web Server - The web server receives a request from the client. The web server asks the logic unit to retrieve some content.
+2) Application - The logic unit receives requests from the web server.
+                - Its job is to run appropriate segments of your code according to the request's instructions.
+                - code requires information from the database, the logic unit will retrieve that data before
+                    organizing it and sending back a response to the web server.
+3) Database - The Database is simply a file or a container for document storage like your computer's hard-drive.
+            - Purpose is to store files, update files, and retrieve files according to instructions received from the interpreter.
+
+The Process Manager: Green Unicorn ~
+* Process managers performs the following roles:
+    - Restart the app automatically if it crashes.
+    - Gain insights into runtime performance and resource consumption.
+    - Modify settings dynamically to improve performance.
+    - Load Balancing
+
+* Green Unicorn (Gunicorn) - performs these roles by acting as an intermediary between incoming requests and your Django app.
+    - designed to handle incoming requests that will need to be routed to the interpreter.
+        - This includes any route you’ve added to urls.py.
+    - Other server, Nginx, which will be serving static files such as images.
+    - Gunicorn needs a way to communicate with our app.
+        - Django project you may have noticed that a document called wsgi.py is automatically generated.
+        - wsgi.py file is the glue that connects the Gunicorn server to your Django app.
+            - Gunicorn knows where to look for all that good code you wrote!
+
+*  When you deploy that app, you’ll be using some kind of process manager, regardless of the technology stack.
+* Common combinations include Unicorn for Rails, pm2 for NodeJS, and Apache for PHP.
+
+There are three basic functions you will need to set up when you add Gunicorn to your project:
+    1) Which socket to connect to.
+    2) What to do if a process fails.
+    3) How many workers to set up.
+
+* Gunicorn takes over the job of ensuring that your app keeps running if an error occurs,
+            directing traffic to the appropriate port, and running concurrent processes.

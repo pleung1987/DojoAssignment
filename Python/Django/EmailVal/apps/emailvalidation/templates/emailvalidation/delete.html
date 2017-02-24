@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Delete</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'emailvalidation/css/normalize.css'%}"media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="{% static 'emailvalidation/css/skeleton.css'%}"media="screen" title="no title" charset="utf-8">
+        <link rel="stylesheet" href="{% static 'emailvalidation/css/stylesheet.css'%}"media="screen" title="no title" charset="utf-8">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Are You sure you want to delete the following course?</h1>
+
+                <h2> Email: {{email.email}}  </h2>
+
+            <form class="row" action="/remove/{{email.id}}" method="POST">
+                     {% csrf_token %}
+                <input type="submit" name="submit" value="YES">
+                <input type="submit" name="submit" value="NO">
+            </form>
+        </div>
+    </body>
+</html>
