@@ -1,0 +1,59 @@
+Stack Views
+* allow us to group elements into horizontal or vertical "stacks" (new feature in iOS 9)
+* think of stacks as similar to divs in HTML.
+    -> act as containers
+** Stack Views make building interfaces much easier in iOS !
+
+NOTE: tack views are not a complete replacement for auto-layout, but rather an additional
+        tool to make the auto-layout process easier**
+
+Step 1:
+* Similar to HTML/CSS divs layouts:
+    -> start by laying out the major areas of our app that will be contained in stacks first.
+    -> then proceed to add elements inside of them.
+ ie (Tick Tack Toe):
+    Start by adding 4 major vertical stack sections:
+        - the top label
+        - middle section to hold our gameboard buttons
+        - two more for :
+            -> our hidden winner label
+            -> reset button
+
+Step 2:
+    - add some basic constraints to these 4 stacks
+    - For all of the stack views, we want to add:
+        -> leading
+        -> trailing
+        -> top and bottom constraints.
+    - Be sure to add height values to ALL BUT the middle stack
+    -  middle stack does not get a set height constraint due to it being the one that we want to
+        have dynamically changed as the size of the screen and orientation shift.
+
+Step 3:
+    - Can add text and buttons to the other stacks on the page as needed now.
+    - Notice that these elements will auto size to the size of the stack they are placed in
+    -  The text for the buttons will be centered automatically, but for text in labels to be centered
+        you just need to change the text alignment.
+
+Step 4:
+    - change the distribution of our middle stack that will hold our gameboard buttons to "Fill Equally"
+        so that anything added to it will take up equal percentages of the stack they are contained in.
+    -  If the distribution is left to "Fill" all elements will full size to the container;
+        -> Overlapping each other instead of trying to share the container space.
+
+Step 5:
+    - The next thing to do is to add three horizontal stacks that will be inside this middle vertical stack
+        -> This is done to represent the rows for the buttons.
+    - This system of embedding horizontal stacks in a vertical one or vice versa makes for an easy way of
+        defining a grid system.
+    NOTE: Remember these newly added stacks will be needed to be set to a Fill Equally distribution as
+        well just like their parent.
+
+Step 6:
+    - now add our buttons to each row simply by dragging them into their respective rows
+        -> (the horizontal stacks)
+    - you can add some styling and background effects to the buttons as desired.
+
+*  if we wanted to add something similar to the padding or margin properties typically found in CSS to the
+    stack we just have to edit the "spacing" of these stacks.
+* clicking each stack and changing its spacing property found on the right-side editor.

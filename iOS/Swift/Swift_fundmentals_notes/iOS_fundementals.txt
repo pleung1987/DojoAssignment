@@ -1,0 +1,151 @@
+Swift Fundementals:
+
+Objective-C:
+* Apple's libraries are all written in Objective-C
+* Apple introduced Swift to eventually replace Objective-C.
+
+Why Swift?
+*  Swift is similar to interpreted languages like Ruby and JavaScript.
+*  it is a compiled language. It's the best of both worlds.
+* Xcode is an IDE or Integrated Development Environment
+    - which basically means that it does a lot to help the developer.
+    - Xcode provides us with the integrated tools to write, build, test, and debug our code.
+
+Documentation:
+* To keep up, we are going to be spending a lot of time in Apple's documentation.
+* Learning how to digest Apple's documentation is the single most important skill for an iOS developer
+
+In Swift writing syntax codes... this can be done in a single line:
+
+print("Hello, world!")
+
+* Code written at global scope is used as the entry point for the program, so you don’t need a main() function.
+    - You also don’t need to write semicolons at the end of every statement.
+
+Simple Values
+
+    * Use {{let}} to make a constant and {{var}} to make a variable.
+    *  The value of a constant doesn’t need to be known at compile time,
+        - but you must assign it a value exactly once.
+
+    ie.
+        var myVariable = 42
+        myVariable = 50
+        let myConstant = 42
+
+    * In the example above, the compiler infers that myVariable is an integer
+        because its initial value is an integer.
+
+* If the initial value doesn’t provide enough information (or if there is no initial value),
+specify the type by writing it after the variable, separated by a colon.
+
+    let implicitInteger = 70
+    let implicitDouble = 70.0
+    let explicitDouble: Double = 70
+
+** Swift is a compiled language.
+    -  What this means is that Xcode must first compile the entire program into
+        1s and 0s before it can execute the program.
+        -  Ruby and JavaScript are interpreted languages.
+    * Compiled languages have to be translated completely before running
+        while interpreted languages get translated on the fly as the program is getting read.
+    * Interpreted languages are slower than compiled languages.
+    * native applications and games are often built in compiled languages because once they are compiled,
+        it takes less time to execute than a program written with an interpreted language.
+    * Compiled languages are great but sometimes miss the immediate feedback you can get
+        while playing around with Interpreted languages
+
+* A playground does not require you to compile and run a complete project and evaluates Swift code on the fly
+    like an interpreter for an interpreted language would.
+
+Creating Comments:
+* We can create a comment by prefixing our comment with '//' and the rest of the line will turn into a comment.
+
+import UIKit:
+* The import UIKit means that we are including all of the Application Programming Interfaces (APIs)
+    made available to iOS and Mac developers by the UIKit framework.
+    **  Utilizing Apple's APIs is a key component in becoming an effective developer.
+
+var str = "Hello, playground"
+* We declare a variable in swift with the keyword var.
+    * A variable should only hold data that is going to change.
+    * The quotations mean that we are creating an instance of the String Type.
+    * We named our variable str but we could have given it any other name:
+        ie.
+            str += " you are so cool"
+    - Here we are adding two instances of the String Type together to create a new instance of String.
+
+NOTE:  Creating instances of String Type does not work with single quotes.
+    - var errorStr = 'single quotes do not work' // don't use single quotes to create instances of String
+
+Variables~
+* In order to store information in our code, we use variables.
+
+// Variables are used to store data. We declare a variable using the "var" keyword.
+// We also have to specify the type of that variable.
+var name: String = "Anakin"
+// Every variable declaration follows the same format:
+// var variable_name: variable_type = variable_value
+
+var name: String = "Anakin"
+name = "Darth Vader"  // Changing the "name" variable to another string is allowed...
+                      // ...but trying to change the var to a value of ANOTHER type is not allowed.
+name = 42             // THIS WON'T WORK because we are trying to change a variable that is a "String"
+                      // type to a value that is a "Int" type
+
+Basic Types:
+
+var str: String = "This is a String"   // "String" type.
+var num: Int = -42                     // "Int" type stores whole numbers both negative and positive.
+var dec: Double = 4.2                  // "Double" type stores numbers with decimals (allocates 64 bits).
+
+Why is Swift Statically Typed?
+-> for Performance.
+* Although loosely typed languages may be easier for the developer (since the developer doesn't need to worry about types),
+    it reduces performance because now the computer has to worry about remembering types
+    and how to store different values of different types.
+** distinguishing types allows the computer to run more efficiently by allocating just enough space for each variable.
+
+// Swift has "type inference"
+var name = "Anakin"  // String type
+                     // Swift looked at val on the right and inferred type: we didn't have to specify!
+
+     var name = "Anakin"            // Type inferred as String based on the value "Anakin"
+     name = 42                      // THIS IS STILL NOT ALLOWED since name is a "String" type
+
+Constants ~
+* variables are used for everything, even for values that never change.
+* Constants hold data that does not vary (Cannot Change Constants)
+** Constants are a big deal in Swift.
+    - Use constants in all parts of your code except for areas where you HAVE to use a variable
+    - constants to hold data that won't change allows our code to be more explicit while at the
+        same time helps the compiler to run our programs more effectively.
+
+            // Declare name as a constant because we anticipate that it will NOT change.
+    let name: String = "Anakin Skywalker"
+            // Note that just like variables, constants also have types
+            // Now we cannot change the name:
+    name = "Darth Vader"        // THIS WON'T WORK because name is a constant so we CANNOT change it.
+
+* Contants are values that are not going to change during your program:
+            // We are declaring a mutable string because we store it in a var.
+            var myMutableString = "change me"
+            // We are declaring an immutable string because we store it in a const.
+            let myImmutableString = "can't change"
+            // We can change the value of a mutable string...
+            myMutableString += "!"
+            // ...but we cannot change the value of an immutable string.
+            myImmutableString += "ahhhh"    // This will error.
+
+As long as you set things that are constants, you cannot change it even if its an array or dictionary.
+
+* Swift's string interpolation lets us  inject constant and variables into a new String.
+- Anything inside of the parenthesis in \() gets evaluated and gets injected into the string.
+- can even put expressions inside of the parenthesis and Swift will evaluate it first and
+    then inject it into the instance of the String Type.
+
+    ie.
+            var numberOfChampionships = 5
+            let name = "Kobe"
+            print("My favorite player is \(name) and he has \(numberOfChampionships) rings")
+            print("His jersey number is \(8 * 3)")

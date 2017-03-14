@@ -1,0 +1,260 @@
+Creating Your Own Types in Swift
+* THREE main ways for us to create our own types in Swift:
+1) Classes
+2) Structs
+3) Enumerations
+
+Classes ~
+* Classes in Swift allow you to define the blueprint of a particular type and then
+    create instances of that type (also known as Objects).
+* Creating your own types and then instantiating them is known as [Object Oriented Programming].
+    -> Becomes very powerful when creating large scale applications with multiple components.
+
+ie.
+        class Person {
+        var species = "H. Sapiens"
+        }
+        var myPerson: Person = Person()
+        print("\(myPerson.species)")
+
+* Created the class Person that has one property "species
+* Then create an instance of the person called "myPerson".
+NOTE: We are declaring the type of myPerson to be the class that we defined above.
+        -> This means we can create our own types!
+
+Stored Properties ~
+ie.
+        class Person {
+        var species = "H. Sapiens"
+        }
+* Person class has  one stored property and it has a default value of "H. Sapiens"
+* Since we declared the property as a variable:
+    -> it is both readable and writable (meaning we can access it and change it).
+
+        var myPerson = Person()                 // Note use of type inference to infer that it is "Person" type
+        myPerson.species = "Homo Sapiens"       // We can change the property
+        print("\(myPerson.species)")            // And we can access it!
+
+* create read-only properties by simply declaring properties as a constant:
+
+        class Person {
+        let species = "H. Sapiens"
+        }
+        var myPerson = Person()
+        myPerson.species = "Homo Sapiens"       // ! => Cannot assign to 'species' in myPerson
+
+Methods
+** Methods are functions that are associated with a Type.
+-> Properties define what an instance "knows"
+**-> Methods define what an instance "can do.
+
+        class Person {
+          var species = "H. Sapiens"
+          func speak() {
+            print("Hello! I am a \(self.species)")   // Note how we refer to the properties using "self"
+          }
+        }
+        var myPerson: Person = Person()
+        myPerson.speak()                      // Note we call method similar to how we access properties
+
+Method Parameter Names ~
+-> Methods are just functions associated with a Type.
+* The first argument of a method does not get an external parameter name;
+    -> but all other arguments get external parameter names.
+
+NOTE: If a method only has one argument, the same rule applies;
+        -> which means the argument does not get an external name.
+
+        class User {
+            var intelligence = 0
+            func studyForTopic(topic: String, hours: Int) {
+                print("I am studying \(topic) for \(hours) hours")
+            }
+        }
+        var user = User()                   //changing user as a variable for User() manager, similar to python
+        user.studyForTopic(topic: "Math", hours: 12)
+
+common practice:
+    - write the name of the first argument in the actual function name ('Topic')
+        ->  The first argument is not going to get an external parameter name.
+    - This practice becomes very clear what each argument does:
+        - Methods do not give free external parameter names for the first argument.
+            -  But gives external parameter names for all arguments afterwards.
+
+Initialization ~
+* the operation of setting up an instance of a type.
+    ->  Helps us create an instance with appropriate values
+* initially didn't have to worry about initializer:
+    -> we have been giving default stored values when defining properties
+NOTE: If we want more control over how an instance of a Type is created,
+        we will have to write our own initializer.
+
+ie.
+    Let's add a name property to our Person class and then add the code to allow a user to
+    specify the name when initializing the instance:
+
+        class Person {
+        var species = "H. Sapiens"
+        var name: String
+        init(name: String) {   // Note this function doesn't get called explicitly. It is called
+                                 // when creating an instance using initialization syntax -- "Person()".
+            self.name = name     // Note use of "self" here to refer to the name property.
+            }
+            func speak() {
+            print("Hello! I am a \(self.species) and my name is \(self.name)")
+                                                     // Note how we refer to the properties using "self".
+            }
+        }
+        var myPerson: Person = Person(name: "Jay")   // Now we have to pass a param to Person initialization.
+        myPerson.speak()                             // Note we call method similar to how we access properties.
+
+
+Structs in Swift ~
+Struct : in Swift are used to create types that hold a [collection of values].
+    -> similar to classes but has it's differences
+
+* like class, used to create types:
+    ->  Structs are used more for creating collections of values.
+ie.
+    (representing shapes is a great use for structs!)
+    struct Rectangle {
+        var width = 10
+        var height = 20
+    }
+    var myRectangle = Rectangle()           // Taking advantage of type inference
+    print("\(myRectangle.width)")
+
+* Declared the Rectangle struct that has two stored properties: width and height that each has default
+    values of 10 and 20 respectively.
+* Instantiate the rectangle using the same syntax as with Classes.
+
+Struct Methods ~
+* similar to methods in classes...
+ie.
+        struct Rectangle {
+            var width = 10
+            var height = 20
+            func printDesc() {
+            print("I have a width of \(width) and a height of \(height)")
+            }
+            mutating func doubleWidth() {                // Why do we need the mutating keyword here?
+            width *= 2
+            }
+        }
+
+Two methods in Rectangle:
+    First method, printDesc:
+        - Does not have to be prefixed with the mutating keyword.
+            ->  the method is not changing the value of the instance in any way
+    Second method, doubleWidth:
+        - Changes the value of one of its properties
+            -> Since the value is changing we have to prefix the method with the mutating keyword.
+
+*  Do NOT need the mutating keyword when writing a similar method in a Class.
+    -> This has to do with value types vs reference types.
+
+Struct Initialization ~
+* like Classes, we need to initialize our properties when instantiation the class (if not given default
+values)
+* Swift will give us a "memberwise" initializer so that we don't have to explicitly define the
+    initialization method.
+    -> memberwise initializer will include external parameter names for all of the stored
+        properties that need values.
+    ie.
+        struct Rectangle {
+            var width = 200
+            var height = 400
+        }
+        let rectangle = Rectangle()
+    * Rectangle Struct, we used the free "empty" initializer provided to us by the Swift compiler.
+    -> This is if we give all of our stored properties default values and do not define our own
+        custom initializer.
+
+        struct Rectangle {
+            var width: Int      // If we don't give default vals to vars, we have to use type annotation.
+            var height: Int
+        }
+        -> console output error, missing argument for parameter 'width' in let rectangle...
+
+* If we don't set the default values for all of the stored properties,
+    then we will have to rely on the "memberwise" initializer.
+** Here, because we didn't provide default values for our stored properties,
+    and we didn't implement our own custom initializer.
+    -> Swift will give us a "memberwise" initializer this time.
+    ->  To reiterate:
+        -> memberwise initializer will include external parameter names for all of the
+        stored properties that need values.
+
+        struct Rectangle {
+            var width: Int
+            var height: Int
+        }
+        let rectangle = Rectangle(width: 200, height: 400)
+        Copy
+NOTE: Remember that the  primary role of initialization is to make sure that the new instance
+    has values for all of its stored properties.
+    ->  Swift will yell at us until we make the necessary changes to ensure that all stored properties
+     will have a value at the end.
+
+Difference with Class and Struct:
+    -> The difference between value and reference types.
+* Swift falls into one of two categories:
+    1) Value Types
+            or
+    2) Reference Types
+
+NOTE:   * Classes and Functions are the only Reference types
+        * Everything else is a Value Type
+
+-> Value types are copied  (if you change the value of the copy, you will not change the original)
+    -> when they are assigned to a variable or a constant
+    -> when they are passed in as an argument to a function
+
+-> Reference types are not copied.
+    -> Their memory address location is passed back and forth so changing the value of a Reference
+        Type will change all of the "pointers" (variables or arguments) that refer to that object.
+
+ie.
+            class Person {
+              var fullName: String
+              init(name: String) {
+                self.fullName = name
+              }
+              func introduce() {
+                print("Hi my name is \(self.fullName)")
+              }
+            }
+            var j = Person(name: "Ketul Patel") // Initialize a Person object and assign it to the j variable
+            var k = j                           // Create a k variable and set its value to be the j variable
+                                                // (remember classes are reference types)
+            j.introduce()                       // Prints "Hi my name is Ketul Patel"
+            k.fullName = "Ketul J Patel"        // We are changing the name through the k variable.
+            j.introduce()                       // Prints "Hi my name is Ketul J Patel" since both
+                                                // j and k refer to the same instance in memory
+
+* In contrast, Structs are Value Types which means that when they are passed, their values are copied
+    and then passed.
+
+Another example:
+
+    struct Rectangle {
+        var width: Int
+        var height: Int
+    }
+    var square1 = Rectangle(width: 10, height: 10)
+    var square2 = square1                   // Here the val inside square 1 (an instance of Rectangle)
+                                            // is copied and passed rather than just pointed to.
+    print("square1's width: \(square1.width), square2's width \(square2.width)")
+                                            // They are the same because square2 is a copy of square1
+    square2.width = 20                      // This only changes square2 because there are
+                                            // 2 separate instances of rectangle in memory
+    square2.height = 20
+    print("square1's width: \(square1.width), square2's width \(square2.width)")
+                                            // They are different now: changing square2 changed a
+                                            // completely separate instance from square1.
+
+* Every type in Swift that is not an instance of a class or function is a Value Type.
+    Includes: Strings, Arrays, and Dictionaries-> implemented internally as structs in Swift
+
+NOTE: The only way to pass a Value Type by memory location is by using the inout designation
+    when passing Value types as argument to a function

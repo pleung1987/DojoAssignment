@@ -1,0 +1,177 @@
+Optionals
+** Optionals are an extremely important part of Swift programming.
+* Previously in Objective-C, any variable could hold a nil value.
+* Swift forces the developer to be cautious of potential nil values through the use of Optionals.
+
+            var name: String = "Jay"  // This is a String type
+            var pet: String?          // This is an Optional String Type
+                                  // Right now the val of pet is nil (we've not given it a val, so it has none).
+            pet = "Skippy"
+
+*  Two things about an instance of an  Optional Type:
+    - Either has a value or it has no value or nil
+        -> for example, an empty string "" is different from nil
+        -> When it is nil it means there's nothing there
+
+* Optionals signal that an instance may not have a value.
+    -> It warns developers that the value may potentially be nil. And nil is very bad.
+    -> When we expect an instance to have a value and it doesn't, our application will crash.
+NOTE: As iOS developers, we have to be very cautious of nil and Optionals help us be better programmers
+        and make Swift a safer language.
+
+ie.
+    var xFactor: String?
+
+-> Here we declared the variable  xFactor to be of an Optional Type that may contain an instance of a String Type.
+* We have to first unwrap the Optional before we can use it.
+
+safely unwrap the optionals :
+    -> If an Optional Type is not nil then do something.
+    -> Common that there is a special syntax to make this process easier.
+        ** This syntax is called [Optional Binding].
+
+        var present: String? = "Apple Watch"
+                                // If we can let "unwrappedPresent" equal "present" meaning there is something
+                                inside of present then go on to do something with "unwrappedPresent"
+        if let unwrappedPresent = present {
+            print("OMG THANK YOU FOR THE \(unwrappedPresent)")
+        }
+
+Force Unwrapping
+
+* If we are 100% confident that the optional has a value and does not hold nil we can use
+    shorthand syntax to unwrap the optional:
+
+    var present: String? = "Apple Watch"        // If we can let "unwrappedPresent" equal "present"
+                                            // (meaning there is something inside of present)
+                                            // then go on to do something with "unwrappedPresent"
+    print("OMG THANK YOU FOR THE \(present!)")  // Force unwrap using the "!"
+
+NOTE: We can force-unwrap optionals using the "!" operator.
+    -> should only be done when we are absolutely sure that the optional holds a value
+        (usually right after the optional has a value assigned to it).
+
+Implicitly Unwrapped Optionals
+* They are still of the Optional Type: it can either contain a value or it is nil
+* difference is that we don't need to unwrap them
+NOTE: Try not to use them unless you are very confident about your optionals
+    -> used in special cases
+
+        ie.
+            var present: String! = "Apple Watch"         // We don't have to unwrap to use the value,
+            print("\(present)")
+            present = nil                                // but we can still set it to nil.
+            print("\(present)")
+Dictionaries ~
+* Array Type is useful for a collection of ordered instances,
+    but a Dictionary Type is more suitable for unordered instances.
+* Dictionary Type is a collection type that organizes its content by key-value pairs.
+    -> Key maps to a value just like a word in a dictionary maps to a definition.
+
+Initializing a Dictionary
+    // Here we are declaring myDict variable to be of Dictionary Type that will use instances of String as
+    // its keys and instances of Int as its values
+            var myDict2: [String: Int]
+
+NOTE: Need to declare a variable or a constant to be of the  Dictionary Type!
+    We will get an error when we try to do something with it because we have not initialized it yet.
+ie.
+    var myDict2: [String: Int] = [String: Int]()
+
+Of course, we can use Swift's type inference:
+    ie.
+        var myDict2 = [String: Int]()
+
+We can declare, initialize and set the values of the Dictionary in one line:
+
+// here we are declaring myDict variable to be of Dictionary Type that will use instances of String as
+// its keys and instances of Int as its values
+                    var dictionary = [
+                        "Kobe": 24,
+                        "Lebron": 23,
+                        "Rondo": 9
+                    ]
+// Note how we are leveraging Swift's type inference here.
+
+Accessing a Dictionary:
+* We can access  Dictionaries just like how we accessed Arrays.
+    -> We just have to provide the key in-between brackets.
+    -> However unlike Arrays where the keys are instances of Ints and are zero-index based.
+    -> Dictionary keys can really be anything and are not particularly ordered.
+
+We can access Kobe's number this way from the previous dictionary that we created:
+ie.
+    dictionary["Kobe"]
+
+** When we access a Dictionary we get back an Optional Type.
+    -> There is a chance that a key doesn't exist in the dictionary.
+    -> Swift will warn us that it might be nil by returning an Optional
+
+We can see this safety net in action when we try to store the result of the access to a separate variable:
+
+        var jerseyNumber = dictionary["Kobe"]
+        print(jerseyNumber) // Optional is not unwrapped
+
+We can be very bold and just unwrap it:
+
+        var jerseyNumber = dictionary["Kobe"]!
+        print(jerseyNumber)
+
+Better practice to use  Optional Binding:
+
+    if let jerseyNumber = dictionary["Kobe"] {
+    print(jerseyNumber)
+    }
+
+Modifying a Dictionary
+    * We can modify a Dictionary in a similar way we did with Arrays.
+
+    var dictionary = [
+        "Kobe": 8,
+        "Lebron": 23,
+        "Rondo": 9
+    ]
+    print(dictionary)
+    dictionary["Fisher"] = 2
+    print(dictionary)
+    dictionary["Kobe"] = 24
+    print(dictionary)
+
+* If the  key exists, we update the value of what is on the right-hand side of the equals sign.
+*  If the key doesn't exist, we add a new key to the dictionary along with the value we provided
+    on the right of the equals sign.
+
+Removing ~
+NOTE: Remove a  key-value pair by accessing the key and giving it the value of nil:
+
+        dictionary["Lebron"] = nil
+
+            Or we can send the message  removeValue.
+
+        var lebronsNumber = dictionary.removeValue(forKey: "Lebron")
+        print(lebronsNumber)
+
+NOTE: It is important to note that  this message returns an Optional Type
+        that might contain the value of the key-value pair that was deleted.
+->  It makes sense that this method returns an Optional Type because the key specified by the user
+    might not be present in the dictionary.  Unwrap it with Optional Binding:
+ie.
+    if let lebronsNumber = dictionary.removeValue(forKey: "Lebron") {
+        print(lebronsNumber)
+    }
+
+Looping Dictionaries~
+* For-in loop to loop through the keys and the values of Dictionaries.
+
+        for (key, value) in dictionary {
+        print("The key is \(key) and the value is \(value)")
+        }
+
+* The ( key, value) is of the Tuple type.
+ie.
+    for x in dictionary {
+    print(x)
+    }
+
+* If we don't provide the ( key, value) then Swift will print out a
+    tuple for each key-value pair. Tuples ARE (key, value) pairs.

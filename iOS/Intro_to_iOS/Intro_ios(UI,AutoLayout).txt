@@ -1,0 +1,123 @@
+User Interface First
+* Xcode is designed so that we build the user interface first.
+* Always design how you want the UI to look and then figure out how to make it work with the code
+* We can build our UI by dragging and dropping things such as Labels and Buttons from our Object library.
+NOTE: After we build the UI we will be able to have a better understanding of our application
+    -> Therefore, waste less time figuring out how to make it work.
+
+Building our Interface
+1) Click on Main.storyboard: Type Label on tab and place a Label in the center-top of the square view.
+                            (bottom right tab)
+2) Double click on the Label and replace the text inside
+-> We don't know what kind of products Apple will release, and we already have multitudes of
+    Apple products with varying screen sizes.
+    -> By designing our UI in a square canvas helps us think about layout in terms of constraints
+    rather than exact placement
+3) When we are initially placing View objects into the Storyboard, try to use the guided blue lines
+    as much as possible. ( This is XCode helping us make better UI )
+4) Drag two buttons out of the Object Library.
+    -> can type out button on tab and drag and drop the buttons just like we did with the label.
+5) Drag and drop another Label in the center of the screen with the following text:
+    "Create the user interface"
+    ->  With default settings, our Label will go off the screen as it tries to fit all of the
+        text in one line.
+    -> will have to click on the Label and then go to the Utility Area, select the Attributes Inspector
+        and change the number of lines to be 0.
+        -> Once it is set to 0, XCode will wrap the text around once it hits the width of the
+            containing label.
+6) Press Command + R to build and run your application
+NOTE: If the results might not be what you were expecting:
+        to fix this, we have to add constraints with Auto Layout.
+
+Auto Layout ~
+* Auto Layout is the hardest part about iOS programming and it isn't uncommon to find yourselves spending
+ hours laying out your application and end up deleting all of the constraints and starting over.
+* Auto Layout really pushes developers to think about design differently.
+
+* Apple doesn't want us to think about screen size thats why they use AutoLayout in a square box.
+-> create a constraint and set horizontal etc to make sure that it is center in all types of screen.
+-> split to preview Main.Storyboard(Preview) to see your exact UI
+-> if we see an orange line, it means that our code is ambiguous.
+    -> only tells the label to be in the middle, but middle can be anywhere.
+    -> to adjust entirely to the set vertical, need to give another constraint on the superview element
+        -> adjust top space, to top layout guide.
+        NOTE: when line is blue, Xcode knows where to put your element in any screen size.
+
+    Gotcha:
+        -> can constantly adding on the same Constrains.
+            -> just because you can keep adding constraints doesn't mean that X Code doesn't know.
+            It will keep adding to it.
+
+* We set specific constraints in our View objects in our storyboard so that they would know how to adapt
+ depending on screen size and orientations (portrait vs. landscape), and different possible apple products.
+
+There are 4 tools available to use in Auto Layout
+* Align popover
+* Pin popover
+* Resolve menu
+* Resizing Behavior menu
+
+Align Popover
+* Constraints can either be set between two different View Objects or onto itself.
+* Our goal is to set just enough constraints:
+    so Xcode will know how to layout our application no matter the screen size or orientation.
+* We are going to set the first constraint onto the question label itself
+* Give Horizontal Center in Container constraint to our question label by first clicking on the label
+    -> adding the constraint in our Align popover menu.
+-> XCode will question us with a orange line as long as it is horizontally centered.
+    -> We are going to set three more constraints.
+    -> "pin" the question label to the top, left, and right using the third icon with a
+        measurement of 0 in our Pin popover menu.
+-> some developers prefer just using the Pin popover menu because it is less error prone
+    when our layout is very complicated.
+*  Since we have "Constrain to margin" selected, question label will go as close as the recommended margin.
+    -> will set our Lines attribute of our question label to 0 so that the label can move
+        on to the next line if the question is long.
+        NOTE: If you are getting warnings regarding frames, click on Resolve menu and click update frames.
+        ->  the warning is telling you is that given the current constraints, the View Objects might not
+        be placed where you might expect.
+
+Pin Popover
+* add constraints to our buttons. (let it sit under the label created)
+    -> pin the Answer button with a left value of 0 and top value of [Standard Value] in our
+        Pin popover menu.
+    -> Standard Value is the same as 8, but try using Standard Value as much as possible.
+    -> It is important to note that the constraint to the left is different from the constraint
+    to the top in this example.
+    -> First constraint is a relationship between the Answer button and the super view
+        -> We want the Answer button to be 0 points away from the super view that is the
+         parent view of all subviews.
+        -> Second constraint is a relationship between the Answer button and the question label
+        -> can observe and even choose which View objects we want to have a relationship in the
+        same drop-down menu in the Pin Popover.
+
+Creating two buttons parallel to each other ~
+ie. (one in left side one in right side)
+* creating a relationship between Answer button and Next button by giving them a
+ [baseline constraint] in our Align popover menu.
+    -> This means that their baselines will always match up.
+* Now we could pin the Next button to the top and to the right,
+    -> but we only have to pin it to the right in this case.
+    -> the Answer button is already pinned to the top, and has to have matching baselines with Next
+        -> Xcode has enough information to place the Next button.
+
+Align all the label in paragraph in the screen size~
+* Place the answer label properly. We are going to give 2 constraints to itself by giving it the
+    Horizontal and Vertical Center to Container.
+    -> This creates a relationship between the answer label and the super view.
+* We are going to pin the left and the right with a value of 0.
+    ->Now Xcode has enough information to layout our UI.
+
+Strategies
+* Pick one of the top corners and work towards the opposite corner.
+    -> Add constraints to the top left most view and move to the bottom right.
+    ->  Auto Layout is a delicate process and there will be many times where it
+    might just be easier to start all over.
+* Can either run and build your app each time but it is more convenient to have a preview pane
+    open so that you can see our changes in real time.
+        -> Try to avoid reset to suggested constraints.
+
+* After we have set all of the constraints open up the size inspector to for each View object and
+    see if you can find any numbers that are not 0 or a Standard Value.
+    -> If we are doing something other than the standard we should think very carefully
+     if that is really needed.

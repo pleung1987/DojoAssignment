@@ -1,0 +1,170 @@
+Conditionals
+*  We use conditionals to execute code based on a specific logical condition.
+ie.
+        // Declare a variable called rings that is of the Int Type.
+        var rings = 5
+        if rings >= 5 {
+        print("You are welcome to join the party")
+        } else {
+        print("Go win some more rings")
+        }
+
+If we have more than one condition we can add an else if statement:
+
+        var rings = 5
+        if rings >= 5 {
+        print("You are welcome to join the party")
+        } else if rings > 2 {
+        print("Decent...but \(rings) rings aren't enough")
+        } else {
+        print("Go win some more rings")
+        }
+
+Equality vs. Identity
+* There is a difference between equality and identity.
+    For example == checks whether the instances on the left and the right are equal.
+* Two instances can be equal, but they don't need to have the same location in memory.
+* The last two operators are called identity operators.
+
+        Operator:
+        && -> are two conditions BOTH true?
+        || -> are either of the conditions true?
+        ! -> true becomes false, false becomes true.
+
+Logical Operators
+* Let's say we want to change the criteria for entering our NBA Legends party.
+    Let's say you have to have at least 5 rings AND have the name Kobe to enter the party:
+
+ie.
+    var rings = 5
+    let name = "Kobe"
+    if rings >= 5 && name == "Kobe" {
+    print("Welcome to the party \(name), congratulations on your \(rings) rings")
+    }
+
+We can change our criteria and say that you have to have at least 5 rings or have at least 3 All-Star appearances:
+ie.
+    var rings = 5
+    let name = "Kobe"
+    if rings >= 5 && name == "Kobe" {
+      print("Welcome to the party \(name), congratulations on your \(rings) rings")
+    }
+
+Or we can just let in everyone who is not crazy:
+    var crazy = true
+    if !crazy {
+    print("Let's party!")
+    }
+
+Int
+* There are unlimited numbers of numbers and a limited number of bits
+*  There is a minimum and maximum value that an instance of an Int Type can represent.
+    - Int Type is signed in Swift: uses some of its possible representations to store negative numbers.
+
+Let's see what the maximum value and minimum value of the Int Type is in Swift:
+        print("The maximum value \(Int.max)")
+        print("The minimum value \(Int.min)")
+* On OS X (the desktop operating system) allocates 64 bits to store an Int Type.
+* On iOS, this is different because some devices store Int Types in 64 bits while
+    older models such as the iPhone 5 utilize the 32-bit infrastructure.
+*  If we use the instances of the Int Type, the compiler will determine the
+    appropriate size for an Int when it builds your program.
+
+Int32
+* We can have an Int be stored in 32 bits by creating an instance of Int32 Type.
+* Most of the time you will simply use the Int type.
+
+UInt32
+* We also have the unsigned integer counterparts as well.
+* We should use Int for all other cases and let the compiler decide how much memory to allocate
+    when storing integers.
+
+Swift is Strongly Typed:
+* Int, Int32, UInt32 and all of the other variations of storing integers are all different types.
+
+** if we declare a constant or a variable to be of a specific Type,
+    we can't assign a different type to it, even though they are just numbers.
+-> We want to use Int consistently throughout our code so that we can leave the hard work to the compiler.
+
+We can convert other variations of the Int Type by using this syntax:
+
+        var myInt32: Int32 = 3
+        var myNormalInt: Int
+                         // This will not error, because we first convert Int32 to instance of Int Type
+        myNormalInt = Int(myInt32)
+
+Floating Point Numbers:
+* There is a finite number of bits a computer has to represent: an infinite amount of numbers.
+
+How would a computer represent something like 1/3 which is .3333333 with 3's repeating until forever?
+    -> The most important concept in this tab is the while [Int's are precise], [Floating Point Types are not.]
+
+Double vs. Float
+* two Types to represent numbers with decimals:
+    1)-> [Double Type] which allocates 64 bits to represent a floating point number and the second
+    2)-> [Float Type] which allocates 32 bits to represent a floating point number
+
+* Double Type has more representations available to it, it will store the floating point number more precisely.
+* Rather than the Int Type where the bits represented how many Int's it can represent, the extra bits for
+    floating point numbers just represent its precision.
+
+Double Is the Inferred Type
+* If we store a floating point number to a variable or a constant Swift will automatically
+    assume that it is a Double.
+NOTE: Avoid explicitly specifying "Float" whenever possible, so we can rely on Swift's type inference.
+
+Operations~
+Perform basic operations in Swift such as:
+        print("Addition \(1 + 3)")
+        print("Subtraction \(1 - 3)")
+        print("Multiplication \(1 * 3)")
+        print("Division \(1 / 3)")
+
+* When we divide an instance of the Int Type with another instance of the Int Type,
+    we get another new instance of the Int Type.
+* What will happen if we divide 1 with 3? We would expect the result to be something like .33333333.
+    ->  It results in zero because remember that Int's can only be whole numbers.
+    ->  If we divide two Int's together and its result should be represented in a decimal,
+        Swift will just round the number down(even if it's 8.9999).
+
+Loops~
+* for storing information, and doing something over and over again.
+
+For-in Loops:
+    * A for-in loop performs a set of code in a specific range, sequence, or collection.
+    * Note that when writing for loops in Swift, you will always use the "for-in" style with a range.
+    ie.
+                // loop from 1 to 5 including 5
+            for i in 1...5 {
+            print(i)
+            }
+                // loop from 1 to 5 excluding 5
+            for i in 1..<5 {
+            print(i)
+            }
+
+While Loops:
+* A while loop is used to loop for an unknown number of times.
+
+We can re-write this for-in loop...
+
+    for i in 1...5 {
+        print(i)
+    }
+
+... as a while loop.
+
+    var i = 1
+    while i < 6 {
+        print(i)
+        i = i+1
+    }
+
+To check divisibility you can use the module operator like so:
+
+    var number = 2
+    if number % 2 == 0 {
+        print("Number is even")
+    } else {
+        print("Number is odd")
+    }

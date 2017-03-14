@@ -1,0 +1,43 @@
+Connections I
+* finished building our UI and properly laid it out using Auto Layout...
+    -> we can start thinking about the implementation of the app
+
+Outlets
+-> two Outlets:
+    1) an Outlet for the question label
+    2) the answer label
+    *  We want to be able to change the text inside of these labels in our application
+    ie. If the user clicks next, we want to display the text of the next question
+        -> Do this by control dragging from the storyboard to the View Controller.
+
+* Now that the labels are wired up, we can change its value in our code.
+    -> labels have a property called text that we can change.
+    -> viewDidLoad() method gets called automatically once our view has loaded
+        ->  Good place to do some set-up code.
+        -> Once this message is sent to our View Controller, we will change the text properties
+        of the labels which will result in our application displaying the correct question and answer.
+
+Connections II
+* Setting up an Outlet is connecting a property from code to a View object on the Storyboard
+* Setting up an Action is connecting a method from code to an event that a user can trigger by
+    interacting with one or more View objects.
+
+Actions
+* For Buttons:
+    -> Once the user touches the button and releases the finger within the bounds of the button,
+    we want to trigger some lines of code.
+        ie.  when the Answer button is clicked, we might want to to display our Answer label
+    -> View object that is going to trigger this event is going to be a UIButton.
+    -> Any is too vague: We want to explicitly state that a UIButton is going to trigger this event.
+    ->  Then when this code is triggered, the sender object will be passed into the block of code which
+        would be the UIButton that alerted the View Controller about an event.
+
+-> Specify the Type to be UIButton only because this describes our IBAction a little better.
+* This action is going to get triggered by a UIButton.
+->  Once the method gets called:
+    -> it passes a sender argument which is the View object that triggered this action
+    ->  We can leave it at AnyObject and our code will still work but it is good practice
+    to be more descriptive when we can.
+-> Can write the lines of code that we want to execute when someone clicks inside our different buttons:
+* We will just log out that a particular button was pressed for now. We will be able to see the results
+of the log in our Debug Area of our Xcode.

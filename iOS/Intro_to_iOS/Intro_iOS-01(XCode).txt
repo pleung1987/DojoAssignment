@@ -1,0 +1,170 @@
+XCode
+
+* Single View Application for our first application.
+specify these fields:
+- Product Name: This will be the name of our folder that holds the files to our application
+- Organization Name: XCode automatically inserts a copyright notice into every source code file you create
+- Organization Identifier: Use reverse domain name notation (i.e. com.codingdojo)
+- Bundle Identifier: XCode combines the Product Name and Company Identifier to generate a unique Bundle Identifier
+- Language: We will be using Swift.
+- Devices: XCode wants to know what types of devices we are building the application for
+- Use Core Data: Leave this unchecked for now. Core Data is one of the ways we can make data persist in our applications
+
+Toolbar~
+* The play button starts building and running our application while the stop button stops it.
+* Run our application to the right of the stop button.
+    -> can either run the application on one of our devices or a host of simulators that XCode
+    provides for us.
+*  Box in the middle of our XCode is called the activity view.
+    -> Activity View displays actions or processes that are currently happening.
+* On the right of the Toolbar:
+    -  selecting what kind of editor
+    -  Series of three buttons that help us maintain the screen real estate on our screen
+-> Standard editor is selected and it gives you a single pane dedicated to editing a file
+-> The Venn-diagram button next to the standard editor button splits the editor into two panes
+    -> Xcode will try to display two relevant files to you.
+    -> You can always control which files to displ* Command + 1 to access the Project Navigator (the first one), Command + 2 to access the Symbol Navigator etc.
+    ay on either screen with the Jump Bar
+
+Navigator ~
+* The Navigator is the left-hand side of your XCode
+* Command + 1 to access the Project Navigator (the first one), Command + 2 to access
+    the Symbol Navigator etc.
+* Project Navigator: List of files that are used in our project.
+* Symbol  Navigator: Symbols are items that the compiler recognizes such as classes,
+    enumerations, and structs.
+* Find Navigator: We can find and replace any part of your application from one search bar.
+* Issue Navigator: Whenever our application fails to build and run we can check out the errors
+    or warnings here.
+* Test Navigator: We can run our unit tests here.
+* Debug Navigator: This is where we will go to debug our application
+    -> If you click on any aspect of the stack frame, we can observe the environment of our application
+     right after that function was called.
+* Breakpoint Navigator:  We can make breakpoints in any part of our code so that we can look at the values
+    in variables during that specific time in the life cycle.
+* Log Navigator: The Log Navigator keeps a history of recent build results and runs logs.
+
+Jump Bar~
+* We can access our recent files here
+    - list of counterparts
+    - superclasses
+    - subclasses, and more
+* The back arrow goes back one file and forward arrow undoes a back arrow.
+* This part of the jump bar allows us to navigate files without using the navigator.
+*  This area has a segmented pop-up that displays the hierarchical path to reach the
+    selected file in the project
+* Can click on different parts of the segmented pop-up and XCode will navigate us there.
+
+Utility Area ~
+* The upper part of the Utility Area is a context sensitive panel (top right) :
+    - Will give you a more detailed information of whatever is being displayed in the editor pane.
+    - Can also make changes here depending on what you have selected
+    - if you have a button selected in the editor area:
+        -> change some of its attributes such as size, text, background color in this panel.
+    ie.
+    * When a file such as ViewController.swift:
+        the inspector selector bar will have two different icons~
+        -> one that looks like a paper:
+            ->specifies the File inspector where we can view and manage metadata for a file.
+            for example: type, name, and path
+        -> one with a question mark on it:
+            -> specifies Quick Help
+            for example. details about a symbol.
+            NOTE: This is a great place to learn more about specific API classes that we are unsure of.
+* The lower part of the Utility Area (bottom right):
+    -> Drag and drop different kinds of resources to our project.
+    -> Primary usages of this part of the Utility Area is the Object Library
+        -> Drag and drop UI elements onto our Storyboard
+    -> Things that can be dragged and dropped from this area:
+        - File templates
+        - Code snippets
+        - Objects
+        - Media files
+
+Editor Area ~
+* We will either be working with Swift code or the Interface Builder in the Editor Area.
+-> Will be going over the Interface Builder as we build out the UI of our application.
+
+Debug Area
+* The left side of the Debug Area:
+    -> Where we can closely observe values in specific variables during a breakpoint in our application.
+* The right side of the Debug Area:
+    -> where we can see any of our logs that we put in our application.
+
+NOTE: We log during different parts of the application so that we know that something is hooked
+    up properly or not.
+
+Storyboards ~ A visual representation of the user interface for an iOS application
+*  Allows us to create a robust UI without having to dive into coding.
+
+* Will then create a new project that does exactly what we did with multiple scenes
+ with just one scene.
+    -> Transitioning between scenes is easy to do but should not be abused.
+    -> Need to think carefully whether something deserves its own scene or is part of the current one
+
+View Controller + Views ~
+* Every scene has its own View Controller that uses the scene to display many Views to the use.
+-> The Scene defines the layout and placement of different "Views" or components on the page.
+-> The View Controller manages the Scene as well as all the states of the different Views
+    (components) that make up that Scene.
+
+I Want To Play My Storyboards v.1~
+*  How we go from scene to scene:
+    -> illustrate the role of storyboards
+        (go from one scene to another and see the flow from a high level)
+    -> Label: its like an H1
+    -> Button: goes to other screen or has action
+    -> View Controller: a new screen
+    -> use control and drag to create attribute to go one screen to another
+
+I Want To Play My Storyboards v.2~
+* Just because we can use many scenes doesn't mean we should overuse and abuse them
+    - use View Controllers to add logic to a scene and thereby make it more powerful.
+    * make everything move in one screen
+    - assitant edditor brings up editor
+        -> drag the control to the code
+            -> drag message to the viewDidLoad()
+            -> drag button into the code and change connection to Action
+            -> create a pageCount variable and increment it plus 1 at nextButtonPressed(sender: AnyObjects)
+                -> now everytime you clicked on the next button, it will go up a page count
+                -> if pageCount<poem.count -1{
+                    pageCount _=1}
+                else{
+                    pageCount =0
+                    }
+                  }
+
+Gotcha ~
+* Have to !be careful! when removing IBOutlets and IBActions:
+    - Deleting them from our code doesn't ensure that the connection no longer exists.
+    - If we get a strange error saying that connections we deleted still exist:
+        -> click on the ViewController and go to the Connections Inspector to check whether
+            all connections are correctly hooked up.
+    - when see error:
+        - go to recent file -> Main.storyboard -> go to view controller Scene -> View Controller
+            -> Connection inspector
+            - the outlet and actions still exist but the code isn't exist.
+            - press the close "x" buttons on the View Controller to completely get rid of the deleted
+            connections.
+
+Connections ~
+* let a View Controller control our screen by making connections between our UI elements in the Storyboard
+    - Control-dragging them into the View Controller code.
+* A connection lets one object know where another object is in memory...
+    -> so that the two objects can communicate.
+
+    * An Outlet points to, or references, an object.
+    * An Action is a method that gets triggered by a button
+        or some other view that the user interacts with.
+
+* An Outlet connects a property in code to a View object in a storyboard.
+    -> This lets us read and write to the object's properties
+        ie. Reading a value of a button, or a slider, or the contents of a text field
+    -> An Action connects an event generated by user interaction with a storyboard to
+        a method in our code.
+
+Why we have to specify IBOutlet and IBAction in our code?
+    - This syntax is not part of Swift.
+        -> Xcode can figure out to put the little dot there and make it connect to the UI in
+            the storyboard
+        -> The IB prefix stands for Interface Builder.

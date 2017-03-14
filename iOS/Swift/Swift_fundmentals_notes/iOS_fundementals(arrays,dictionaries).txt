@@ -1,0 +1,95 @@
+Arrays
+*  Swift provides us with two Collection types: Array and Dictionary.
+*  Arrays are an ordered collection of values.
+*  Dictionaries are an unordered collection of key-value pairs
+
+* We will declare a variable  toDoList to be of an instance of the Array Type which will hold
+    onto an ordered collection of instances of the String Type.
+
+    var toDoList: [String] = ["Learn iOS", "Build the next Flappy Bird", "Retire in Cancun"]
+
+Here we are declaring the toDoList and giving it some values to begin with.
+
+Appending to empty Array
+
+    var toDoList: [String] = [String]()              // Setting the array type and initializing the array
+    toDoList.append("Learn iOS")
+    toDoList.append("Build the next Flappy Bird")
+    toDoList.append("Retire in Cancun")
+    print(toDoList)
+
+* Now if we are initializing an instance of an  Array Type that will hold onto instances of the String Type,
+    we can get rid of the type annotation because Swift will be able to infer its type with [String]() just
+    like value types.
+
+    var toDoList = [String]()
+    toDoList.append("Learn iOS")
+    toDoList.append("Build the next Flappy Bird")
+    toDoList.append("Retire in Cancun")
+    print(toDoList)
+
+* we could not assign an  Int to a variable or a constant that was declared to hold a different Type, if we try
+    to append an instance of a Type that is not a String, Swift will throw us an error.
+
+printing integers inside of array:
+
+        var arrayOfInts = [1, 2, 3, 4, 5]      // Note that we let Swift infer the type here
+        // The first number lives at index 0.
+        print("\(arrayOfInts[0])")
+        // The second number lives at index 1.
+        print("\(arrayOfInts[1])")
+        // The third number lives at index 2.
+        print("\(arrayOfInts[2])")
+        // The fourth number lives at index 3.
+        print("\(arrayOfInts[3])")
+        // The fifth number lives at index 4.
+        print("\(arrayOfInts[4])")
+
+* We used ranges in our  for-in loops. Ranges can be used to index instances of the Array Type as well:
+
+        var arrayOfInts = [1, 2, 3, 4, 5]
+        // => "[1, 2]"
+        print("\(arrayOfInts[0...1])")
+        // => "[2, 3, 4]"
+        print("\(arrayOfInts[1..<4])")
+        // => "[3, 4]"
+        print("\(arrayOfInts[2...3])")
+
+* After we access an Array using its index, we can set the value at that particular index as well.
+
+        var arr = [1, 2, 3, 4]
+        arr[0] = 8
+        print(arr)      // The array has now changed!
+
+* append():
+            var nums = [1, 2, 3, 4]
+            nums.append(5)
+            print(nums)
+* remove():
+            var arrayOfInts = [1, 2, 3, 4, 5]
+            var popped = arrayOfInts.remove(at: 0)
+            print(popped)
+            print(arrayOfInts)
+* insert():
+    ->  insert method with two arguments.
+        -> the first argument is the value that we would like to add to the Array
+        -> the second argument is the index where we would like to insert it
+
+            var arrayOfInts = [1, 2, 3, 4, 5]
+            arrayOfInts.insert(6, at: 5)
+* Count:
+    -> The  Count is a property of the Array Types. It holds the total number of elements in an Array.
+            var arrayOfInts = [1, 2, 3, 4, 5]
+            arrayOfInts.insert(6, at: arrayOfInts.count)
+
+* Looping Through Arrays:
+
+        var starters = ["Fisher", "Kobe", "Gasol", "Bynum", "World Peace"]
+        for starter in starters {
+            print(starter)
+        }
+    Or we can use a range as well along with the count property:
+
+        for i in 0..<starters.count {
+        print(starters[i])
+        }
