@@ -1,0 +1,147 @@
+Custom Cell ~
+
+*  Most applications use TableView to display its data but sometimes it is hard to tell because they use
+    Custom Cells.
+
+Steps:
+-> create a new project called CustomCell with a Single Page Application template
+-> delete the ViewController that it is created for us and drag out a Table View Controller
+    -> Make sure to set it as the Initial View Controller.
+-> Cell changes depending how it is set.
+
+Assignment: Tab Bar Controller
+* Tab Bar Controller combined with the Navigation Controller gives our application that classic iOS feeling
+-> assigns the bottom part to be a tab that can go between pages
+-> create two controllers and make second controller link as "view controllers"
+
+set the following codes on the two controllers~
+
+Page 1 Controller:
+
+import UIKit
+class FirstViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("FirstViewController viewDidLoad")
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        print("FirstViewController viewWillAppear")
+    }
+}
+
+Page 2 Controller:
+
+import UIKit
+class SecondViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("SecondViewController viewDidLoad")
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        print("SecondViewController viewWillAppear")
+    }
+}
+
+Error handling ~
+
+What happens when we need data from a website or an API?
+* Sometimes, internet connections are intermittent. Sometimes requests time out.
+    -> There are all kinds of reasons why a function might break, so sometimes we need to "handle" any errors
+     that might occur.
+
+ie.
+What it looks like:
+
+    do {
+        try myFunction(){
+            // ... you can also try assignments ( ie: try let x = someValueThatMightError )
+        }
+    } catch specificError1 {
+        // ... code for dealing with specificError1
+      } catch specificError2 {
+        // ... code for dealing with specificError2
+        } catch {
+        // ... code for dealing with general errors. we must be exhaustive
+          }
+
+
+Basic Examples
+  Here's a function that returns a Bool, but throws an error if something goes wrong first:
+    ie.
+          func doUnsafeThings( badStuffHappened: Bool, somethingUnlikely: String? ) throws -> Bool {
+           if ( badStuffHappened == true ) {
+                throw Error
+           }
+              // if you made it here, you can return:
+              return true
+          }
+
+
+ Here, we TRY to call this function and set CATCH operations for what to do if it fails:
+    ie.
+          do {
+              let theResult = try doUnsafeThings()
+          } catch error {
+              // ... deal with error bc dangerousStuff might not work out
+          }
+
+Handling Multiple Error Types
+  Say we scaled our "doUnsafeThings" function, and we have many types of errors that could potentially occur.
+
+    ie.  Here's how we could define multiple error types with an enum:
+
+          enum BadStuffError: Error { // error type can be extended to our specific case/need
+           case Bad
+           case Worse
+           case Terrible
+          }
+
+Structured Example
+    func doUnsafeStuff() throws -> Bool {
+       if badStuffHappened == true {
+        throw BadStuffError.Bad
+       }
+       if worseStuffHappened == true {
+        throw BadStuffError.Worse
+       }
+       if TerribleStuffHappened == true {
+        throw BadStuffError.Terrible
+       }
+       return true
+      }
+* We now have a function that will "throw" errors under certain conditions.
+
+Catching thrown errors
+        do {
+         let result = try doUnsafeStuff()
+        } catch BadStuffError.Bad {
+                                    // ... code to execute
+        } catch BadStuffError.Worse {
+                                    // ... code to execute
+        } catch BadStuffError.Terrible {
+                                    // ... code to execute
+        }
+
+The Guard Statement
+* Writing clean, comprehensible code often saves us time and errors. The guard keyword allows us to write simpler
+ conditionals:
+
+                            // if/else syntax
+        func foo() {
+         if let value = anotherValue {
+                            // ... code for successful assignment
+         }
+                            // ... code for unsuccessful assignment
+         return
+        }
+                            // guard syntax
+        func fooGuard() {
+         guard let value = anotherValue else {
+                            // ... deal with unsuccessful assignment, throw an error, return out of function, etc.
+          return
+         }
+                            // just keep coding, just keep coding ...
+        }
+* This way we can do our checks up front and keep organized ( and error free ).

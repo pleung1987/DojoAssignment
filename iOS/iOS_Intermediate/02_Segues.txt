@@ -1,0 +1,74 @@
+Show Segues + Navigation Controller
+* Most simple way to move from page to page is using a Navigation Controller and Show Segues.
+
+Can lay out all of our views in a tree structure like so:
+    ie.
+        main
+        ├── view a
+        │   └── view c
+        └── view b
+            ├── view d
+            └── view e
+* To use this technique a view controller must be embedded within a navigation controller (In the storyboard,
+ select a ViewController and click `Editor > Embed In > Navigation Controller`).
+    ->  Main strength of the Navigation Controller is that it provides a button to dismiss the top view.
+
+Video Outline:
+* Select main view controller, embed in navigation controller
+* Create all children view controllers with buttons / titles
+* Ctrl+drag from button on main view controller to child view controller
+* Select "Show"
+
+-> all done in Main.StoryBoard.
+Navigation Controller connects the tree structure together
+-> go Editor, embed -> Navigation Controller -> control drag from children(button) to other tree page,
+    -> highlight show
+
+Modal Segues ~
+* The modal segue is often used to present a view that will be temporarily used, and has no children.
+    ie. (ex: a view containing a form)
+    -> does not provide a builtin back button like the navigation controller + show segue combo,
+        so we need to create that functionality.
+
+* To use this technique, ctrl-drag from a button on the main page to the destination page and
+    select "Modal."
+    ->   In order to dismiss, we need to call `dismiss(animated: true, completion: nil)`.
+
+
+Video Outline
+
+* Ctrl-drag from button on first view to second view
+* Create ViewController class for second view
+* Link IBAction from button
+* Within action include `dismiss(animated: true, completion: nil)`
+
+-> presents the second view from the first view by pressing button.
+    -> the page will present from the bottom.
+-> for dismiss button to work, need to create custom class.
+    -> Create a new cocoa file, link up with view Controller (select a custom class and
+     find new file name created)
+     -> call function dissmiss.
+* Creates a temporary list that pops up and can be dismissed to return back to same page
+
+Prepare For Segue ~
+* We will want to segue to a new page, but hold onto information.
+    -> In order to pass information forward, we must prepare for the segue.
+
+To prepare for the segue, we need to override the
+    ->  `prepare(for segue: UIStoryboardSegue, sender: Any?)` function
+* find the destination view, and set the attributes we want to set.
+
+ie.
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            let destination = segue.destination as! FavoriteNumberViewController //(the new view file you created)
+            destination.favoriteNumber(newView file) = 24
+        }
+
+Video Outline
+
+    * Link submit button on first page to modally present second page
+    * Create custom class for second page with text attribute and label outlet
+    * Create action for back button to dismiss the view
+    * When the view loads, use the text attribute to update label outlet
+    * Prepare for segue, by finding the segue's destination and setting the text attribute
+* Updates the the input and pass it on into another Page.

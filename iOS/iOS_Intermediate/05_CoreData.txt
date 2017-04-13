@@ -1,0 +1,147 @@
+Data Persistence
+* most common ways to persist data in iOS app:
+    -> NSUserDefaults
+    -> NSCoding
+    -> Core Data
+    -> Back-end API Server
+
+* Will be focusing heavily on Core Data and using a Back-end API server:
+
+1) NSUserDefaults
+Very easy to use, but generally reserved for small pieces of data like settings and user preferences.
+Should not be used for storing any core data for your application. Data is stored on the device.
+
+2) NSCoding
+A method of persisting data where you encode data and save it in a file. Gives great control over how
+the data is structured, but may not be the best option when dealing with relational data. Data is stored
+on the device.
+
+3) Core Data
+An iOS framework that uses an object-oriented style for storing and modeling data. A robust and relatively
+easy solution to implement for larger data sets and relational data. Data is stored on the device.
+
+4) Back-end API Server
+Using the full force of a back-end API server allows one to have full control over their database and use
+any database (MySQL, MongoDB, PostgreSQL, etc.). Relies on an internet connection. Data is not stored on
+the device.
+
+Core Date Basics ~
+
+* For an iOS application to use a database, it relies on a Cocoa API known as  Core Data.
+* There are relational databases, which is what you're probably used to, and object databases,
+    which is what Core Data provides.
+    -> relational database, the key actions are  select (SELECT * FROM table_name) and transaction
+    (INSERT, UPDATE or DELETE).
+    -> Filter and sort according to some set of rules, and then return a linear collection of rows.
+    ->  In the transaction, we inform the system that we are performing some series of data transformations,
+     we then commit the transaction
+
+The main adjustments for developers coming from RDBMS-land (Relational Database Management System):
+
+1. The concept of Unique Identifiers (Primary keys) - They are going on behind the scenes but you never have
+ to worry about them and should not try to define your own.
+2. Setting up relationships between objects - We don't save the unique ID of a related object, instead, we use
+ Swift semantics to relate the objects.
+3. Data Normalization - You don't need to worry about data normalization in Core Data. In practice, you still
+ need to worry about good data design, because that's always important, but you don't need to worry as much about
+ the underlying implementation details as in an SQL database.
+
+* Core Data is hardware-agnostic.
+    ->  Core Data works directly with SQLite, the public-domain database engine bundled with MacOS X and iOS.
+
+* can also save data on to a  .plists file
+-> Although useful, we would not consider plists for anything other than saving simple preferences and really basic
+ data such as remembering preferred default language, audio/video preferences, default templates, etc.
+ -> Retrieving and saving data to plists can be quite slow.
+
+* Core Data will give you the flexibility to expand your object models as needed by:
+    -> easily fetch objects from the persistent storage based on certain parameters
+    ->  create relationships between models (One-to-Many, One-to-One) memory management, etc.
+
+    * Core Data manages to save and undo functionality for you. It has a persistent store, which tracks changes,
+     and can be flushed to the disk automatically at any number of times (app close, etc.).
+    * Core Data and related classes provide easy ways to get your entities into UITableViews, like NSFetchedResultsController.
+    * Core Data abstracts away a lot of the messy things you'd otherwise have to deal with yourself, such as lists
+    of objects, one-to-many or many-to-many relationships, or constraints on object attributes, into a single nice
+    clean object-oriented interface.
+    * Core Data comes with a nice graphical object model editor that can help you think through your object/entity
+    design, and refine it as you go.
+    * Supports migration.
+
+Setup
+* Follow instructions on previous page to alter "AppDelegate" file. Then create a new file `file > new > file`
+    of type "Data Model" and name it after your app.
+
+    OR
+
+* Start a new project and check off the "Use Core Data" box.
+    -> Inside the Data Model `.xcdatamodeld` file, create an entity and add attributes.
+
+Saving an Item
+    * This will enable you to communicate with Core Data (it's like a scratch pad for our data. Before we commit our request to Core Data, we first need to write what we want (retrieve or save) in NSManagedObject:
+ie.
+    let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+* Create new entity:
+    let thing = NSEntityDescription.insertNewObject(forEntityName: "OurCustomEntityName", into: managedObjectContext) as! OurCustomEntityName
+
+* Set attributes of the item:
+    thing.coolTextAttribute = "Some Totally Cool Text"
+
+* Commit changes using the managedObjectContext:
+
+    if managedObjectContext.hasChanges {
+        do {
+            try managedObjectContext.save()
+            print("Success")
+        } catch {
+            print("\(error)")
+        }
+    }
+
+* Fetch All Items
+-> Tell Core Data that we want to fetch items:
+ie.
+    let itemRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AwesomeEntity")
+
+* Iterate through a list of items:
+
+Iterate through records:
+ie.
+    do {
+        // get the results by executing the fetch request we made earlier
+        let results = try managedObjectContext.fetch(itemRequest)
+        // downcast the results as an array of Mission objects
+        items = results as! [AwesomeEntity]
+        // print the details of each item
+        for item in items {
+            print("\(item.coolTextAttribute)")
+        }
+    } catch {
+        // print the error if it is caught (Swift automatically saves the error in "error")
+        print("\(error)")
+    }
+
+Reading from Core Data and displaying in our Table View ~
+
+* Store the items in an array:
+
+    var items = [AwesomeEntity]()
+
+    Fetch all items on page load, and save into data source:
+
+* override func viewDidLoad() {
+        super.viewDidLoad()
+                            // Do any additional setup after loading the view, typically from a nib.
+        let userRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AwesomeEntity")
+        do {
+            let results = try managedObjectContext.fetch(userRequest)
+            items = results as! [AwesomeEntity]
+        } catch {
+            print("\(error)")
+        }
+    }
+    
+* Set text of cell with item text:
+
+    cell.textLabel?.text = items[indexPath.row].coolTextAttribute

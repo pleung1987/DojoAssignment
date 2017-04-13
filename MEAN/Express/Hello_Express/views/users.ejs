@@ -1,0 +1,20 @@
+<html>
+<body>
+    <h2>Here are all the users:</h2>
+    <% for (var i = 0; i < users.length; i++) { %>
+        <h3>Name: <%= users[i].name %></h3>
+        <h4>Email: <%= users[i].email %></h4>
+        <hr>
+    <% } %>
+</body>
+</html>
+
+<!--The <% %> tags are the delimiter for the embedded JavaScript.   -->
+
+<!--Using these tags allows us to run JavaScript code that can be embedded into the HTML document we are making.-->
+
+<!-- Notice the <% %> tags allow us to enter JavaScript code, and the <%=  %> tags actually print the JavaScript
+ code to the document. -->
+
+<!-- Use the tags with the equal sign (=) to actually print values, whereas you'll use the tags without the equals
+sign to invoke loops or use logic (anything that involves JavaScript but doesn't output code). -->

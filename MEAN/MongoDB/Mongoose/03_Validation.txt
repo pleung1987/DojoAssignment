@@ -1,0 +1,47 @@
+Validations~
+*  Let's say for our users we wanted to make the first name, last name, and the email required...
+Add our validation in the server.js file like this:
+
+                                // require the mongoose module
+        var mongoose = require('mongoose');
+                                // to make a model, you can first define a schema, which is just the BLUEPRINT for a model
+        var UserSchema = new mongoose.Schema({
+            first_name:  { type: String, required: true, minlength: 6},
+            last_name: { type: String, required: true, maxlength: 20 },
+            age: { type: Number, min: 1, max: 150 },
+            email: { type: String, required: true }
+        }, {timestamps: true });
+
+*  validation methods in Mongoose are pretty one-dimensional;
+    -> we pretty much have to validate things using optional parameters in our schema definition.
+    -> Making required fields is easy, but more intricate validations (email strings, dates, etc) can get ugly...
+    -> To make life a little easier, Mongoose has added a lot of new validation options to help us validate for
+     many options. (Can look at there Documentation by searching: Mongoose Validations)
+
+Displaying validation errors:
+    -> The following code checks to see if our errors are set and prints them if they are:
+        NOTE: The tools will be better when we use Angular.
+
+        <server.js side>
+            app.post('/users', function (req, res){
+                var user = new User(req.body);
+                user.save(function(err){
+                    if(err){
+                        res.render('index', {title: 'you have errors!', errors: user.errors})
+                    }
+                    else {
+                        res.redirect('/users');
+                    }
+                });
+            })
+
+        <index.ejs side>
+             <% if(typeof(errors) != 'undefined' ) { %>
+                 <% for (var x in errors) { %>
+                  <h3><%= errors[x].message %></h3>
+                 <% } %>
+             <% } %>
+
+* if your web application requires a stronger validation engine, there are Node Modules that do just that!
+* Mongoose Validator is a simple node module that allows you to create powerful validation arrays that go
+    hand in hand with your models.

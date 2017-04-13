@@ -1,0 +1,52 @@
+OOP (Object Oriented Programming)
+- an organization principle
+- Using blueprints that new objects are based on, we can make our code easier to navigate and understand.
+- We pair JavaScript Objects and Functions to create Constructors that will act as our blueprints.
+
+* Try for a parameter order that's as consistent as possible with the variables that they are set to.
+*  You can deviate from this pattern, but generally, something similar to the properly hoisted pattern
+ should be used.
+NOTE:  Be consistent!
+
+Object Constructors~
+* Object Constructors are just functions that act as blueprints for creating particular objects.
+
+    function NinjaConstructor(name, age, prevOccupation) {
+          var ninja = {};     // the object that will eventually be returned
+                                /*
+                                Addition of properties to ninja.
+                                */
+          ninja.name = name;
+          ninja.age = age;
+          ninja.prevOccupation = prevOccupation;
+                                /*
+                                Addition of methods to ninja
+                                */
+          ninja.introduce = function() {
+            console.log("Hi my name is " + ninja.name + ". I used to be a " + ninja.prevOccupation + " and now I'm a Ninja!");
+          }
+                                /*
+                                return ninja
+                                */
+          return ninja;
+        }
+
+
+                              // Create the Andrew Ninja
+        var Andrew = NinjaConstructor("Andrew", 24, "Teacher");
+        Andrew.introduce();
+                              // Create the Michael Ninja
+        var Michael = NinjaConstructor("Michael", 34, "Founder");
+                              // here we redefine the introduce method for a particular "Instance" or Object
+        Michael.introduce = function() {
+          console.log("I am the Sensei!")
+        }
+    Michael.introduce();
+
+We did a couple of things here:
+* Capitalized NinjaConstructor. This is a JavaScript convention to indicate that the function is an
+    Object Constructor.
+* Created an object inside of the function and returned it. This is the specific instance of the
+    object being created.
+* Redefined Michael’s introduce method (remember that these instances are just simple JavaScript objects,
+so we can manipulate them like we've always been able to)

@@ -1,0 +1,144 @@
+Overview
+
+Mongoose~
+* Connect MongoDB to a project using Mongoose.
+* most popular way of using MongoDB with Node and Express is NOT establishing a direct connection.
+    -> instead use a Node module called Mongoose.
+
+* Mongoose is able to connect to a MongoDB database and it will allow us to give a little bit more structure to our data
+    ->  by providing functionality in the form of models and schemas
+
+* Mongoose allows us to make models in the traditional MVC sense
+    ->  Acts as a layer between our application and our database (a very common pattern in software development)
+* By converting our free-form MongoDB data into models...
+    -> able to do things like:
+        - validate
+        - add associations
+        - run more intricate queries more effectively
+ie.
+    * Let's assume we wanted to build a mongoose model for a user collection in our MongoDB.
+        -> Go to your MongoDB command line and make sure your server is running.
+            (can check your terminals to ensure the server is still running)
+1. install everything like before plus mongoose:
+
+        make a package.json file:
+            * npm init -y
+            * npm install express --save
+            * npm install ejs --save
+            * npm install body-parser --save
+            * npm install mongoose --save
+
+* We will sends a user's name and age to the '/users' route in the index.ejs file at views.
+
+2. Requiring Mongoose
+- After we install mongoose, we need to require it. You can add the next block of code anywhere before our routes section.
+    -> We suggest you add this after we defined the app variable.
+
+            var mongoose = require('mongoose');
+
+* how our back-end works:
+    - our web server which handles all of the incoming requests...
+        -> decides which logic units to call upon (in our case our web server and logic units are in the same place
+            -- server.js).
+    - Next, we will have our database server which is the "mongod" that we will have to send requests to (from express).
+        -> To connect the two and how do we make it easy to interact with the database server from express with Mongoose
+
+3. Connect Mongoose to MongoDB
+
+        // This is how we connect to the mongodb database using mongoose -- "basic_mongoose" is the name of
+        // our db in mongodb -- this should match the name of the db you are going to use for your project.
+
+                        mongoose.connect('mongodb://localhost/basic_mongoose');
+
+    * Mongoose provides more structure to MongoDB by adding schemas that we can create that turn into models for our collections.
+    -> These models specify keys, types, and even validations for documents in a specific collection.
+
+4. Create your Mongoose Schemas ~
+
+            var UserSchema = new mongoose.Schema({
+                name: String,
+                age: Number
+            })
+            mongoose.model('User', UserSchema);          // We are setting this Schema in our Models as 'User'
+            var User = mongoose.model('User')           // We are retrieving this Schema from our Models, named 'User'
+
+* Its job is to take a blueprint object and, in turn, create the necessary database collection out of the model.
+    -> We get this blueprint by making a new schema instance from the mongoose.Schema() object constructor
+
+    *  the mongoose.Schema() method takes a JSON object as its parameter
+        ->  the structure of that object is how each new document put into the collection will be formatted.
+        -> We set the mongoose.model to the "User" variable so that we can run model-like methods on it to make all of
+        the CRUD operations easier.
+
+    NOTE: If you create a model, mongoose WILL create the appropriate collection in your database for you!
+            Even with the appropriate naming (plural for collection names)!
+
+5. Use the Mongoose Models to Create / Retrieve / Update / Destroy
+
+* Let's focus in on the route that we are going to modify:
+
+                // This is the route that we already have in our server.js
+                // When the user presses the submit button on index.ejs it should send a post request to '/users'.  In
+                //  this route we should add the user to the database and then redirect to the root route (index view).
+        app.post('/users', function(req, res) {
+        console.log("POST DATA", req.body);
+                // This is where we would add the user from req.body to the database.
+        res.redirect('/');
+        })
+
+    *  make sure that the req.body has a name and age field.
+        ->  let's modify the route to use our User model to save a new user to the database.
+
+        //making the post more effective:
+
+            app.post('/users', function(req, res) {
+          console.log("POST DATA", req.body);
+                                // create a new User with the name and age corresponding to those from req.body
+          var user = new User({name: req.body.name, age: req.body.age});
+                                // Try to save that new user to the database (this is the method that actually inserts into
+                                    the db) and run a callback function with an error (if any) from the operation.
+          user.save(function(err) {
+                                // if there is an error console.log that something went wrong!
+            if(err) {
+              console.log('something went wrong');
+            } else { // else console.log that we did well and then redirect to the root route
+              console.log('successfully added a user!');
+              res.redirect('/');
+            }
+          })
+        })
+
+        * notice that "User" is actually an object constructor (notice the _"new" keyword). The "User"_,
+            which constructs user objects, have methods that talk to the database!
+        * ".save" is the method that actually inserts into the database.
+        * ".save" takes a callback function that has an error parameter so that we know whether or not the insert
+            was successful
+            -> - any method that interacts with the database will typically have a callback function as a parameter
+                (the callback function will run when the database operation finishes).
+
+RECAP if it doesn't work when you run:
+
+    1) Make sure your mongodb server is running (the 'mongod' command)
+    2) Make sure your post data matches the data that you are inserting into the database (name and age)
+    3) Make sure that your form submits a post request to '/users'
+    4) Make sure mongoose is actually installed
+    5) Check the order of everything related to mongoose (require --> connect --> Schema --> Model --> route)
+
+Lastly...
+    * try to modify the root route to render index.ejs AND pass it all of the users that are in the database.
+    * Then modify index.ejs to display all of those users above the form.
+
+add the following:
+
+    // The root route -- we want to get all of the users from the database and then render the index view passing it all of the users
+
+    app.get('/', function(req, res) {
+      User.find({}, function(err, users) {
+                    // This is the method that finds all of the users from the database
+                    // Notice how the first parameter is the options for what to find and the second is the
+                    //   callback function that has an error (if any) and all of the users
+                    // Keep in mind that everything you want to do AFTER you get the users from the database must
+                    //   happen inside of this callback for it to be synchronous
+                    // Make sure you handle the case when there is an error, as well as the case when there is no error
+      })
+    })

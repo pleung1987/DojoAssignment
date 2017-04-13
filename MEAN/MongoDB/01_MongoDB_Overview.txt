@@ -1,0 +1,89 @@
+ MongoDB~
+
+(Video)
+ - if you want to create a web app and store javascript object, MongoDB is a good choice.
+-> can update, remove, insert etc into DB.
+
+similar to express:
+- module.export is passed into the route variable from server to index.js.
+
+What is MongoDB? Why Use it?
+* MongoDB is a NoSQL database.
+    -> NoSQL = " Not Only SQL".
+    -> Does support a structured query language (SQL)
+    -> more flexibility in the storage of the data other than just basic tabular storage (a.k.a housing data in tables)
+
+*  NoSQL databases emphasizes that there are 'no relations' between the data.
+    -> In a NoSQL environment, every piece of data is unaware of the other pieces.
+
+NO JOINS ~
+-> The ideal environment to use a NoSQL database in is one that focuses on speed while having little to no need
+    of relationships between tables
+    -> Reason being: joins are an expensive operation.
+
+Think about the concept of a join:
+
+     -> SELECT * FROM users LEFT JOIN address ON users.id = address.user_id
+
+* For every user, we have to find the address that matches specifically one piece of information in the address table.
+    -> Doing this for every entry in your table would take a lot of time.
+    -> If a database that has over hundred of thousands of data to join, this process would be expensive in time and resources.
+
+* With the ability of Node servers to use socket connections, we now have the ability to communicate in real-time
+    between clients and servers.
+    -> f we need to do an expensive operation on the server side with the database, we'll negate all the speed
+        advantages we've gained using a Node server.
+    -> This is a good reason to consider MongoDB.
+
+-> everything stored in a MongoDB database is a JSON object.
+
+        Such as:
+
+            {
+             'first_name': 'James',
+             'last_name': 'Johnson',
+             'age':
+             }
+
+Installing MongoDB~
+
+- using HomeBrew: a package manager for iOS. (Steve Jobs and Steve Wosniac's club they use to present)
+(Follow installation instructions)...
+
+Running the MongoDB server:
+* to run your MongoDB server, simply type...
+
+        mongod
+//or
+        sudo mongod      // run the same command with more privileges
+
+After it runs...
+    -> you should not be able to see your normal terminal prompt line, only a beeping underscore.
+    -> This means your server is up and running
+
+NOTE: DON'T CLOSE THIS WINDOW OR TYPE ANYTHING ELSE!
+    -> it's much easier to stop your server if you leave this window up.
+    -> If you do close it, the MongoDB server will keep running in the background.  Forever.
+
+    To shut down your server from the server window, press...
+
+            * control + c  //  on your keyboard in a terminal window.
+
+Connect to your database:
+    -> To connect to your MongoDB databases, open a new tab in your terminal or a new terminal window and type...
+
+            * mongo
+
+    -> Now you should see the terminal cursor become a single arrow and beeping underscore. We're in!
+
+Shutting down if your mongod window got closed...
+
+* Open a terminal window and type:
+
+        ps -ax | grep mongo
+
+* then copy the number on the left of the row that shows 'sudo mongo' ->  Take that number and type...
+
+        sudo kill *that_number*
+
+    ->  The kill command tells a process ID to terminate.

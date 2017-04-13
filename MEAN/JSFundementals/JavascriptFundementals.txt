@@ -1,0 +1,255 @@
+Javascript fundemental:
+
+iterate through a dictionary(object):
+
+        var myobject = {
+        language: "javascript",
+        dojo: "Washington DC",
+        favourite_Instructor: "hello Dude"
+        }
+        for(var key in myobect){
+            console.log(key, myobject[key]);
+        }
+
+
+- JavaScript is a scripting language that can communicate directly with the DOM
+    -> JavaScript can add, remove and modify HTML elements.
+    -> you could build entire website using Javascript
+     (In fact, ReactJS – a JavaScript library developed by Facebook/Instagram – does just that)
+
+JavaScript is an interpreted language~
+- JavaScript does not need to be compiled to machine language before it runs.
+- Web Browsers are types of interpreters that reads the code at runtime.
+- Installed another interpreter on our local machine – the Node-modified V8 engine!
+
+* all Javascript interpreters follow a similar pattern when interpreting our code:
+- Scan our code for the following keywords: var and function
+- The var is moved and the name associated with var is copied to the top of the code
+(an action we’ll call hoisting). The interpreter leaves behind any assignments, meaning
+the hoisted variable names begin their life as undefined.
+
+* If that was difficult to swallow, no worries
+  This is one of those things that’s easier to grok with examples:
+
+        console.log('hello world');
+        var hello = 'Whee!';
+
+-> Can be re-written as:
+        var hello;              // the variable hello exists, but the value associated with it is
+                                currently undefined
+        console.log('hello world');
+        hello = 'Whee!';
+
+-> When our interpreter finds a function keyword, the entire code block (i.e. everything inside the
+function’s {}) is moved to the top of our code (but below any hoisted variables).
+
+        console.log('hello world');
+        var hello = 'Whee!';
+        var jello = 'jiggly';
+        function greeting(){
+          console.log("I will be hoisted");
+        }
+
+* would be interpreted as:
+
+        var hello; // hello exists but value is currently undefined
+        var jello; // jello exists but value is currently undefined
+        function greeting(){
+          console.log("I will be hoisted");
+        }
+        hello = 'Whee!';
+        jello = 'jiggly';
+        console.log('hello world');
+
+* After this initial reordering, the code is run line by line.
+
+* hoisting var’s and inner functions to the top of the { – that’s often what people are referring
+to with the term function scope.
+
+
+Variables
+~ variables store information for later use.
+* Initially, the value associated with my_first_variable is undefined.
+
+* variable is assigned the value String ‘Data’. (Assigned and set to a value (set as)
+    are often interchangeable)
+
+* Just a reminder: Variables can hold any type of JavaScript element. This includes:
+
+    - Strings
+    - Numbers
+    - Objects
+    - Functions
+    - Other variables
+    - undefined
+    - null
+    - Booleans
+    - Arrays
+
+* To determine the type of data that the variable contains you can use the
+built-in function <typeof>
+
+ie.
+            var myunknown = 'hello';
+            console.log(typeof(myunknown));
+
+A friendly hoisting reminder:
+
+                // What happens if you do the following?
+        console.log(a);
+        var a = "weird";
+                // Will it throw an error?  What will it print, if it doesn't throw an error?
+                // How about this?
+        console.log(typeof(b));
+        var b = "weird too";
+        console.log(typeof(b));
+
+Array~ infinite amount of drawer that stores a value
+
+Functions ~
+* You send the raw materials to the factory/function as arguments, which processes those inputs
+according to a specific process – our logic – and returns a finished product (the return value).
+
+If we wanted to use the return for something we could have stored whatever the function
+evaluated to in another variable (store it in a variable):
+
+        var theProductOfFiveAndFourteen = myFunctionName(5,14);
+
+* Now we can use theProductOfFiveAndFourteen at any point after this in our code.
+
+NOTE: Remember... Functions are first class
+    -> they can basically go wherever they want!
+    * Functions can be stored as standalone functions (like above), as the value of variables,
+     or as attributes in a JavaScript object (where they're known as methods)
+    * Functions can be passed as arguments to functions (known as a callback)
+    * Functions can be returned from functions. (This is creating what’s called a closure,
+     which we’ll discuss later.)
+
+Conditionals~
+- Conditionals are directions to take based on certain conditions.
+- Our minds are already programmed to execute the right set of instructions.
+
+condition_1 and condition2 are expressions that evaluate to true or false:
+
+Things that are false:
+    false
+    0 // numerical 0
+    null
+    undefined
+    "" // empty String
+    NaN // numerical Not a Number
+
+* Difference in == and ===:
+
+==	is equal to value (Abstract Value Comparison)	"x" == "x" evaluates to true
+===	is equal to value and type (Strict Equality Comparison)	“1” === 1 evaluates to false
+
+
+While True (Conditionals cont.)~
+
+*  all things that we continue to do while the condition is true. Once the condition is false,
+we can stop doing these things.
+
+Loops~
+~ Loops can be used on both arrays (by index), as well as objects (by key).
+
+Separating loop types:
+Separating the loop type can help remind us what type of data we're dealing with in any given code block.
+JSON objects are often returned as an array with many objects inside of the array.
+
+Objects~
+* an array was a file cabinet that maintains order by linking each value with an index
+-> OBJECT lets us escape the confines of a numerical indexing system
+
+For example, say we stored the following function in an array:
+        var array = [ function(){console.log('hello there');} ]
+
+//know how to access and invoke that function because we know exactly where it is:
+    The 0th bucket of array.
+        // Invoke the function
+        array[0]();
+
+NOTE: It’d be pretty tedious to have to remember the exact index location in the array...
+ Instead, wouldn’t it be great to attach the function to a more memorable name, rather than 0?
+Well, why not use an object?
+
+ie.
+    var object = { helloFunc: function(){console.log('hello there');} }
+
+* To create an object, we just use {}. We also attached a key (helloFunc) that will let us access the function,
+ which, because it’s now inside an object, we refer to as a method.
+
+- each item (value) in a JavaScript object must have some sort of reference (key).
+-  JavaScript Object Notation (JSON) is extremely important to understand because anything
+ can be represented using it (that’s because objects can contain other objects and arrays)
+**  Objects are data format of choice for most APIs!
+
+1) We can create an empty JavaScript object using {}.
+2) The keys in JavaScript objects are called ‘properties’ or ‘attributes’
+3) A property in the object can store/hold a string, number, array, function or even another object.
+ie.
+
+        var dojo = {};                                 // creates an empty object
+        dojo = {
+          name: 'Coding Dojo',                         // property can store a string
+          number_of_students: 25,                      // property can store a number
+          instructors: ['Andrew', 'Michael', 'Jay'],   // property can store arrays
+          location: {                                  // property can even store another object!
+            city: 'San Jose',
+            state: 'CA',
+            zipcode: 95112
+          }
+        }                                              // access object properties with dot (.) notation
+        console.log(dojo.name, dojo.number_of_students, dojo.instructors, dojo.location);
+        console.log(dojo["name"]);                     // or bracket [] notation (note: specify key in quotes)
+        dojo.number_of_students = 40;                  // we can reassign any of the properties
+        dojo.location.city = "Bellevue";
+        dojo.location.state = "Washington";
+        dojo.location.zipcode = "unknown";             // note that we can change this from integer to string
+        dojo.phone_number = 1234567890 ;
+
+* Arrays are generally used to keep track of a list of related things of the same type.
+NOTE: While objects are generally used to keep attributes of a thing associated with that thing.
+ie.
+    var myDonut = {
+      frosting: 'glazed',
+      type: 'old fashioned',
+    }
+
+* very common to see arrays filled with objects, where the objects all have the same keys,
+but with different values.
+
+    var glazedDonuts = [
+      {
+        frosting: 'glazed',
+        type: 'old fashioned',
+        age: '45',
+        time: 'minutes'
+      },
+      {
+        frosting: 'glazed',
+        type: 'regular',
+        age: '5',
+        time: 'minutes'
+      },
+      {
+        frosting: 'glazed',
+        type: 'jelly filled',
+        age: '1',
+        time: 'seconds'
+      }
+    ];
+
+* You could then go to the donut owner and ask something like: Can I buy the 1st donut on the rack
+ if it has been out of the oven for fewer than 25 minutes? The code conversation for that
+ would be:
+
+     var purchase;
+                    //You
+     if((glazedDonuts[0].age < 25 && glazedDonuts[0].time == 'minutes') || glazedDonuts[0].time == 'seconds'){
+                    //shop owner
+       purchase = glazedDonuts[0];
+     }
+     else {
+       console.log('sorry it has been out a bit longer');
+     }

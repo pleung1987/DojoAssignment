@@ -1,0 +1,36 @@
+Adding sockets to Express
+* To add socket functionality to any Express project...
+1) Add the socket.io module
+2) Modify the server-side code
+3) Modify the client-side code
+
+* Node module we will be using for this is called 'socket.io'
+
+- So our first step is to install socket.io.
+* Since socket.io is just a node module we already know how to install it using npm install.
+* (I hope you guys are seeing a theme with npm install here)
+
+                    npm install socket.io --save
+
+-> Check out Sockets folder server.js to see how to create socket functions
+
+Configuring the client:
+* Let's assume the app we're going to build is a single-page application,
+    -> so we only need to serve one view
+    -> which will be served by the root route (app.get('/')...etc )
+
+* On the client, we emitted an event using socket.emit().
+    -> The first parameter we passed to that method was a string
+    -> This is the name of the event that will be emitted!!
+    -> The second parameter we passed to the method is a JSON object.
+* The socket connection allows us to pass JSON objects back and forth between client and server.
+ie.
+    -> in the callback of our "button_clicked" method, we added the line:
+
+        socket.emit('server_response', {response: "sockets are the best!"})
+
+* This is an example of emitting an event from the server to the client.
+* The convention is very similar to the technique we just saw:
+    -> we emit an event and pass a JSON object.
+
+Server-side emit syntax:

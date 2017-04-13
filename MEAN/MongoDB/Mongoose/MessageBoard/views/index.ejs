@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <title>Dojo Message Board</title>
+    </head>
+    <body>
+        <h1>The Dojo Message Board</h1>
+        <hr>
+        <div class="showError">
+            <% if(typeof(errors) != 'undefined' ) { %>
+                <% for (var x in errors) { %>
+                 <h5 style="color:red"><%= errors[x].message %></h5>
+                <% } %>
+            <% } %>
+        </div>
+        <div class="postMessage">
+            <form class="" action="/message" method="post">
+                <label for="name">Name:</label>
+                <br>
+                <input type="text" name="name" value="">
+                <br>
+                <label for="message">Post Message:</label>
+                <br>
+                <textarea name="message" rows="8" cols="80"></textarea>
+                <br>
+                <button type="submit" name="button">Post Message</button>
+            </form>
+        </div>
+        <div class="displayMessage">
+            <% for (i in messages) { %>
+                <hr>
+                <h3>Name: <%= messages[i].name %> </h3>
+                <h3>Message: <%= messages[i].message %> </h3>
+                <% for (j of messages[i]._comments) { %>
+                    <h5><%= "Name:" + j.name %> </h5>
+                    <h5> <%= "Comment:" + j.text %> </h5>
+                <% } %>
+                <div class="commentSection">
+                    <form class="" action=<%="/comment/" + messages[i]._id %> method="post">
+                        <p>Name:<input type="text" name="name" value=""></p>
+                        <p>Comment:</p> <textarea name="message" rows="4" cols="50"></textarea>
+                        <br>
+                        <input type="submit" name="" value="Post Comment">
+                    </form>
+                </div>
+            <% } %>
+        </div>
+    </body>
+</html>

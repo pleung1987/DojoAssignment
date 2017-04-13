@@ -1,0 +1,72 @@
+Node Modules
+* The ability to include code from other files within another is extremely important in a back-end environment.
+    -> We do this with front-end JavaScript by adding script tags with the src attribute pointing to the
+    right place
+
+*  In Node.js, we need to be able to pull code from JavaScript files into other JavaScript files.
+    -> To do this, we use the require() method.
+
+Exporting in Node
+    * Let's make a folder called node_module_basics and within that folder make two files: my_module.js and app.js.
+    We are going to import my_module.js into app.js. Here's our basic set up:
+
+app.js
+
+    var my_module = require('./my_module');
+    my_module.greet();
+
+my_module.js
+
+    module.exports = {
+        greet: function(){
+            console.log("we are now using a module!");
+        }
+    }
+
+* When run Node...  Your terminal window should show the output "we are now using a module!"
+*  by requiring the module my_module, we were able to import the object we set equal to module.exports
+    in the my_module.js file
+
+NOTE: MOST IMPORTANT facet of Node.js; without this, the MEAN stack would be impossible to create.
+
+** Requiring a Node module allows you to use the module.exports object of another file!
+
+A couple of notes:
+    - Notice that we require() the string "./my_module".
+Two things to note:
+    1) There is no .js at the end of the file.
+        -> The require method automatically looks for JavaScript files, so we don't need to include
+            a file extension.
+    2) The files app.js and my_module.js are in the same directory.
+        -> Normally, the require() method looks for node modules that aren't in the same directory as the
+        file that is running; by default.
+        ->  the require() method looks for the modules located in a folder called node_modules.
+        -> To tell require() to look in the current directory (i.e. the folder that the file is located in)
+            we have to include "./" in front of the file path.
+        -> "./" (dot-slash) is the file path for the current directory.
+
+* Sometimes, we don't want to export just an object. What if we wanted to return a function that
+returns an object?
+ie.
+
+    <my_module.js>
+        module.exports = function(){
+        return {
+            greet: function(){
+                console.log("we are now using a module!");
+            },
+            add: function(num1, num2){
+                console.log("the sum is:", num1 + num2);
+                }
+            }
+        }
+
+    <app.js>
+    var my_module = require('./my_module')();     //notice the extra invocation parentheses!
+    console.log(my_module);
+    my_module.greet();
+    my_module.add(5,6);
+
+* instead of exporting an object literal, we are exporting a function that returns an object
+    (or an 'object constructor').
+* All this process really highlights is the different ways to construct JavaScript objects

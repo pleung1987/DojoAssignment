@@ -1,0 +1,84 @@
+Documents
+
+* db.createCollection('ninjas') -> creates the document stored into the collection
+
+* db.ninjas.insert({name:"Patrick"})
+
+NOTE: Unlike SQL, you don't need to have the same documents in the same collections.
+ie. to above's example:
+    db.ninjas.insert({name:"Michael", status: "wise"})
+
+* cls -> clears the screen
+
+QUERY
+* db.ninjas.find({})    //matches all these key value pair into the parameters to see the speficic detail.
+* db.ninjas.find().pretty()     //show the documents in a nicer way.
+* Query by something db.ninjas.find({name: "Patrick"})      //finds everything that is in the name Patrick.
+    // have to make sure the properties has the be matched inorder to find specific.
+* MongoDB will automatically make a Id String for you.
+    -> You can find the object based on querying the ID
+
+REMOVE
+* db.ninjas.remove({name:"Patrick"})    //it will remove all ninjas with the name Patrick
+                                        // it will erase as many thing as it wants(entire object)
+* if you only want to remove two things, you need to specify your parameters: (say you have two name: Patrick)
+    -> db.ninjas.remove({name:"Patrick"}, true)     //true means only remove one.
+        // this removes only one object and not all with the same name
+
+UPDATE
+* db.ninjas.update({name:"Patrick"}, {location:"Mountain View"})   //takes in two arguments, 1st- the query, which documents
+                                                                you want to update, 2nd- What fields do you want to add
+* the default updates will overwrite all the datas, and deletes everything inside.
+* USE UPDATE OPERATOR to fix this:
+    -> db.ninjas.update({name:"Patrick"}, {$set:{location:"Mountain View"}})    //to add location instead of overwrite...
+    -> set adds the document into the collection object you are working on.
+
+ON Platform:
+* CREATE - Inserting a document into a collection:
+            // Pattern:
+            db.COLLECTION_NAME.insert({YOUR_JSON_DOCUMENT})
+
+            // Example:
+            db.ninjas.insert({name: "Trey", belt: "black", status: "awesome"})
+
+* READ - Retrieving documents from a collection:
+        ->  To retrieve documents from your collections, you will use the following method.
+
+            // Pattern:
+            db.COLLECTION_NAME.find({YOUR_QUERY_DOCUMENT})
+
+            // Examples that finds every documents:
+            db.ninjas.find({})
+            db.ninjas.find()
+
+            // Example finds by unique id:
+            db.ninjas.find({_id: ObjectId("5462a78e514e258182f4c69a")})
+
+* DESTROY - Removing documents from a collection:
+    ->  To remove an item from the database, we would run the following syntax:
+
+        // Pattern:
+        db.COLLECTION_NAME.remove({YOUR_QUERY_DOCUMENT}, BOOLEAN)       //The boolean is called the justOne boolean
+                                                                    if it is present and it is true, the remove query will only remove the
+                                                                    first document that matches the query.
+
+* UPDATE - Updating documents in a collection:
+    ->  The update syntax can be tricky if you do not see it done correctly first. Let's say I wanted to add a location to the ninja whose name is Trey. I want to make his location equal to Mountain View. I would try to the following:
+
+        // Example to update:
+        db.ninjas.update({name: "Trey"}, {location: "Mountain View"})
+
+* The second document is the document that contains the fields we want to add. The full syntax for the update query
+    is this:
+
+        // Pattern:
+            db.COLLECTION_NAME.update({QUERY}, {FIELDS_TO_UPDATE}, {OPTIONS})
+        // Note: the options document is optional.
+
+* MongoDB's native update method will completely overwrite everything except the _id field when we run the way
+    shown above.
+
+* if we just want to add new document into existing...
+
+        // Example:
+        db.ninjas.update({name: "Trey"}, {$set: {location: "Mountain View"}})

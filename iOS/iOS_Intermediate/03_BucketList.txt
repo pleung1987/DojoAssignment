@@ -1,0 +1,314 @@
+Apples UITableViewController:
+-> A controller object that manages a table view.
+
+* UITable​View​Controller implements the following behaviors:
+-> If a nib file is specified via the init(nib​Name:​bundle:​) method (which is declared by the
+    superclass UIView​Controller)
+        -> UITable​View​Controller loads the table view archived in the nib file.
+        -> Otherwise, it creates an unconfigured UITable​View object with the correct dimensions and autoresize mask
+-> If a nib file containing the table view is loaded, the data source and delegate become those objects defined in
+the nib file (if any).
+-> When the table view is about to appear the first time it’s loaded, the table-view controller
+    reloads the table view’s data.
+
+NOTE: You create a custom subclass of UITable​View​Controller for each table view that you want to manage.
+-> When you initialize the controller in init(style:​), you must specify the style of the table view (plain or grouped)
+    that the controller is to manage.
+
+~ Table View Controller ~
+* Like before, to respond to events happening on the cell we had to do the same thing but this time, we set the
+Table View's delegate property as self then implemented didSelectRowAtIndexPath method.
+
+* Use a Table View Controller instead of using the default View Controller if we are dealing with Table Views.
+    -> Table View Controller is optimized for using Table Views in a View Controller.
+    -> It already has set its tableView's dataSource and delegate as itself.
+    -> We can only use UITableViewController when the Table View takes up the entire screen.
+
+Navigation Controller~
+APPLE DOC:
+* Table View Controller is often used with a Navigation Controller.
+-> A navigation controller’s primary job is to manage the presentation of your content view controllers.
+    NOTE: Must never modify the views in the navigation hierarchy directly.
+    -> only way to customize these views is through methods of the UINavigationController and UIViewController classes.
+->  navigation controller’s primary responsibility is to respond to user actions by pushing new content view controllers
+ onto the stack or popping content view controllers off of the stack.
+ ie.
+    -> when the user selects a photo album in the Photos app, the app pushes a view controller that displays
+    the photos in that album.
+PLATFORM:
+* Navigation controller serves as the navbar for your application.
+*  There is usually a button on the top left and the top right to help you navigate through different
+    View Controllers in your application.
+
+* Utilize multiple scenes along with using the Table View Controller and the Navigation Controller.
+
+1. Set up the Table View Controller~
+* Delete the default View Controller in our storyboard.
+* Table View Controller from the Object Library and place it on the screen.
+* specify that this is the initial View Controller that Xcode should load when the application first starts.
+* Change our View Controller to have a more accurate name.
+    -> change the name of our ViewController.Swift File to (ie. BucketListViewController.swift).
+    -> In our declaration, we will specify that we want BucketListViewController.
+    -> instead of inheriting from a UIViewController, we will be inheriting from UITableViewController
+        which is a subclass of UIViewController.
+        -> UITableViewController automatically has a Table View taking up the whole screen with
+            its delegate and dataSource set to the view controller.
+                -> Meaning: conforms to the dataSource and delegate protocol.
+    -> Hook up our code with the scene in the storyboard.
+
+2. Embed the Navigation Controller
+    -> embed in a Navigation Controller because our application is going to have more than one scene.
+    -> Then double click on the navbar on top of the table to change the title.
+
+3. Implement the Data Source protocol
+    -> implement the two required methods in the UITableViewDataSource Protocol
+    ie. an array of strings to serve as Model objects
+    initial the table view for the array:
+
+        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                // dequeue the cell from our storyboard
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MyCell")!
+                // All UITableViewCell objects have a build in textLabel so set it to the model that is corresponding to the row in array
+        cell.textLabel?.text = items[indexPath.row]
+                // return cell so that Table View knows what to draw in each row
+        return cell
+        }
+
+Recap:
+* We used a UITableViewController class along with a Table View Controller.
+    -> The Table View Controller has a Table View UI element as it's "Super View"
+        -> The Super View is the outermost UIView in the View Controller.
+    -> The UITableViewController class inherits from UIViewController and itself conforms to UITableViewDataSource
+        -> UITableViewDelegate so you do not have to explicitly conform to these in your own class
+    -> specify that we were using a custom class in our User Interface to actually hook up the class to the UI.
+    ->  embedded a Navigation Controller into our Table View Controller. A Navigation Controller gives us access to
+        the top NavBar and "controls" displaying and manipulating that top NavBar.
+    ->  conformed to the UITableViewDataSource protocol to help us display the data similar to how we did in the
+        Beast List.
+
+Delegates & Protocols~
+* In Swift, we use different controllers - Navigation Controllers, View Controllers, and the like.
+    -> Controllers are classes:
+        ->  they (like just about everything in Swift) are using the paradigm of Object Oriented Programming.
+        -> classes inherit properties and methods from other classes, which is very useful
+        ->  keeps us from having to rewrite commonly used code chunks and allows us to easily make use of
+        and extend functionality created by others
+
+* each class is instantiated into an object, and these objects (including our controllers) are each almost entirely self-contained:
+    -> they can't really talk to anything outside of themselves.
+* If we want to change one controller, we shouldn't have to change our code hardly anywhere else.
+    -> makes our code flexible and extensible.
+
+ How can we pass data from one object to another?
+    -> This is where delegation steps in.
+    -> Delegation is the process of setting up a pointer from one object to another.
+    -> Table Views in particular require two delegates to be implemented in order to function.
+        ->  a table view is designed to display data, and if we don't set up any place for it to get its data from,
+        or tell it how to display that data, it won't be able to do its job.
+    -> These requirements particular classes have are known as protocols:
+        -> A protocol is just a set of rules our delegates must conform to in order to work with certain types of objects.
+
+Example protocol:
+    protocol UITableViewDataSource {
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    }
+    ->  Declare what the function should be, and now any class that follows this protocol must include these functions.
+
+* In order to embed a Table View into a view controller, our view controller must conform to the Table View's protocol.
+    -> a table view won't do its job unless we both give it data to display and provide a way to customize how that
+    data is displayed and behaves.
+
+* Object A (in this case, our ViewController) must conform to a protocol that describes what methods it has that
+ are relevant to Object B (the "delegate" protocol, in this case our UITableView)
+* Object B must have a reference to a type that conforms to the protocol (this will be a reference to Object A)
+* Object A must implement the protocol methods
+* Object B will call upon Object A's protocol methods through its reference
+
+Implementing the Protocol:
+ie.how we set up the  delegates for a UITableView, adding them as extensions to a ViewController class:
+
+    extension ViewController: UITableViewDataSource {
+       func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            //logic
+       }
+       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            //logic
+       }
+    }
+    extension ViewController: UITableViewDelegate {
+    }
+
+* Once method is in place:
+-> we need to do to just update the data in our TableView is to modify the actual repository of data we're
+using to populate our cells, and then run the reloadData() method on the array or object that contains that data.
+
+1. Add the Bar Button
+* going to drag and drop a Bar Button from the Object Library to the top right section of our Navigation Controller
+-> Then we are going to give it an identifier of 'Add' so that we get a + sign on our Bar Button.
+
+2. Have the Bar Button segue to another View Controller
+- Drag a new Table View Controller onto the storyboard.
+- Control drag from the + bar button to the new View Controller and click the show segue.
+- Run and test the + button and see if it seagues back to the same scene we came from.
+
+3. Connecting our new View Controller to Code
+- create a new Swift file to serve as the code behind the new TableViewController we added to our application.
+NOTE: The file name should match the name of the class and the class needs to inherit from UITableViewController.
+- After we create the file we are going to connect it to the scene in our storyboard.
+    -> will get error: we need to give a reusable identifier for the Prototype table cell in our new View Controller.
+    ->  In this scene, we only need one table row to enter in the new item
+        -> means that we are going to have static content.
+        Make changes: go Table View-> change to static cell from content -> style change to Grouped and
+        table View Section change Rows to 1;
+    -> Drag and drop the text input into the cell with the following constraints and attributes:
+
+4. Embedding a new Navigation Controller
+*  Since we will be adding a new item on this page, it might be clearer to the users if there is a cancel
+    button on the top left and a done button on the top right.
+    -> change our show segue to present modally ( A show segue doesn't allow us to alter what it says in
+    the top left bar button)
+    -> embed a new Navigation Controller.
+    -> drag a Bar Button to the top left with the identifier of Cancel and another Bar Button to the top
+    right with the identifier of Done.
+
+5. Implementing the CancelButtonDelegate Protocol
+Delegation~ involves having one object perform actions "on behalf of, or in coordination with, another object.
+    -> delegate is an object that conforms to a protocol which describes what methods it must implement which
+    will then be invoked by the second object
+
+Key aspects of using Delegation:
+* Object A must conform to a protocol that describes what methods it has that are relevant to Object B (the "delegate" protocol)
+* Object B must have a reference to a type that conforms to the protocol (this will be a reference to Object A)
+* Object A must implement the protocol methods
+* Object B will call upon Object A's protocol methods through its reference
+
+-> we will be using Delegation to handle the interactions between our AddItemTableViewController and our
+    BucketListViewController.
+    -> have the BucketListViewController handle the functionality for adding a new list item
+    ( the array of list items already exists in BucketListViewController)
+* We want the presenting View Controller to get dismissed when the user pressed the Cancel button.
+    -> create a new Swift file with the following protocol.
+        -> call the protocol "CancelButtonDelegate" because the protocol will help distinguish any
+        View Controller
+    ie.
+        import UIKit
+
+        protocol CancelButtonDelegate: class {
+        func cancelButtonPressed(by controller: UIViewController)
+        }
+
+    * protocol defines that any class that conforms to CancelButtonDelegate must implement the
+        cancelButtonPressed(by controller: UIViewController) -> () method.
+
+*  we would want the BucketListViewController to be its CancelButtonDelegate so that the BucketListViewController
+    can handle dismissing the MissionDetailsViewController
+    ->  We are going to set the BucketListViewController to be its delegate.
+    -> must first declare that we are going to be conforming to the CancelButtonDelegate Protocol and then
+     implement the required methods for this protocol.
+
+        class BucketListViewController: UITableViewController, CancelButtonDelegate {
+            // ...
+            func cancelButtonPressed(by controller: UIViewController) {
+                dismiss(animated: true, completion: nil)
+            }
+            // ...
+        }
+
+* When the BucketListView Controller conforms to CancelButtonDelegate,
+    -> we need to add a property in our AddItemViewController so that BucketListViewController
+    can set itself as the cancelButtonDelegate.
+* Once the user clicks on the button we want to send a message cancelButtonPressed to our cancelButtonDelegate...if we have one.
+
+        import UIKit
+        class AddItemTableViewController: UITableViewController {
+            // ...
+            weak var delegate: CancelButtonDelegate?
+            @IBAction func cancelBarButtonPressed(_ sender: UIBarButtonItem) {
+                delegate?.cancelButtonPressed(by controller: self)
+            }
+            // ...
+        }
+
+->  in the AddItemTableViewController we have an action for the Cancel Bar Button and inside of that action, we call the delegate's
+cancelButtonPressed method (passing self as the UIViewController)
+NOTE: we now have weak var cancelButtonDelegate which is of the "CancelButtonDelegate" type.
+
+* Make sure that when we segue to the AddItemViewController we set this property to point to the
+    BucketListViewController.
+
+* Now when we are segueing into the AddItemViewController, we are going to set ourselves as its cancelButtonDelegate:
+
+class BucketListViewController: UITableViewController, CancelButtonDelegate {
+    // ...
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "AddNewMission" {
+            let navigationController = segue.destination as! UINavigationController
+            let controller = navigationController.topViewController as! AddItemTableViewController
+            controller.delegate = self
+        }
+    }
+    // ...
+}
+NOTE: We will be using this method a lot in the future;
+    ->  from within the method we can reference both the ViewController that we are segueing from
+        and the ViewController that we are segueing.
+
+CancelButtonDelegate Recap
+    * We defined the CancelButtonDelegate Protocol
+        -> The protocol has one method -- cancelButtonPressed(by controller: UIViewController) -> ()
+    * We made the BucketListViewController conform to the protocol.
+        -> The implementation of cancelButtonPressed simply dismisses the top ViewController
+    * We gave the AddItemTableViewController a reference to a type that conforms to the CancelButtonDelegate
+        protocol and defined where we were going to use the cancelButtonDelegate (when the cancel bar button
+        action is triggered).
+    * We assigned the reference from AddItemTableViewController to the BucketListViewController in the
+    prepareForSegue method: "controller.cancelButtonDelegate = self"
+
+6. Implementing the AddItemTableViewControllerDelegate Protocol
+*  Need to implement another protocol for when the Done button is pressed.
+*  Done button is pressed we want to grab what is in the text label and send it to our delegate.
+    -> by appending it to its Array of Strings.
+
+Create a new Swift file with the following Protocol definition in it:
+
+    import Foundation
+    protocol AddItemTableViewControllerDelegate: class {
+        func addItemViewController(_ controller: AddItemTableViewController, didFinishAddingItem item: String)
+        func addItemViewController(_ controller: AddItemTableViewController, didPressCancelButton button: UIBarButtonItem)
+                            // Taken from CancelButtonDelegate file, and altered to match pattern.
+                            // NOTE: You will need to update AddItemTableViewController to make the Cancel Button work
+    }
+
+* Notice that we called the function inside of AddItemTableViewControllerDelegate "addItemTableViewController".
+
+->  We want it to have a property called addItemTableViewControllerDelegate so that it can be set later on similar
+    to how the cancelButtonDelegate was set.
+    ->  invoke our delegate's method passing along what is in the Text Field once the user presses "Done."
+    ->  need to have an Outlet to the UITextField as well.
+
+AddItemTableViewController should look like this afterwards:
+
+    class AddItemTableViewController: UITableViewController {
+        weak var delegate: AddItemTableViewControllerDelegate?
+        @IBOutlet weak var itemTextField: UITextField!
+        @IBAction func cancelBarButtonPressed(_ sender: UIBarButtonItem) {
+            delegate?.addItemViewController(controller: self, didPressCancelButton: sender)
+        }
+        @IBAction func doneBarButtonPressed(_ sender: UIBarButtonItem) {
+            delegate?.addItemViewController(controller: self, didFinishAddingItem: itemTextField.text!)
+        }
+    }
+Now let's declare that our BucketListViewController conforms to this protocol and also implement the
+necessary function. Here we are going to append the item that we get to our items array and then reload our table view.
+
+    import UIKit
+    class BucketListViewController: UITableViewController, CancelButtonDelegate, AddItemViewControllerDelegate {
+        // ...
+        func addItemViewController(controller: AddItemViewController, didFinishAddingItem item: String) {
+            dismiss(animated: true, completion: nil)
+            items.append(item)
+            tableView.reloadData()
+        }
+        // ...
+    }

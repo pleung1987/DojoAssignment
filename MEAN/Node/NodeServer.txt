@@ -1,0 +1,163 @@
+Node as a Server
+* Node is not only a tool to run JavaScript...
+    -> It includes a variety of packages to allow us to run a webserver!
+
+* keywords/capabilities to look at as you first start exploring for NODE Documentation:
+    - http (important)
+    - https
+    - modules (important)
+    - path (important)
+    - debugger
+    - file system (fs) (important)
+    - globals
+
+* And a few that are worth checking out if those weren't enough:
+    - Query Strings
+    - REPL
+    - Timers
+
+FS and HTTP~
+* What is the FS module?
+    - Reading a file is how we obtain the content to serve to clients
+    - Writing it is how we output content to the client
+    - If we don't have a way of doing this, we're not going to be able to build a server!
+Thus: That is why the creators of Node.js built the fs (file system) module.
+    -> FS module allows us to do exactly what we need: read and write content from files!
+
+- It is very rare that you will see the HTTP module used without the fs module.
+    - HTTP module is the module that allows us to build a web server that accepts HTTP requests and can serve responses.
+
+Setting up a basic server ~
+
+* Check out the Node_server file:
+    - when we run localhost:6789 it runs the html file on that localhost ip.
+
+THIS LINE IS CRUCIAL:
+
+        var server = http.createServer(function (request, response){...}
+
+    * This one line creates our web server.
+    * Notice the createServer() method takes a parameter, namely, a callback function with a request and
+        response parameter.
+    * request and response parameters are:
+        1) HTTP request made by the client and captured by the server
+        2) HTTP response we will prepare and serve back to the client!
+
+* Sketch out what's going to happen:
+    1- Any request made to this web server gets passed into the callback.
+    2- If the request matches one of the response patterns we built into the server, we will prepare and
+     serve the associated response.
+    3- If the request doesn't match, we will send back an error to the client.
+
+Build our default request/response pattern:
+    -> The default, or root route, is just the response we serve if we request the basic route of the site.
+
+NOTE: "www.facebook.com" is the same route as "www.facebook.com/"
+
+Configuring the root route:
+
+            if(request.url === '/') {
+                fs.readFile('index.html', 'utf8', function (errors, contents){      //This command goes and finds a file by name and reads it
+                    response.writeHead(200, {'Content-Type': 'text/html'});
+                    response.write(contents);
+                    response.end();
+                });
+            }
+
+*  Code above captures ONE REQUEST and serves ONE RESPONSE.
+    -> code begins with an if statement:
+        - We are asking if the URL property of the request object is equal to "/"
+        - The route "/" is always considered the root route.
+            -> We are asking if the URL requested by the client is a particular form.
+    -> If the request URL matches the string to the right of the triple equals sign, we will serve the
+        appropriate response.
+    -> That response begins at fs.readFile(...).
+        -> This command goes and finds a file by name and reads it.
+    -> name of the file we're opening is called 'index.html'.
+            -> The second parameter is the encoding of the file.
+    -> Here, we're telling the fs object what type of characters to expect in the file it's opening.
+    -> You will need to include this line for any text-based document you serve, remember this!!
+
+    -> When the fs module reads the file, it passes the contents of the file into a callback and this
+        is where we actually formulate and serve the response.
+    -> Notice the first thing we do is call the response.writeHead() method.
+        -> This method sends the headers for our response along with a status code.
+        -> A header is the part of a response that contains the specifics of the response.
+    -> We need to tell the browser what type of response we're serving.
+        -> The status code is a code that tells the browser the status of the response.
+        -> Any status code in the 200's or 300's is good. (Anything in the 400's to the 500's is bad)
+            !!  For now, just always put a 200 as your status code on any valid request. !!
+    -> We finally send the response to the client using the response.write() method.
+        -> the Method sends the contents of the files to the client.
+    -> Since a response might contain multiple chunks of data, we call response.end() when we are finished.
+
+    -> The server.listen() method tells our server to listen on a specific port. (Server Module)
+
+Making a Full Web Server ~
+* In order to make a fully-fledged web server, you need to write more rules!
+ie. Let's say we wanted to load an HTML file when a client requested the URL: localhost:6789/dojo.html.
+    * Modify our original code in app.js to look like this:
+
+                                // get the http module:
+        var http = require('http');
+                                // fs module allows us to read and write content for responses!!
+        var fs = require('fs');
+                                // creating a server using http module:
+        var server = http.createServer(function (request, response){
+                                // see what URL the clients are requesting:
+            console.log('client request URL: ', request.url);
+                                // this is how we do routing:
+            if(request.url === '/') {
+                fs.readFile('index.html', 'utf8', function (errors, contents){
+                    response.writeHead(200, {'Content-Type': 'text/html'});
+                    response.write(contents);
+                    response.end();
+                });
+            }
+            else if (request.url === "/dojo.html") {
+                 fs.readFile('dojo.html', 'utf8', function (errors, contents){
+                     response.writeHead(200, {'Content-type': 'text/html'});
+                     response.write(contents);
+                     response.end();
+                 });
+            }
+                                // request didn't match anything:
+            else {
+                response.end('File not found!!!');
+            }
+        });
+                            // tell your server which port to run on
+        server.listen(6789);
+                            // print to terminal window
+        console.log("Running in localhost at port 6789");
+
+* now you should be able to make any URL serve any HTML page.
+
+NOTE: If we Want to add CSS connected to our index.html, add the following in your index.html:
+    ->      <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
+    * Then run your Node server and bring up your browser and your JavaScript console.
+        -> Open the network tab and refresh your page.
+
+- this message will be visible if you click on the style.css request and furthermore click on the
+    preview or response tab that opens when you click on the style.css request.
+- A request for a stylesheet is handled exactly the same way as a request for an HTML page.
+- Even though the end result of requesting an HTML page compared to a CSS page is different,
+    -> the process is still the same: the server gets a request and sends a response, period.
+
+Some hints:
+1) If you're using jQuery, or Twitter Bootstrap or anything stored somewhere other than your computer,
+you don't need to write a route for it on your server.  The routes we write in our servers are only for
+content stored on our servers.  Remote stuff is someone else's server's responsibility. Yay!
+
+2) Any file written in plain text will be served with utf-8 encoding.  Images won't be served with utf-8;
+ omit that argument in the fs.readFile() method when serving images.
+
+3) Use the following table to figure out which headers to send with your server's responses:
+
+
+File type:	         Headers:
+HTML	           {'Content-Type': 'text/html'}
+CSS	               {'Content-Type': 'text/css'}
+Javascript	       {'Content-Type': 'text/javascript'}
+png/jpeg/gif	   {'Content-Type': 'image/*'} (* is the image format, ie png or jpeg etc)

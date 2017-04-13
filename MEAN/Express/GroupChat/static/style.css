@@ -1,0 +1,32 @@
+.container{
+    margin-left: 10%;
+}
+
+h1{
+    color: red;
+    text-decoration: underline;
+}
+.chatbox{
+    border: 2px solid black;
+    height: 300px;
+    width: 70%;
+    padding:10px;
+    display: block;
+    overflow-y: scroll;
+}
+.message{
+    display: block;
+}
+
+.chat{
+    border: 2px solid black;
+    height: 34px;
+    width: 70%;
+}
+.sendBtn{
+    background-color: Blue;
+    color: white;
+    padding: 10px;
+    margin-left: 67%;
+    font-family: fantasy;
+}

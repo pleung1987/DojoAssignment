@@ -1,0 +1,109 @@
+Overview~
+* When you first started with Express your server.js file was no more than 20 lines.
+    -> we need to find some way of organizing our code to make it clean, readable, and expandable.
+
+* Modularization is the practice of splitting up your code into modules or components that have dedicated
+    roles or responsibilities.
+    -> The most common example of modularization is the MVC framework.
+
+* MVC frameworks separate the code into M, V, and C components that each has its own responsibilities.
+
+    - We'll be turning our projects to the following organization ie. Quoting Dojo:
+    <Folder breakdown>
+        Quoting Dojo
+            - Client
+                - Static Folder
+                - Views Folder
+                    - index.ejs
+                    - main.ejs
+            - node_modules
+            - server
+                - config
+                    - mongoose.js
+                    - routes.js
+                - controllers
+                    - quotes.js
+                -models
+                    -quote.js
+            - package.json
+            - server.js
+
+    * Notice that your package.json, your server.js, and your node_modules are all within your main project folder.
+        ->  Those files will never move.
+
+VIDEO~
+
+- 3 discrete places to modualize:
+        - Mean Server
+        - Mean Client
+        - JSON object http response and http over Ajax request
+
+    -> Database server that can be Modularized
+        - controllers folder holds all the logic
+        - models holds all the schema
+        - server.js puts the require function to call it to the folders
+        - config folder holds the connections
+            - create a mongoose_setup.js and put var mongoose require, and mongoose.connect('mongodb://localhost/'DBname'')
+            - add var fs = require('fs')
+            - add var path = require('path')
+            - go to path and get all the models folder
+                - var models_path = path.join (__dirname, '/../models/') etc...
+            - at server.js add require('./config/mongoose_setup.js')
+        - server.js do a require ('./config/routes.js')
+            - put all the get and post routes into the routes file in config.
+            - invoke it at require('./config/routes.js')(app)  <- invoked
+        - config:
+            - at routes.js
+                -> the controllers require, need to to go up a file and into another file...
+                    - thus: require('./../controllers/dojos.js')
+                    - add module.exports = function(app){ put all the app get and post inside the function}
+
+* Dependencies for Server-Side Modularization:
+    -> same as Mongoose.
+
+* Require & module.exports:
+    ->  First Rule when dealing with require and module.exports is to always look for the other one.
+        - (i.e. in order to understand what a require brings back you need to look at the file we're requiring and more
+        specifically the module.exports value inside of it)
+
+    ie.
+        * Let's say we have 2 files -- search.js and dictionary.js, our search.js file has a function that takes in an
+        input and returns whether it exists in our dictionary...
+        * Let's say that we are storing our dictionary in the dictionary.js file.
+
+            <dictionary.js>
+                var dictionary = ['apple', 'banana', 'peanut', 'butter', 'grapes', 'jelly'];
+
+            <search.js>
+                function search(word, dictionary) {
+                  for(w in dictionary) {
+                    if(dictionary[w] == word) {
+                      return true;
+                    }
+                  }
+                  return false;
+                }
+    * how can we expose var dictionary to our search.js? With require & module.exports of course!
+
+            <dictionary.js>
+                var dictionary = ['apple', 'banana', 'peanut', 'butter', 'grapes', 'jelly'];
+                module.exports = dictionary
+
+            <search.js>
+                var dictionary = require('./dictionary.js');
+                function search(word, dictionary) {
+                  for(w in dictionary) {
+                    if(dictionary[w] == word) {
+                      return true;
+                    }
+                  }
+                  return false;
+                }
+
+        * In search.js we require dictionary.js; here...
+            ->  require is a function that takes in a parameter.
+            -> The parameter is the location of the file we are requiring.
+        * Since we pass the dictionary variable into the module.exports, when we require it we can store the returned value
+         into another variable.
+
+    NOTE: Require and module.exports are the two most important tools when modularizing your code.

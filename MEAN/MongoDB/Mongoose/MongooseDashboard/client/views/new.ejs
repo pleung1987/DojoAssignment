@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <title>New</title>
+    </head>
+    <body>
+        <h1>Create New Cat</h1>
+        <!-- submit form will POST to / route -->
+        <div class="showError">
+            <% if(typeof(errors) != 'undefined' ) { %>
+                <% for (var x in errors) { %>
+                 <h5 style="color:red"><%= errors[x].message %></h5>
+                <% } %>
+            <% } %>
+        </div>
+        <form action="/cat" method="post">
+            <h5>Name: <input type="text" name="name"></h5>
+            <h5>Type: <input type="text" name="type"></h5>
+            <h5>Color: <input type="text" name="color"></h5>
+            <h5>Gender: <input type="text" name="gender"></h5>
+            <input type="submit" value="Add New Cat">
+        </form>
+    </body>
+</html>

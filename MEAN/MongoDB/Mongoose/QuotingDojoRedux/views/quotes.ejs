@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Quoting Dojo Quotes</title>
+    </head>
+    <body>
+        <h1>Here are the Awesome Quotes!</h1>
+            <div class="">
+                <% for (var i = 0; i < user.length; i++) { %>
+                <hr>
+                <h2> <%= user[i].name %> </h2>
+                <h4>Quote: <%= user[i].quote %>  &nbsp &nbsp &nbsp &nbsp <i><%= user[i].createdAt %></i>  </h4>
+                <% } %>
+            </div>
+    </body>
+</html>

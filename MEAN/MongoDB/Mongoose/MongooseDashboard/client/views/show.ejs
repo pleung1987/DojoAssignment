@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <title>Show</title>
+    </head>
+    <body>
+        <center>
+        <h1>Showing <%= cat.name %>'s details...</h1>
+            <h3>Name: <%= cat.name %></h3>
+            <h3>type:  <%= cat.type %></h3>
+            <h3>color:  <%= cat.color %></h3>
+            <h3>gender:  <%= cat.gender %></h3>
+            <a href="/">Home</a> &nbsp | &nbsp
+            <a href="/<%=cat._id %>/edit/">Edit</a>
+        </center>
+    </body>
+</html>

@@ -1,0 +1,201 @@
+“this” & “new”
+
+Previous Constructor Style~
+    function NinjaConstructor(name, prevOccupation) {
+      var ninja = {}; // <-- PAY ATTENTION TO THIS LINE!
+      ninja.name = name;
+      ninja.prevOccupation = prevOccupation;
+      ninja.introduce = function() {
+        console.log("Hi my name is " + ninja.name + ". I used to be a " + ninja.prevOccupation + " and now I'm a Ninja!");
+      }
+      return ninja; // <-- AND THIS LINE!
+    }
+
+NOTE: 'this' and 'new' work in concert to eliminate those two lines!
+
+Stepping through the process:
+1) We can replace ninja with this:
+
+    function NinjaConstructor(name, prevOccupation) {
+        var this = {}; // <-- PAY ATTENTION TO THIS LINE!
+        this.name = name;
+        this.prevOccupation = prevOccupation;
+        this.introduce = function() {
+            console.log("Hi my name is " + this.name + ". I used to be a " + this.prevOccupation + " and now I'm a Ninja!");
+        }
+        return this; // <-- AND THIS LINE!
+    }
+
+2) var this = {}; and return this; can and should be removed...
+
+    function NinjaConstructor(name, prevOccupation) {
+      this.name = name;
+      this.prevOccupation = prevOccupation;
+      this.introduce = function() {
+        console.log("Hi my name is " + this.name + ". I used to be a " + this.prevOccupation + " and now I'm a Ninja!");
+      }
+    }
+
+3) ...because the new keyword placed before invoking the function will do that for us!
+
+    function NinjaConstructor(name, prevOccupation) {
+        this.name = name;
+        this.prevOccupation = prevOccupation;
+        this.introduce = function() {
+            console.log("Hi my name is " + this.name + ". I used to be a " + this.prevOccupation + " and now I'm a Ninja!");
+        }
+    }
+    var dylan = 'new' NinjaConstructor('Dylan', 'Construction Worker'); //distinguishing new, please remove ''
+
+NOTE: 'new' keyword creates the object “this” inside of our function and then returns it.
+    -> Now we don’t need to put var this = {} or return this in our constructor!
+
+* One common pitfall using this:
+    To the above code, add the following:
+
+    console.log(this)
+                        //after var dylan ... add:
+    var nikki = NinjaConstructor('Nikki','Historian');
+
+* What's nikki?
+
+* The code below can prevent the problems caused by not using new on a constructor
+    (use it inside the constructor function):
+
+    if (!(this instanceof NinjaConstructor)) {
+                            // the constructor was called without "new".
+       return new NinjaConstructor(name, prevOccupation);
+     }
+
+Private Methods and Variables~
+* Private variables are data that's accessible within the object but not as a property of the object.
+* create private methods and variables using what we know about 'function scoping'!
+
+    function Ninja(name, age, prevOccupation) {
+                        // PRIVATE
+      var privateVar = "This is a private variable";
+      var privateMethod = function() {
+        console.log("this is a private method");
+      }
+                        // PUBLIC
+      this.name = name;
+      this.age = age;
+      this.prevOccupation = prevOccupation;
+      this.introduce = function() {
+        console.log("Hi my name is " + this.name + ". I used to be a " + this.prevOccupation + " and now I'm a Ninja!");
+        privateMethod();                // this works since it is a scope that can access privateMethod!
+        console.log(privateVar);        // this works too!
+      }
+    }
+
+Create a new ninja:
+    var Pariece = new Ninja("Pariece", 24, "TFA Teacher");
+                    // try this:
+    Pariece.privateMethod();
+                    // or this:
+    privateMethod();
+                    // or this:
+    Pariece.privateVar;
+                    // none of these work. Think about the scope of each.
+
+NOTE: the two variables at the beginning of the Ninja constructor function? These are private!
+    ->  Because of function scoping!
+    ->  limited to the context of the particular function (Ninja) that was invoked
+* how the var keyword floats until it hits the enclosing function (cage) and can’t be accessed outside?
+    -> That’s function scoping, and it's the way we create privates within our constructors.
+
+NOTE: Any function or value that's not linked to the this keyword is private!
+
+Why are privates useful?
+* Private variables can be useful to protect your objects from being altered in unintended ways.
+    ie.
+        -> objects built with a User constructor function have a social security number
+        -> protect Anything you  definitely don't want your program to alter.
+
+                function User(name, ssn){
+                  var social = ssn;
+                  this.name = name;
+                }
+                var mike = new User('Mike', 274164398);
+
+* can't change the data, but we can't view the data either.
+    -> We can create a public method that lets your program read the information without ever being
+     able to change it!
+     -> Accessing a variable instantiated in the User function even well after the User function
+     finished running is taking advantage of something called closure.
+
+            function User(name, ssn){
+                var social = ssn;
+                this.name = name;
+                        // Adds a so-called 'getter' function to allow reading private variables
+                this.getSSN = function(){
+                return social;
+                }
+            }
+            var mike = new User('Mike', 274164398);
+            console.log(mike.getSSN()); // 274164398
+
+NOTE: Anything var is private, anything using 'this' is public.
+    -> can access and read the private by using a 'getter' function.
+
+Scoping "this"~
+
+* What if you tried to access the this keyword inside of a private method?
+
+    function Ninja(name, age, prevOccupation) {
+                                            // PRIVATE
+        var privateVar = "This is a private variable";
+        var privateMethod = function() {
+        console.log(this); // What will print here?
+        }
+                                            // PUBLIC
+        this.name = name;
+        this.age = age;
+        this.prevOccupation = prevOccupation
+                                            // PUBLIC METHODS DECLARED HERE
+        this.introduce = function() {
+        console.log("Hi my name is " + this.name + ". I used to be a " + this.prevOccupation + " and now I'm a Ninja!");
+        privateMethod();
+        console.log(privateVar);
+        }
+    }
+    var Speros = new Ninja("Speros", 24, "MBA");
+    Speros.introduce();
+
+* Inside of the private method, this refers to the global Window or Node object.
+    -> depending on which environment you're running the script!
+NOTE: You never want to mess with the built-in globals because it can create very difficult-to-find bugs!
+
+* Different strategies we can use to make sure the 'this' we're talking about inside a private method
+    is the object instance:
+    ->  One way is to capture a snapshot of this and store it in a variable that you call
+        something else.
+            -> any method (public or private) is free to reference.
+    ie.
+        function Ninja(name, age, prevOccupation) {
+                                        // PRIVATE
+            var self = this;            // HERE WE HAVE DECLARED SELF to EQUAL THE NEW OBJECT WE CREATE WITH NEW
+            var privateVar = "This is a private variable";
+            var privateMethod = function() {
+            console.log("this is a private method for " + self.name);     // refer to name via self
+            console.log(self);          //right here to show that we are calling the private inside constructor
+            }
+                                    //PUBLIC
+            this.name = name;
+            this.age = age;
+            this.prevOccupation = prevOccupation
+            this.introduce = function() {
+            console.log("Hi my name is " + this.name + ". I used to be a " + this.prevOccupation + " and now I'm a Ninja!");
+            privateMethod();
+            console.log(privateVar);
+            }
+        }
+        var Speros = new Ninja("Speros", 24, "MBA");
+        Speros.introduce();
+
+* We declared a private variable self that hangs on to the Ninja object constructed
+    ->  when we call var Speros = new Ninja('Speros', 29, 'MBA')
+
+NOTE: It’s good training to console.log(this); and console.log(self) // if you've declared it;
+*  while we work through this section! Instead of self, it's not an uncommon practice
+    to use: var _this = this; or var my = this;

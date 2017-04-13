@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Basic Mongoose</title>
+    </head>
+    <body>
+        <form class="" action="/users" method="post">
+            <h3>Name: <input type="text" name="name" value="input name"></h3>
+            <h3>Age: <input type="text" name="age" value="input age"></h3>
+            <input type="submit" name="submit" value="Submit">
+        </form>
+        <br>
+        <h1>This is the Submitted information of User Name and Age</h1>
+            <div class="">
+                <% for (var i = 0; i < user.length; i++) { %>
+                <hr>
+                <h2> <%= user[i].name %> </h2>
+                <h4>location: <%= user[i].age %> </h4>
+                <% } %>
+            </div>
+    </body>
+</html>

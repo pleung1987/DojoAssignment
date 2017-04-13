@@ -1,0 +1,187 @@
+Table Views
+
+* Table Views are the UI View subclass behind some of the most popular apps on the App Store.
+    -> ! must master !
+* App just has  a table with just one column. ->  think of it as a list.
+
+Content ~
+* First, determine if our content is going to be dynamic or static.
+    -> Don't know how many cells we have to display until the application is running.
+    -> Use Dynamic Prototypes to generate our cells.
+* Since we don't know how many cells to generate before hand:
+    -> Create a [prototype cell] that will be used as a blueprint to create cells
+    -> If we know beforehand how many cells that we need, we can create [Static Cells].
+
+Two main types of TableViews:
+1) Plain type is for dynamic data
+    -> When we don't know before hand  how long data is going to be.
+    ie. Contacts App
+2) Grouped type is for fixed data
+    ie. Settings Apps
+
+Start by building a project using Dynamic Cells:
+*  Drag and drop all the objects that we need
+*  crucial that we are using the blue guides when we lay out our UI because it helps
+    XCode figure out (and us as well) who the nearest neighbor is
+* pin something to the top, leading, trailing, or the bottom, we are creating that constraint
+    between the selected View and its closest neighbor.
+* Make sure we are using the Table View.
+
+* Pin the Button to the top right corner. Also, create a horizontal constraint to the left with
+    its closest neighbor (UITextField).
+    * Create a constraint between the UITextField and the UIButton.
+        -> Their Center-Y should match
+        -> Pin the UITextField to the super view on the left.
+*  We will get a warning saying that we need to set Content Hugging Priority.
+    -> This priority determines how strongly should Auto Layout attempt to keep an object from expanding.
+*  Can raise Content Hugging Priority of the UIButton to be higher than the UITextField
+    -> in a situation where Auto Layout has to determine how to fill the entire horizontal place,
+     it will expand the text field to fill up the space and leave the button alone to be just as big as
+     the content that it holds.
+* Pin the Table View with a distance of 0 to its nearest neighbor (super view) while constraining to margins
+* Pin it to the top and bottom with Standard Value away from its closest neighbor.
+
+Step 2: Make the Connections
+* Make two Outlets and one Action:
+    1) Have an Outlet to our Text Field -> can read what the user inputs into that text field.
+    2) Need an Outlet to the UITableView -> that we assign our View Controller as its dataSource and delegate.
+    3) Need an Action so that we can run the code once a user presses the Insert button.
+
+Make sure you are selecting the right UI element:
+
+        @IBOutlet weak var taskTextField: UITextField!
+        @IBOutlet weak var tableView: UITableView!
+        @IBAction func beastButtonPressed(_ sender: UIButton) {
+        }
+
+After making the connections let's implement the UITableViewDataSource protocol:
+    1)  Declare that our View Controller conforms to the UITableViewDataSource protocol:
+    ie.
+            extension ViewController: UITableViewDataSource {
+            }
+
+    2) Then we need to set our UITableView's dataSource to self:
+        -> when the viewDidLoad message gets sent to our View Controller
+    ie.
+            override func viewDidLoad() {
+            super.viewDidLoad()
+            tableView.dataSource = self
+            }
+
+Wait what's a Protocol?
+* Notice that conforming to a Protocol seems very similar to inheriting from a subclass
+
+* one key difference: A Protocol defines the architecture of a particular type.
+    -> but not the implementation.
+    -> while a Parent Class defines both the architecture and a potential implementation that can
+        be extended.
+    -> by conforming to the UITableViewDataSource Protocol we are promising to implement a couple of
+    key methods to help provide the data for the TableView.
+
+NOTE: need to implement UITableViewDataSource protocol whenever the data in the table is dynamic.
+ie.
+    Our data might come from a database of records that change over time.
+
+* Two important methods in this protocol (delegate has to answer these two questions):
+    1) How many cells are we going to need?
+    2) How should I create each cell?
+* We need to implement 2 key methods to answer these two questions:
+
+1) How many cells are we going to need?
+
+    // MAKE SURE THESE ARE WITHIN UITableViewDataSource EXTENSION!
+    // How many cells are we going to need?
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // return an integer that indicates how many rows (cells) to draw
+    }
+
+2) What cell should I draw in each section?
+
+    // How should I create each cell?
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Get the UITableViewCell and create/populate it with data then return it
+    }
+
+Video:
+    extension ViewController: UITableViewDataSource {
+    }   // when the table view wants to know, what data should I display, it ask the viewController
+
+-> display number of rows:
+    extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UiTableView, numberofRowsInSection section: INT) -> Int{
+
+        }
+    }
+
+-> what should I put in this row (show the number of the row):
+    extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView UiTableView, cellForRowAt indexPath: UbdexOatg) -> UITableViewCell{
+
+        let cell = tableView.dequeueReusableCell( withIdentifier: "My Cell", for:indexPath)
+        return cell
+            // grab the cell, and return it cuz of -> UITableViewCell expected return
+        cell.textLabel?.text = "\(indexPath.row)"
+        }
+    }
+
+Create Table View, and choose prototype cell 1
+    -> identify it as "My Cell"
+* on: viewDidLoad(){
+    tableView.dataSource = self  /. ask View Controller the previous two questions.
+}
+    -> shows all the index cells we included. (if we return in extension ViewController, it shows the row numbers it returns)
+
+At ViewController:
+* set var task = ["something cool", "Something Very Cool", Something Extremely Cool"]
+
+-> instead of just returning 3 rows (hard coded)
+    -> return task.count in :
+    extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UiTableView, numberofRowsInSection section: INT) -> Int{
+        return task.count
+        }
+    }
+    -> change cell.textLabel?.text - task[indexPath.row]:
+        let cell = tableView.dequeueReusableCell( withIdentifier: "My Cell", for:indexPath)
+            return cell
+                // grab the cell, and return it cuz of -> UITableViewCell expected return
+            cell.textLabel?.text = task[indexPath.row]
+            }
+        }
+
+* In our implementation of the UITableViewDataSource protocol, we are dequeuing a prototype cell with the name of MyCell.
+    -> We haven't created this prototype cell yet
+* First we have to specify that our Table View is going to display dynamic data in prototype cells.
+
+~ Deleting from the Beast List ~
+* Let's add the functionality to delete items from the list when we tap on them:
+
+Implement the UITableViewDelegate protocol ~
+* UITableViewDelegate protocol allows the view controller to implement methods that can deal with User Interactions
+    with the Table View cells.
+
+* To listen to this tap event so that we can execute a chunk of code, we are going to
+    have to implement the UITableViewDelegate protocol:
+    1) Declare that our View Controller is going to conform to the UITableViewDelegate protocol...
+    ->
+        class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+        }
+    2) Tell the tableView that its delegate will be the View Controller (do this in viewDidLoad)
+    ->
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            tableView.dataSource = self
+            tableView.delegate = self
+        }
+    3) Now let's implement didSelectRowAtIndexPath method (part of the UITableViewDelegate protocol).
+        -> this code will be implemented as soon as one of the table view cells are tapped.
+        -> also be passed an indexPath argument to this message, which we can use to figure out which cell was clicked.
+        NOTE: Rows of the cell are similar to indexes in an array (they both start out with 0).
+    ->
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            print("Section: \(indexPath.section) and Row: \(indexPath.row)")
+            tasks.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
+    * After we have removed the particular Model object that was clicked from the array, we have to call reloadData
+        on our tableView to update our cells with the recent changes in our array.

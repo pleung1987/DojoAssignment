@@ -1,0 +1,124 @@
+Socket.io ~
+* Perhaps the most tantalizing thing about Node.js is the ability to use web sockets.
+    -> up to now... only communicate with web servers with only HTTP requests and responses:
+        1) the client makes a request
+        2) the server processes the request and prepares and sends a response
+
+* If we wanted to do something like building a chat room or a multiplayer game?
+    1 - You log on to the chatroom and have the ability to chat with other users.
+    2 - Every time you post a message, everyone in the chatroom gets your message.
+    3 - Every time a different user posts, his/her message appears on your screen.
+    4 - If a user disconnects, you get a message saying they've left.
+
+** ALL OF THESE STEPS MUST ALSO HAPPEN WITHOUT REFRESHING!
+    -> Try mapping out this process using HTTP requests, or even AJAX.
+    -> You'll find the standard request/response lifecycle just can't quite get it done.
+        ->  Because in steps 3 and 4...
+            - There is a need for the server to be able to instantiate an interaction with the client
+            - Which is backward compared to our standard model.
+    -> It also seems like isolated events just aren't going to cut it, refreshing the page each time something
+        happens just won't do.
+    ** Need a persistent connection.
+        -> Need our client and server to always be connected instead of just sending requests back and forth.
+            ->  Something like a phone call ( the ability for the client and the server to engage each other"
+                at the same time.)
+                ->  This is called non-blocking communication.
+
+Enter sockets ~
+* With Node.js, making this connection is super easy.
+    -> can set up a real-time connection between client and server that is always listening for events from
+    the other party.
+    -> A very important fact of this connection is that it is not performed using HTTP.
+    NOTE: Socket connections are event-driven.
+
+Events ~
+* Important: learn about the logic you'll need to build applications with sockets before you ever touch the code
+    -> The Code we write for sockets will happen only as the events we tie to the code are triggered.
+        -> Will be writing both 'client-side' and 'server-side' code.
+        -> Both sides will have the ability to emit events and listen from them.
+
+Listening ~
+* A socket event is very much like a jQuery event: a click, a hover, a form submission, etc..
+    -> In sockets, we write our own events - all events are user-defined!
+    -> This is how we are able to have our Node servers react just the way we want them because we tell
+        them exactly what events to fire on.
+    NOTE: Both the server and the client can listen for events (THIS IS SUPER IMPORTANT)
+
+Emitting ~
+* Emitting an event is the act of signaling to either a client or server(ie. "Hey! I am doing something!s")
+    -> If my server is waiting for a chatroom client to emit a "new_text" event, when the necessary actions
+    are completed by the client, the event "new_text" will be emitted by the client to the server.
+    -> If the client is listening for a "new_user_entered_room" event, when the server gets a new user added
+    to the chatroom, it will emit a "new_user_entered_room" event.
+
+* Clients emit to the server, not other clients!
+    ie. Let's go back to the chatroom example: if I type some text into my chat box and I enter it,
+        my text should appear on the screens of the other users (as well as mine).
+    -> What is the process that's happening here?
+        1) I enter text and submit it. This should trigger a client-side emit: "new_text
+        2) The server is listening for an event called "new_text", and it is triggered by the client.
+            -> This gets triggered.
+        3) When the server gets the "new_text" event, in turn, it is programmed to emit to all the
+        clients an event called "updated_chat" and pass the new chat text to the clients.
+        4) The clients are all listening for an event called "updated_chat" and when they get
+        that event, the new message appends to the chat box on their screen.
+    * Focus on the two main things:
+        - the user enters text, and all the chatrooms get updated.
+
+* The 4 Steps above are refer to as duplicity:
+    (For any one specific socket action, there will be two associated steps)
+    -> If we want to do ONE action, we have to have TWO steps:
+        1) A listener for the event is present
+        2) An emit of the listened-for event to trigger the action
+
+Different types of emits (server only)
+    * the client side only has one option: emit to the server.
+    * server has a little bit more choice.
+        ->  three different types of emits from the server side.
+
+1) Emit~
+    ->  The standard emit is used after an event is triggered on the server.
+        -> Which is after the client emits a particular event that the server is listening for.
+    -> will have the option to emit back to the particular client that triggered the event.
+        -> means: we are able to talk back directly to the client that triggered our event.
+    chat room example:
+        -> when a user first connects via the socket connection
+            -> could capture that event on the server and emit back to that particular user
+            and only that particular user!
+
+2) Broadcast ~
+    Chat Room example:
+    -> after we emit from the server to the particular client that just joined, we might
+        want to emit to all the other users that a new user joined the chat room.
+        -> by Cueing our second type of emit -> sending out of an event to all of the sockets
+        EXCEPT for the socket connection that triggered the event is called a broadcast.
+    * Node server has the ability to broadcast an event to everyone except the person who
+    triggered it!
+
+3) Full broadcast ~
+    * The full broadcast goes to every connected socket. Period
+        -> Any client who has a connection to the server via web sockets will get the event
+         emitted by a full broadcast.
+
+Socket.io Analogy ~
+* Ice cream analogy: Ice cream Factory -> IceCream Vendor
+    -> after the order is done, they hangs up the phone and the request response is done.
+    -> Factory acts as a server now...
+        - Factory picks up the connection with vendors and never hangs up.
+            -> Sockets creates the connections and is never disconnected
+                -> (unless someone purposely disconnects it)
+            -> Emit is sending the request information two way stream.
+            -> instead of emitting one on one, we can broadcast, and all that are connected to your system
+            will know your information posted.
+            -> Changed the way how the factory works instead of changing the workers to work
+            more efficient.
+                -> In Node, it is creating the factory and the workers inside.
+                -> Use Node, to create the server (can emit and broadcast to clients)
+                    -> can simotanously handly thousands of request every second
+    Concept of a Group:
+        - Have a Node JS Server
+        - Have a Client (JavaScript Code that the browser executes)
+            -> Node JS can broadcast to all the clients
+            -> reassure that the connection is persistent
+            -> use express to combine all the client to a group
+                -> use app.js.join()... can broadcast the people in that room/group.

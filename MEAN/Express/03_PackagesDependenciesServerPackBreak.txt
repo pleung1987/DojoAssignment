@@ -1,0 +1,116 @@
+package.json & bower.json ~
+* Package managers, such as NPM and Bower keep track of what modules you are using through JSON files.
+* these files contain information about the project overall.
+    -> as well as which modules have been downloaded for the project, specifically
+    -> If you choose to move a project from one machine to another e.g. into GitHub
+        -> these .json files minimize the need for copying all of the dependent modules that we download
+            from the package management site.
+            -> Keeping the overall size of the project that we pass much smaller.
+
+* three packages that we include in a lot of our files so far that aren’t pre-installed with node:
+    - express
+    - ejs
+    - body-parser
+
+    * Let’s use NPM’s package.json file:
+        - in terminal/command-prompt/bash type npm init -y
+        -> this command basically says: we are using this folder for an npm based project,
+            -> (npm init), the (-y) says fill the package.json with the base information.
+    -> If you open this file, the contents should look something like this:
+            {
+                "name": "TestProject",
+                "version": "1.0.0",
+                "description": "",
+                "main": "index.js",
+                "scripts": {
+                          "test": "echo \"Error: no test specified\" && exit 1"
+                          },
+                "keywords": [],
+                "author": "",
+                "license": "ISC"
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!<Needed to start Server>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    * Let’s use NPM’s package.json file: (done before)
+        - in terminal/command-prompt/bash type npm init -y (sets the folder as the npm target)
+    -> let’s install ejs and express, from command-line in the same folder:
+        - npm install express --save
+        - npm install ejs --save
+        - npm install body-parser --save
+            //THIS ARE ALL THE MODULES FROM NPM Packages NEEDED TO smoothly RUN THE SERVER OF EXPRESS
+        ** type: npm install       //refreshes the npm packages
+
+        - For Sockets: npm install socket.io --save
+        
+!!!!!!!!!!!!!!!!!!!!!!!!!!<Needed to start Server>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+* Now look at package.json:
+                {
+                    "name": "TestProject",
+                    "version": "1.0.0",
+                    "description": "",
+                    "main": "index.js",
+                    "scripts": {
+                    "test": "echo \"Error: no test specified\" && exit 1"
+                    },
+                    "keywords": [],
+                    "author": "",
+                    "license": "ISC",
+                    "dependencies": {
+                        "body-parser": "^1.15.0",
+                        "ejs": "^2.4.1",
+                        "express": "^4.13.4"
+                    }
+                }
+    * You should also have a new node_modules folder with those packages inside.
+
+* Want to use the same dependencies for another project?
+    -> You have some options, but our favorite way is: Create the new project, npm init -y in the new project
+        -> then copy the dependencies to that new package.json.
+    -> Then type: npm install. Install, when not passed any information, will look for a package.json file
+        -> then install all the listed dependencies in the package.json.
+
+* Bower works almost identically: however, you have to manually type in the initialization conditions.
+    -> rather than using -y. Just hitting the enter key at each question will initialize the bower.json
+    with the default conditions.
+
+~ Dependencies Intro ~
+* Goal: will need to utilize different Node.js modules contingent on what part of the MEAN stack you're
+    working on.
+    -> aka. These are your dependencies
+        ie. when you get to the Angular chapter, your node_modules folder and your package.json will shrink
+            down to just requiring express!
+NOTE:  most important thing to understand is that you won't just be adding to your dependencies
+        -> but instead, it will be an ever expanding and contracting list!
+
+Dependencies for Express & Socket.io ~
+    * Node.js
+        -> You will almost always be running a Node server or app of some kind.
+        -> This will act as your server and back-end JavaScript interpreter.
+    * Express
+        -> Express is a wonderful set of tools that help us write rules for incoming HTTP requests
+        -> Express is arguably the most useful Node module in your collection!
+    * node_modules:
+        1) EJS
+            -> Embedded Javascript is the templating engine we will use to render our views.
+            -> node server will take the .ejs file you wrote, parse through it
+                - resolve all of the Javascript in the file
+                - then send a 'rendered' HTML page to the client
+            -> This is an extra computation that the server will be required to do.
+                -> Will replace EJS with a full front-end framework like Angular.
+        2) Express
+            ->  Express is super useful for managing incoming requests!
+        3) body-parser
+            -> used for Parsing the body
+            -> We'll use this piece of middleware to parse information out of HTTP requests made to our server.
+            -> will be used to not only pull POST data out of requests,
+                -> but can also snag data encoded into URLs via GET requests,
+                -> later you'll use body-parser to pull raw JSON.
+        4) socket.io
+            - will use web sockets within your application to connect users
+
+Package.json
+    * Can use this package.json as a guide, but we strongly recommend using npm to bring in your Node modules
+        for every project you make.
+    * npm install express --save will make sure you get the newest version of express!

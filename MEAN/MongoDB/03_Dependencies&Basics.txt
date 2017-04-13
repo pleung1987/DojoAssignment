@@ -1,0 +1,89 @@
+Dependencies for MongoDB~
+* MongoDB
+-> All you need for this chapter is the 'mongod daemon' and the 'mongo terminal'.
+
+NOTE: To run our Mongo server we need to run mongod and LEAVE IT RUNNING while we use the database.
+
+-> The mongo terminal, which needs mongod running, is where you can access your database manually...
+    -> to create, update, and manage your data directly.
+    -> That's it for dependencies on Mongo!
+
+<Mac>
+    1) Start MongoDB Server: (open your terminal and enter the following): sudo mongod
+    2) Open Mongo Terminal: (open your terminal and enter the following): mongo
+
+* to use db:
+    -> use 'db name'
+
+* drop the database:
+    db.dropDatabase()
+    -> erases a database
+
+* make databse
+    -> the use creates a database if the database doesn't exist
+    use 'db_name'
+
+* collections -> are the TABLES of a MongoDB database
+    -> like SQL database(it is called tables), in MongoDB its is called collections:
+        * show collections (in terminal)
+            -> shows your tables you created
+    -> make collections users:
+        db.createCollection('collection_name')
+        -> creates a object {"ok": 1}
+    -> to drop a collection:
+        db.'collection_name'.drop()
+    -> inserting objects inside a collection:
+        db.'collection_name'.insert({})     //has to be a JSON Object when you insert, due to MongoDB runs on JSON objects( BSON (Binary JSON) instead)
+                                            and is a document oriented database, we are inserting documents in collections
+    -> db.users.find()
+        - looks into all the document.
+
+Operators ~
+* Since our queries are more method-based and not typed syntax like regular SQL, we need to pack more functionality
+     into the documents.
+    ->  Operators allow you to 'operate' on the data
+
+ie.
+    ->  Let's say I have the following documents in a collection called dojos.
+
+* If I wanted to get all the Dojos whose number of students is greater than 15, I would run the following:
+    ie.
+        db.dojos.find({number_of_students: {$gt: 15}})      //$gt looks for values that are greater
+
+* Here is a chart of the most frequently-used operators (take some time to play around with them):
+
+        name                	                     description
+        $gt (greater than)	                   Use to query selectively on numerical-valued fields
+        $gte (greater than or equal to)	       Use to query selectively on numerical-valued fields
+        $lt (less than)                    	   Use to query selectively on numerical-valued fields
+        $lte (less than or equal to)	       Use to query selectively on numerical-valued fields
+        $in (in array)	                       Use to find documents who have a particular value within an array.
+
+Operators with arrays ~
+    * if one of the key value pair has an array of data, how do we add into it?
+
+    -> We wanted to add an element in the interests array. The operator we would use is called the $push operator.
+
+    ->  To add the interest 'snowboarding' to the student document, we would run...
+
+        db.students.update({_id: ObjectId("5463d871a6a96d5ed6252f4d")}, {$push: {interests: 'snowboarding'}})
+
+    * The $push operator is a key of the update document, and its value is another document with a key of interests,
+        and a value of 'snowboarding'.
+
+* couple common array update operators to get familiar with:
+
+
+Name	                                           Description
+$push                         	Push to an array contained within a document.
+
+$pop	                       Removes either the first or last element from an array. EX:
+                                //db.COLLECTION.update({QUERY}, {$pop: {array_key: (1 or -1)}})
+                                Use 1 for the last item in the array, -1 for the first item.
+
+$addToSet                       It functions just like $push.  However, $addToSet only adds to
+                                the specified array if the value doesn't already exist (thereby preventing duplicate entries).
+
+$pull	                        Removes a specified value from an array, unlike $pop, which removes by location.
+                                 Ex:
+                                 db.COLLECTION.update({QUERY}, {$pull: {array_key: VALUE}})

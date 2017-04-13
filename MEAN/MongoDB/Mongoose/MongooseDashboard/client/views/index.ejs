@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="utf-8">
+        <title>Index Page</title>
+    </head>
+    <body>
+        <div class="container">
+            <center>
+                <h1>Home Page for Cat Lovers</h1>
+                <a href="/create">Create a New Cat Profile</a>
+                <!-- display all Cats -->
+                <% for (var i = 0; i < cats.length; i++) { %>
+                    <hr>
+                    <a href="/<%=cats[i]._id %>"><img src="Cat.jpg" alt="cat" class="catImg" ></a>
+                    <h3>Name: <a href="/<%=cats[i]._id %>"><%= cats[i].name %></a>  </h3>
+                    <a href="/<%=cats[i]._id %>/edit">Edit Cat~</a>
+                    <form action="/<%=cats[i]._id %>/delete/" method="post">
+                        <input type="submit" value="Delete">
+                    </form>
+                <% } %>
+                </center>
+        </div>
+    </body>
+</html>

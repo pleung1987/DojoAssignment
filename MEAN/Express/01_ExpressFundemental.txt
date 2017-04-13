@@ -1,0 +1,35 @@
+Express
+* Express is just a set of tools built on top of Node.js that allow us to more easily handle
+    requests and build a robust server.
+
+* Unlike other MVC frameworks (like Codeigniter, Django, and Rails), Express is quite flexible in the
+    way it can be configured.
+
+Fundamental knowledge for Express:
+* Client-Server Model
+* The Traditional HTTP request/response cycle
+* What is Node.js?
+    -> What does "require" do?
+    -> What is module.exports?
+    -> What are Node modules (middleware)?
+
+MVC ~
+* Same as Python ` Model`,`View`, `Controller`
+
+What is Express?
+* Express.js is a framework built in JavaScript using Node.js as the server component.
+    ->  Express isn't exclusively MVC.
+    -> It's actually more so just a set of tools that allows us to create a more robust Node Server.
+
+* After we created the server.js file and call onto the app to do its stuff...:
+    -> Install Express (Node Module) with npm
+        -> in terminal: npm install express
+        -> your file should contain a node_module folder after the installation.
+
+The node_modules folder ~
+* node_modules folder is the folder that "npm install" installs your dependencies in.
+* All Node applications have 3rd party modules that they may use.
+* To use these, you must run "npm install package_name" which will then install the module and all of
+    its dependencies inside of the node_modules folder.
+
+* After you done installing node_modules folder -> run the node server.js

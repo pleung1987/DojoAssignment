@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Survey Form</title>
+    </head>
+    <body>
+        <h1>Welcome to Survey Form!</h1>
+        <form class="form" action="/result" method="post">
+            <div class="name" id="name">
+                <label for="name">Your Name:</label>
+                <input type="text" name="name">
+            </div>
+            <div class="location" id="location">
+                <label for="location">Dojo Location:</label>
+                <select class="" name="location">
+                    <option value="Mountain view">Mountain View</option>
+                    <option value="Seatle Wa">Seattle, WA</option>
+                    <option value="Los Angles">Lost Angeles</option>
+                    <option value="San Jose">San Jose</option>
+                </select>
+            </div>
+            <div class="language">
+                <label for="language">Favourite Lanaguage:</label>
+                <select class="" name="language">
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="Python">Python</option>
+                    <option value="Swift">Swift</option>
+                    <option value="MEAN">MEAN</option>
+                    <option value="PHP">PHP</option>
+                </select>
+            </div>
+            <div class="comment">
+                <label for="comment">Comment (optional):</label>
+                <textarea name="comment" rows="8" cols="80"></textarea>
+            </div>
+            <input type="submit" name="" value="Submit">
+        </form>
+    </body>
+</html>
+
+<!--The <% %> tags are the delimiter for the embedded JavaScript.   -->
+
+<!--Using these tags allows us to run JavaScript code that can be embedded into the HTML document we are making.-->
+
+<!-- Notice the <% %> tags allow us to enter JavaScript code, and the <%=  %> tags actually print the JavaScript
+ code to the document. -->
+
+<!-- Use the tags with the equal sign (=) to actually print values, whereas you'll use the tags without the equals
+sign to invoke loops or use logic (anything that involves JavaScript but doesn't output code). -->

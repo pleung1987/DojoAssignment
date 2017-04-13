@@ -1,0 +1,47 @@
+Bind, Call, and Apply~
+* these three methods can take your code to the next level.
+
+* when we call new Constructor(); a few things happen:
+    - A new instance of Constructor is created that inherits from object.
+    - The new instance is linked with the Constructor.prototype.
+    - this is bound to the newly constructed instance.
+    - the object is returned.
+
+NOTE: Bind, Call, and Apply allow us to regulate this.
+
+1) Create an index.html file and include a main.js file.
+2) Bower install jQuery, and include jquery before the main.js file.
+3) Add a button to the HTML body.
+
+* Bind also takes an optional argument
+
+* Bind is a fantastic tool to control which 'this' we are using and pass information from object to object,
+  or use other objects methods and will help DRY out your code.
+
+** WARNING: BIND CREATES A NEW METHOD OR OVERWRITES A METHOD IN THE OBJECT **
+
+Call and Apply
+
+* First: think of Commas when you hear Call, and Arrays when you hear Apply.
+    -> Call and Apply allow us to inherit methods from other constructors:
+
+        function Ninja(name, age){
+          this.name = name;
+          this.age = age;
+          // there could be lots of other stuff here!
+        }
+        function BlackBelt(name,age){
+          //Commas!
+          Ninja.call(this,name,age);
+          this.belt = 'black';
+        }
+        function YellowBelt(name,age){
+          //ARRAY
+          Ninja.apply(this,[name,age]);
+          this.belt = 'yellow';
+        }
+        var yB = new YellowBelt('mike', 40);
+        var bB = new BlackBelt('charlie', 29);
+        console.log(bB.name);
+        console.log(yB.name);
+        Copy

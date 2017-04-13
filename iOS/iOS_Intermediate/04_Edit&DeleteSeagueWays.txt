@@ -1,0 +1,3 @@
+Bucket List crUD
+1) when we click on any of our items we should be segued to a page where we can edit the item
+2) swipe to delete.

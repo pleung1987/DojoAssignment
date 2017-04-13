@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <title>Edit</title>
+    </head>
+    <body>
+        <h1>Edit <%= cat.name %> </h1>
+        <form action="/<%= cat._id %>" method="post">
+            <h5>Name: <input type="text" name="name" value="<%= cat.name %>"></h5>
+            <h5>Type: <input type="text" name="type"  value="<%= cat.type %>"></h5>
+            <h5>Color: <input type="text" name="color"  value="<%= cat.color %>"></h5>
+            <h5>Gender: <input type="text" name="gender"  value="<%= cat.gender %>"></h5>
+            <input type="submit" name="" value="Edit Cat">
+        </form>
+        <a href="/">Home</a>
+    </body>
+</html>

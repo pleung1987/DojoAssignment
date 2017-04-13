@@ -1,0 +1,72 @@
+Arrays and Strings
+
+* Array questions and string questions are oftem interchangable.
+
+Hash Tables ~
+
+*  hash table is a data structure that maps keys to values for high efficient lookup.
+
+Simple Implementation: use an array of linked lists and a hash code function.
+-> to insert a key (might be string or any other data type) and value we do the following:
+
+    1) Compute the Key's hash code, usualy be an int or long.
+        - two different keys can have the same hash code as they maybe infinite number of keys or finite number of ints.
+    2) Hash code to an index in the array
+        - this could be something like hash(key)% array_length
+    3) at this index, there is a linked list of keys and values.
+        - Store the key and value in this index
+        - must use linked list because of collisions
+            -> could have two different keys with the same hash code
+            -> or two different hash codes that map to the same index
+
+ArrayList and Resizable Arrays
+* in some languages, array(some called list) are automatically resizable.
+* the array or list will grow as you append items.
+* other languages like Java, arrays are fixed length.
+
+-> You need an array-like data structure that offers dynamic resizing, you would usually use an ArrayList.
+-> An ArrayList is an array that resized itself as needed while provide 0(1)- constant access.
+-> A typical implmentation is that when the array is full, the array doubles in size.
+    - Each Doubling takes 0(n) time, but happens so rarely that the amortized insertion time is still 0(1)
+
+Formula:
+    ArrayList<String> merge(String[] words, String[] more){
+        ArrayList<String> sentence = new ArrayList<String>();
+        for (String w: words) sentence.add(w);
+        for (String w: more) sentence.add(w);
+        return sentence;
+    }
+
+* Dynamically resizable arrays/list
+
+StringBuilder~
+
+* Imagine you were concatenating a list of strings... What will the running time of this code be?
+    -> For simplicity: assume that the strings are all the same length(call this x) and that there are n strings.
+
+String joinWords(String[] words){
+    String sentence = ""
+    for (Sting w: words){
+        sentence = sentence + w
+    }
+    return sentence;
+}
+
+* On each concatenation, a new copy of the string is created, and the two strings are copied over... character by character.
+    -> first iteration requires copying 2x characters.
+    -> third iteration requires 3x, and so on.
+    -> total time therefore is 0(x + 2x + ... + nx)
+        -> reduces to 0(xn^2)
+
+        0(xn^2) = n(n+1)/2 or 1 + 2 + 3 +... + n
+
+* StringBuilder can help you avoid this problem by Simply bcreating a reziable array of all strings.
+    -> copying them back to a string only when necessary.
+
+    String joinWords(String[] words){
+        StringBuilder sentence = new StringBuilder();
+        for(String w: words){
+            sentence.append(w);
+        }
+        return sentence.toString();
+    }

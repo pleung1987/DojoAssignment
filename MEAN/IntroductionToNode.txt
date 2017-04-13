@@ -1,0 +1,99 @@
+Introduction to Node.js
+
+- Node.js is a powerful and flexible JavaScript interpreter, capable of letting us run JavaScript
+code free from our browser, using our computer's native hardware.
+
+How~
+-  Node.js uses Chrome's V8 engine to efficiently interpret JavaScript.
+    -  V8, however, is written in C++ and JS
+- By using this engine, we can skip a bunch of steps in the runtime processes. That means speed
+
+Sockets
+- Node.js has its ability to use WebSockets, a technology that allows a continuous, non-blocking
+connection between the client and server.
+    -> non-blocking connections allow both parties to send information at the same time.
+        -> ie. like a phone call (both sides can listen and talk at the same time)
+-  With Node.js, we can easily set up these socket connections and have a persistent connection
+from each client to a server.
+    ->  Means we can actually force information onto the browser without the need of an HTTP request!
+
+Use cases
+- Sockets makes Node.js a great tool for making real-time applications.
+- These are applications that exchange information as the users input it, with no lag
+    ->  Things like chat rooms and multiplayer games are great examples of Node’s strengths.
+- A single node server can hold 200,000 connections
+    (Apache can only hold 20,000 connections)
+
+Drawbacks
+- Heavy computation is a killer in a Node server, primarily due to poor memory management.
+- if logic is required before entering the event loop, Node’s performance will decline dramatically.
+- Node is often used with noSQL databases such as MongoDB.
+- Mongo also uses a V8 engine core, but it doesn’t have the same event-loop
+    -  (it’s just a worker), so large numbers of inefficient queries can back up that worker.
+- Node also has a very 'batteries-not-included' unopinionated style, favoring configuration over convention.
+- out of the box, we won't be able to do all the amazing things a full featured framework like
+    Ruby on Rails can do.
+    - We'll need to bring in middleware and do our own configuration to really get the most out of Node!
+
+GOOD THING IS:
+    -> You should use Node for what it’s good for: making servers capable of handling lots of connections
+        and moving data quickly!
+
+Installation
+- You can enter a JavaScript console without needing to open a browser.
+- You can run JavaScript files in your terminal. That means you don’t have to write JavaScript in HTML <script> tags,
+ which makes the development experience a little cleaner.
+
+Node: an interpreter similar to what’s available in your browser’s developer tools.
+-> An interpreter walks through your source code, parsing it line by line.
+-> source code is then translated into an intermediate representation, which is just a fancy way to say the
+ computer is making it into something it can read more efficiently.
+-> This interpreted machine code is then run line by line.
+** Node.js is equipped to do this process without the need of a browser.
+
+* Node will parse for methods that your browser will not, particularly those related to HTTP
+    requests and responses.
+
+NPM
+-> Npm is a package manager and the default tool that comes with Node.js to manage your project
+ dependencies.
+ What are dependencies?
+    ->JavaScript files and libraries that give us tools to make applications with, such as a ready-made
+    function that spins up a server with ease!
+
+- npm is just a tool to fetch and prepare other chunks of code.
+    -> we call those chunks "modules"
+    -> modules" are very similar to Ruby gems and Python libraries, often generalized as "middleware".
+
+- npm can install and use modules from either a local destination on your computer or it can get them from
+    a remote location called the npm registry,
+
+Packages:
+- To demo installing middleware with npm, we'll use a super useful package called nodemon.
+- Using nodemon instead of the node command in your terminal will automatically re-run your JavaScript file
+or project whenever you save something.
+    -> no more manual server restarts!
+
+Install by typing: $ npm install -g nodemon (may require sudo)
+* -g is the option we used is called the ‘global’ option.
+- Most of the node modules we will install will NOT be global;
+    -> if you're not absolutely sure if you want it in every Node project you create, don't add it globally!
+
+NOTE: With node and nodemon we have the power to run JavaScript without having to include it
+    in <script> tags of HTML.
+
+bower~
+- used for front-end dependecies, use another package manaer called bower.
+    -> ave us from having to hunt down the perfect CDN for important libraries like jQuery,
+    Bootstrap, and Angular.
+
+- Make a directory, navigate to it via terminal and run the following commands:
+$ bower install jquery
+$ npm install jquery
+
+* Both of these will get you a copy of jQuery – one in a folder called node_modules and
+    the other living in bower_components.
+    - we’re going to treat as best-practice separating your front-end components like jQuery from
+    server-side modules like Express
+
+-> Further down the road, you may want to explore alternatives like browserify or webpack.

@@ -1,0 +1,61 @@
+Core Data CRUD
+
+Managed Objects~
+
+* In this module we frequently refer to context, but keep in mind that we are referring to a variable that
+ has been previously set, pointing the default viewContext provided in our AppDelegate:
+
+ie.
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+Saving ~
+* Whether we are creating, updating, or deleting records, in order for those changes to persist we must call
+save on the managed object context, flushing the changes to the database:
+ie.
+    do{
+        try context.save()
+    catch{
+        print(error)
+    }
+
+NOTE: since viewContext.save() is a throwing function we need to place it inside of a do/try/catch block
+
+Create ~
+* Whereas in the past we had to call a creation function from the NSEntityDescription class, passing several pieces
+ of data, the generous engineers at Apple have provided us with the same functionality wrapped into the init function
+ for the ManagedObject class.
+
+         let newThing = Thing(context: context)
+         newThing.property = "value"
+
+* Once we have initialized a new managedObject, we set its values and save it to the context. Done!
+
+Fetch ~
+* Fetch requests to get information from our database
+* NSManagedObject class for our entity has a built in method fetchRequest()
+    -> we use to generate a new request (note the type of the request).
+* When executed against a managed object context, the fetch returns a nice array of managedObjects.
+
+ie.
+        let thingRequest:NSFetchRequest<Thing> = Thing.fetchRequest()
+        do {
+            let fetchedThings = try context.fetch(thingRequest)
+         }
+            catch { print(error)
+        }
+
+Update ~
+* All we have to do is change the values of a managedObject and then save the context!
+ie.
+        someManagedObject.property = "newValue"
+        do
+        {
+            try context.save()
+        } catch {
+            print(error)
+        }
+
+Delete~
+* To delete something from the database, we call upon the delete function of the managed object context:
+
+    context.delete(someManagedObject)

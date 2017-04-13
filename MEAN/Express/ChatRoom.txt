@@ -1,0 +1,83 @@
+ChatRoom Demo
+
+FrameWork to build this~
+
+1) Have the NodeJS server render views/index.ejs that has the html content for the client
+whenever the client requests "/"
+
+        routings/index.js
+
+        app.get("/", function(req,res){
+            res.render('index', {pass code we wants})
+        });
+
+2) In the client codes:
+    - have JS code that ask the user for their name.
+    - store this user input in a variable called name.
+
+    <script>
+        var name = prompt('What is your name?')
+    </script>
+
+
+3) Have the client send information to server (EMIT)
+    - each EMIT has an event name
+        -> Got_a_new_user : pass name to the server
+
+        <script>
+            var name = prompt('What is your name?')
+            io = io.connect();
+            io.emit('got_a_new_user', {name: name}); //emit the event and pass data in the event
+
+        </script>
+
+
+4) Have the server Listen for an event called 'got_a_new_user' and when that events gets triggered:
+    -> have the server BroadCast an Event called "new_user" to the client
+        -> pass data with the name of the new user attached to this event.
+
+        app.io.route('got_a_new_user', function(req){       //execute function when got the event got_a_new_user
+            req.data.name
+            app.io.broadcast('new_user',{new_user_name: req.data.name})            //Broadcast event and attach a name
+        })
+
+        b) We store the name/session_id of the new user in a variable/array/has called users.
+
+            var users = {};
+            //store in this users -> the session ID
+
+        c) to the person who sent this request, we EMIT an event called 'existing_users'
+            -> with all the users data
+
+            app.io.route('got_a_new_user', function(req){       //execute function when got the event got_a_new_user
+                req.data.name
+                app.io.broadcast('new_user',{new_user_name: req.data.name})            //Broadcast event and attach a name
+
+                //add the new users into user's array
+                req.io.emit('existing_users', users: );
+            })
+
+
+5) Have the client Listen for an event called "new_user"
+    -> when this event gets triggered have the client render this information in JQuery
+        somewhere in the html.
+
+        <script>
+            var name = prompt('What is your name?')
+            io = io.connect();
+            io.emit('got_a_new_user', {name: name}); //emit the event and pass data in the event
+
+            io.on('new_user', function(data){
+                //render this info in the HTML '{new_user_name: req.data.name}' <-this data.
+            })
+        </script>
+
+
+6) Have the server listen for an event called 'disconnect'
+    -> when this occurs:
+        -> Broadcast to all the clients an event 'disconnect_user'
+            -> with some data (name of the disconnected user with session ID(id for later))
+
+7) Have the client listen for an event 'disconnec_user'
+    -> When trigged:
+        -> have the client remove the proper jQuery box.

@@ -1,0 +1,85 @@
+Look into Quoting Dojo for Modualarization example.
+
+1) -> first Modularize your Routes, linking all the logics with the routes
+
+2) -> modularize by spinning out the actual logic for each route into another file!
+    -> put all logic in the controller
+
+3) -> Modularize your Model
+@ Server/config/mongoose.js :
+
+                        // require mongoose
+            var mongoose = require('mongoose');
+                        // require the fs module for loading model files
+            var fs = require('fs');
+                        // require path for getting the models path
+            var path = require('path');
+                        // connect to mongoose!
+            mongoose.connect('mongodb://localhost/Modular1');
+                        // create a variable that points to the path where all of the models live
+            var models_path = path.join(__dirname, './../models');
+                        // read all of the files in the models_path and require (run) each of the javascript files
+            fs.readdirSync(models_path).forEach(function(file) {
+              if(file.indexOf('.js') >= 0) {
+                        // require the file (this runs the model file which registers the schema)
+                require(models_path + '/' + file);
+              }
+            });
+
+- At the server/models/'singlar_name.js' :
+
+                            // require mongoose
+                var mongoose = require('mongoose');
+                            // create the schema
+                var QuoteSchema = new mongoose.Schema({
+                name: String,
+                quote: String
+                })
+                            // register the schema as a model
+                var Quote = mongoose.model('Quote', QuoteSchema);
+
+
+* Don't forget to take all of the database stuff out of the server.js file. Now think about what we have to require in the server.js file
+to load both of these files. The mongoose config file already loads the quote.js model so all we have to require is our mongoose
+config file!
+
+                server.js
+                                    // require express and path
+                var express = require("express");
+                var path = require("path");
+                                    // create the express app
+                var app = express();
+                                    // require bodyParser since we need to handle post data for adding a user
+                var bodyParser = require("body-parser");
+                app.use(bodyParser.urlencoded({extended: true}));
+                                    // static content
+                app.use(express.static(path.join(__dirname, "./static")));
+                                    // setting up ejs and our views folder
+                app.set('views', path.join(__dirname, './views'));
+                app.set('view engine', 'ejs');
+                                    // require the mongoose configuration file which does the rest for us
+    *****       require('./server/config/mongoose.js');             **********
+                                    // store the function in a variable
+                var routes_setter = require('./server/config/routes.js');
+                                    // invoke the function stored in routes_setter and pass it the "app" variable
+                routes_setter(app)
+                                    // tell the express app to listen on port 8000
+                app.listen(8000, function() {
+                  console.log("listening on port 8000");
+                })
+
+
+    * Congratulations you just finished modularizing the server-side!
+
+
+* Now, we have to change our server.js file to reflect this.
+    -> You'll have to change two lines in server.js the first is the static file server line:
+
+                                    // static content
+            app.use(express.static(path.join(__dirname, './client/static')));
+
+* This is the line that tells express where our views directory is:
+
+            app.set('views', path.join(__dirname, './client/views'));
+
+NOTE: Congratulations, you have now modularized your project!

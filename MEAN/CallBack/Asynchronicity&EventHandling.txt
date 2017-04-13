@@ -1,0 +1,52 @@
+Asynchronicity
+
+JavaScript runs synchronously:
+    - After the interpreter hoists variables and functions to the top of their scope, JavaScript runs
+    code-block by code-block. (which as a general rule can be thought of as line-by-line)
+    - This is how that event-loop can set up a queue of events in Node.
+    - It also allows us to run code that might take a bit of time to run,
+        without completely stalling our program  (AJAX calls to APIs), DB queries etc...
+
+-> 'Promises' and 'Callbacks' basically allow us to make sure that we have our data before moving on.
+* A promise says to the interpreter:
+        -> “I promise to give you data back, so you can move on with your code.”
+        -> This is basically what we had done with our callback above.
+        ->  A number of libraries exist to make promises in ES5 (q is a popular one)
+            -> in ES6 they added promises to the core language
+* A promise listens for resolve, and reject, and ends the promise after one of these methods runs.
+
+Event Handling
+* Callbacks can be used to handle events.
+-> Javascript uses an Event-Driven programming style?
+    -> means that we listen for events, trigger events, and keep track of a list of instructions to run
+    when the event is triggered.
+    -> we take care of listening for events and passing the list of instructions to dictate what to do
+     once the event is triggered.
+
+ie.
+    <html file>
+        <html>
+          <body>
+            <button id="someButton">This is Some Button</button>
+            <script>
+                            // some js code here to add an event listener to the button
+            </script>
+          </body>
+        </html>
+
+* We want to make it so that when the user clicks the button, the page alerts “you clicked a button!”
+
+        <JS file>
+        // Link our variable "button" to a DOM element
+        var button = document.getElementById("someButton")
+        // add a DOM eventListener to that variable.
+        button.addEventListener("click", whatToDoOnClick);
+        // here we define the whatToDoOnClick function
+        function whatToDoOnClick() {
+          alert("You Did it!")
+        }
+
+* Things we did:
+    -> We stored the button element in the button variable so that we could run methods on it.
+    -> We used the “addEventListener” method to add a listener for the “click” event that will run the
+    “whatToDoOnClick” function once triggered.
