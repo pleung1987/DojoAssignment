@@ -1,0 +1,30 @@
+Friends API~
+* We are going to work in 3 files that we previously created: server.js, routes.js, and mongoose.js;
+
+* We create 2 more folders if we don’t already have them:
+    - models
+        -> In models, we are going to put a friend.js file.
+    - controllers
+        -> In controllers, we are going to put a friends.js file.
+
+* We provide a quick update to server.js, full code for mongoose.js (minus the DB name which you will have to provide)
+    ->  And most of the code for the routes.js (minus a require of the controllers/friends.js file).
+    -> We provide a template for the controllers/friends.js file but the methods need to be fleshed out.
+    -> We provide a very barebone models/friend.js file, which will also need to be filled out.
+
+Let’s start with server.js:
+    -> We’ve already required routes.js and routes.js exports an empty function with a parameter app.
+    -  Let’s pass our server app into that function as an argument:
+
+
+
+Tips to Start a project:
+    1) Install Dependencies
+    2) setup server.js and server folder
+    3) Make a client folder
+    4) Make a static folder
+        -> boiler plate: see if the index.html shows up (seeing hello world)
+    5) Set up database
+        -> put sample data into mongoose
+        -> console.log a fetching
+    6) Set up routing for partials

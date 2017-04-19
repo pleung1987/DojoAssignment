@@ -1,0 +1,28 @@
+<div ng-controller="PlayersController">
+    <fieldset><legend>Players</legend>
+    <!-- creates a border with title within the boarder line -->
+    <center>
+    <br>
+        <form ng-submit= "addplayer()" method="post">
+            <label for="name">Player Name: </label>
+            <input type="text" name="name" ng-model="player.name" required>
+            <button type="submit">Create Player</button>
+        </form>
+    <br>
+    <div class="playersList">
+        <table border ="1", width= 300px>
+            <thead>
+                <th> Name^ &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</th>
+                <th>Actions </th>
+            </thead>
+            <tbody ng-repeat= "player in players track by $index">
+                <tr>
+                    <td> {{player.name}} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</td>
+                    <td><button ng-click="deletePlayer(player)"> Remove Player</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </center>
+    </fieldset>
+</div>

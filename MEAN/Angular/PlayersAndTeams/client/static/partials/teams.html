@@ -1,0 +1,28 @@
+<div ng-controller="TeamsController">
+    <fieldset><legend>Teams</legend>
+    <!-- creates a border with title within the boarder line -->
+    <center>
+        <br>
+            <form ng-submit= "addteam()" method="post">
+                <label for="name">Team Name: </label>
+                <input type="text" name="name" ng-model="team.name" required>
+                <button type="submit">Create Team</button>
+            </form>
+        <br>
+        <div class="teamList">
+            <table border ="1", width= 300px>
+                <thead>
+                    <th> Team ^ &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</th>
+                    <th>Actions </th>
+                </thead>
+                <tbody ng-repeat= "team in teams track by $index">
+                    <tr>
+                        <td> {{team.name}} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</td>
+                        <td><button ng-click="deleteTeam(team)"> Remove Team</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </center>
+    </fieldset>
+</div>

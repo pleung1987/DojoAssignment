@@ -1,0 +1,109 @@
+$routeParams~
+*  In a normal stack, we might pass a parameter through the URL to our controller, and search our DB for the team with that ID.
+    ->  those same concepts apply to our front-end MVC Angular.
+
+* To create a link with an ID attached, you'd do the exact same thing you have done in other stacks:
+ie.(using teams and Players)
+
+<partials/teams.html>
+
+    <tr ng-repeat = 'team in TC.teams track by $index'>
+         <td><a href="#/{{team.name}}" ng-bind = 'team.name'></a></td>
+         <td><button ng-click='TC.removeTeam($index)'>Remove</button></td>
+    </tr>
+
+    * We added the <a> tag with a link to the name of the team in the past.
+    * If we were to click the Team name that is currently displayed we would just get redirected back to our default view.
+        -> That's not exactly what we want...
+    * next step is, now the name is attached to the URL, to add a route that will listen to that parameter that comes across...
+
+
+ie.
+    <app.js>
+
+        myApp.config(function ($routeProvider) {
+                                // continue of config
+             .when('/:teamname',{
+              templateUrl: 'partials/team.html'
+             })
+            });
+
+* Finally, we have a route set up to listen for a param that comes across the URL.
+    -> When that's the case, we want to load a new partial.
+    -> We have a parameter able to be passed through the URL.
+    -> We have a route that loads up a new partial
+
+* The last thing we need is to extract the parameter from the route and actually load up that one object:
+
+    <controller.js>
+
+        myApp.controller('teamController', function(teamsFactory, $routeParams){
+            console.log($routeParams)
+        })
+
+    * Here we are injecting the $routeParams to a new controller.
+    * Controller now has access to the $routeParams object. Console.log of $routeParams showcase an object that has the
+    team name as an attribute of it.
+
+ngMessages~
+
+Error handling:
+    * In most websites when filling out a form you may run into a validation error at some point...
+    *  Maybe we have a length requirement and need to let the user know that they have not met that requirement before saving the information.
+
+How to Handle these error in Angular:
+    * Remember Angular has no idea about any validations we might have in our Mongoose blueprint!
+    * Angular is a standalone application!
+    * Angular has created a custom module we can use called ngMessages! (for front end validation)
+
+    * ngMessages works by supplying each input tag with a few validation options.
+    * Lets try: So we have an input field and let's add in some validation that we have to fill in that input and the min length is 4 characters...
+
+Set Up:
+
+    * Include the module on our index page. Then inject that new module into our Angular App:
+ie.
+
+        /index.html
+
+        <script src="https://ajax.googleapis.com/aj..."></script>
+        <script src="https://ajax.googleapis.com/aj..."></script>
+        <script src="https://ajax.googleapis.com/aj..."></script>
+        <script type = 'text/javascript'>
+            var myApp = angular.module('myApp', ['ngRoute', 'ngMessages']);
+            # other code here-rainbow">!
+        </script>
+
+Use:
+    * We now have access to our pages to some new Angular Directives!
+    *  One important thing we have to do is wrap our inputs in forms now for later use of displaying our error messages as well
+     as add a name tag to our inputs.
+
+</partials/players.html>
+
+     <div ng-controller='playersController as PC'>
+      <h3>New Player</h3>
+      <form name='playerForm'>
+          Name: <input type='text' name='name' ng-model='PC.newPlayer.name' minlength='4' required>
+          <button ng-click='PC.createPlayer()'>Add Player</button>
+      </form>
+     </div>
+
+Displaying:
+    * Let's now display our errors...
+ie.
+
+</partials/players.html>
+
+    <div ng-controller='playersController as PC'>
+     <form name='playerForm'>
+         Name: <input name='name' type='text'  ng-model='PC.newPlayer.name' minlength='4' required >
+         <button ng-click='PC.createPlayer()'>Add Player</button>
+     </form>
+     <div ng-messages="playerForm.name.$error">
+         <p ng-message="minlength">The player name is too short.</p>
+         <p ng-message="required">The player name is required.</p>
+     </div>
+    </div>
+
+* ng-message on tags will display the area that you want to customize your front-end validation.

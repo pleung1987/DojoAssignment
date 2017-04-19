@@ -1,0 +1,22 @@
+<center>
+    <h1>Friend List</h1>
+    <div class="friendsList">
+        <table border ="1", width= 600px>
+            <thead>
+                <th> Name </th>
+                <th> Show </th>
+                <th> Update </th>
+                <th> Delete </th>
+            </thead>
+            <tbody ng-repeat= "friend in friends track by $index">
+                <tr>
+                    <td style="text-align:center"> {{friend.first_name}} {{friend.last_name}}</td>
+                    <td style="text-align:center"> <a href="#!/show/{{friend._id}}">Show</a></td>
+                    <td style="text-align:center"> <a href="#!/edit/{{friend._id}}">Edit</a></td>
+                    <td style="text-align:center"> <button ng-click="delete(friend)">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</center>
+<h3 style="text-align: right; margin-right: 180px"><a href="#!/new">Create Friends</a></h3>

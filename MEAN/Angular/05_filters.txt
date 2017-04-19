@@ -1,0 +1,14 @@
+Filters~
+
+* Angular was designed to be able to handle data
+    ->  filtering data is important, so angular should have that
+    ->  Angular filters are quite sophisticated and can add quite a bit of functionality to your apps
+    ->  There are several filters, but the one most commonly used is the filter filter.
+
+In HTML Template Binding:
+    {{ filter_expression | filter : expression : comparator : anyPropertyKey}}
+
+In JavaScript
+    $filter('filter')(array, expression, comparator, anyPropertyKey)
+
+* Work on Filters Assignment

@@ -1,0 +1,232 @@
+<Modules>
+
+What is a module?
+
+* by linking Angular to our project:
+    - ng-app=''
+        -> That is how we use the default angular module in our application.
+        -> Setting the ng-app directive to an empty string indicates we are going to use all of the default functionalities.
+
+    - Angular module is like the configuration object for our front-end framework.
+        -> To use Angular to its fullest capacity, we must make our own module and add functionality to it.
+
+        ie. (make our own Angular module:)
+
+            <html ng-app='myApp'>
+                <head>
+                    <script src='bower_components/angular/angular.js'/></script>
+                    <script type='text/javascript'>
+                      var myAppModule = angular.module('myApp', []);       // first parameter we pass to the angular.module() method is its name
+                                                                        // The second parameter we pass is an array containing any additional
+                                                                            configuration objects.
+                </script>
+                </head>
+                <body>
+                    <div ng-init="students=[{name: 'Mike', age: 34}, {name: 'John', age: 24}, {name: 'Trey', age: 24}, {name: 'India', age: 35}]">
+                        <ul>
+                            <li ng-repeat="student in students">{{ student.name }},{{ student.age }}</li>
+                        </ul>
+                    </div>
+                </body>
+            </html>
+
+    * Using the angular module method (angular.module()), we are able to instantiate our own module.
+        -> The module we declare is the captain of the ship.
+            ->  first parameter we pass to the angular.module() method is its name
+            -> The second parameter we pass is an array containing any additional configuration objects.
+    * The Angular module is the entry point for anything we do with Angular;
+        -> if we want our Angular code to be able to have a certain functionality (routing, custom tools, etc)
+            we have to let our Angular module know that it will be given these capabilities.
+                -> This is done through dependency injection.
+                -> Dependency injection is a top-down inheritance pattern.
+                ->  By passing all necessary resources to the object of highest importance upon its creation,
+                 there is no confusion when we need to know what the object is capable of or what abilities its
+                 children may possess.
+                    -> Think of the objects being passed (injected) as tool boxes
+                    -> And where they are getting passed TO (injected to) as the foreman
+                        ->  giving all of the toolboxes to the foreman at the beginning, the foreman (and therefore us, the user)
+                         knows exactly what can and cannot be done with each toolbox!
+
+<Controllers>
+
+Angular Controllers ~
+    * If the module is the head-honcho of Angular, then the controllers are the second-in-commands.
+    * Angular controllers are responsible for logic pertaining to the flow of data in a particular portion of our view page.
+    * In general, each 1 partial or section of HTML has a controller attached to it, so we can bind values from
+     JavaScript to that part of HTML.
+
+    *  the $scope variable is what allows the controller to pass data to the view it controls:
+
+                NOTE: The $scope object is the glue between the controller and the view.
+
+Controller Syntax - (Using $scope) ~
+    * Controllers on the most basic level are just plain old JavaScript functions.
+
+    ie.
+        <html ng-app='myApp'>
+            <head>
+            <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js'></script>
+            <script type='text/javascript'>
+              var myAppModule = angular.module('myApp', []);
+              // the .controller() method adds a controller to the module
+              myAppModule.controller('studentsController', function ($scope){
+                  $scope.students = [
+                    {name: 'Mike', age: 34},
+                    {name: 'John', age: 24},
+                    {name: 'Trey', age: 24},
+                    {name: 'India', age: 35}
+                  ];
+              });
+            </script>
+            </head>
+            <body>
+            <div ng-controller='studentsController'>
+            <ul>
+                <li ng-repeat="student in students">{{ student.name }},{{ student.age }}</li>
+            </ul>
+            </div>
+            </body>
+        </html>
+
+    * What we have done is move our students' data into our controller and made it a property of $scope.
+    * Notice we also added the ng-controller directive to the containing div as well.
+    * Using the ng-controller directive gives all of the HTML encapsulated by the parent div access to the specified
+    controller and its associated scope.
+
+    -> We associate the controller with the module by using the .controller method on our module.
+        -> This will be very useful to us as our app continues to grow in complexity.
+        -> We pass $scope into the function we use to make the controller ( another example of  dependency injection! )
+
+Scope methods and data binding (again)~
+    * the data flows from the $scope to the view...
+        -> but we can also go the other way!
+    * Angular boasts  two-way data binding
+        -> i.e., changes in the $scope data will be updated on the view AND changes on the view will be updated in the $scope
+
+    ie. (add this to our HTML within the div governed by our studentsController:)
+
+        <h3>Add a new student!</h3>
+        <form>
+            Name: <input type='text' ng-model='newStudent.name'>
+            Age: <input type='text' ng-model='newStudent.age'>
+            <input type='submit' value='add new student' ng-click='addStudent()'>
+        </form>
+
+    //Now, let's add this line of code within our controller function:
+
+        $scope.addStudent = function (){
+                                        // add to the array
+            $scope.students.push($scope.newStudent);
+                                        // clear the form values
+            $scope.newStudent = {};
+        }
+
+    * Now when we open our page again and add values to the form and click it, we should see a new value appear in our list!
+    * We just utilized two-way data binding!
+
+    Under the hood:
+        - The ng-click directive executed a method we assigned to $scope called addStudent().
+            -> The ng-click directive functions very much like the .click() jQuery handler (and by extension,
+                the onClick html attribute)
+             NOTE: Similar functionality can be achieved using an ng-submit directive on the form tag.
+        - The values in the form elements were added as a JSON object to the array using the standard .push()
+            method on the $scope.students array.
+            -> Since we changed $scope data, the data-binding feature recognized that the data in the ng-repeat loop needed
+             to be updated so one more list item was added to reflect this.
+        - The ng-model directive created a new variable in our $scope called newStudent.
+            -> The ng-model directive is what allows data on the VIEW side to be available to the $scope variable.
+            -> We will utilize the ng-model directive whenever we want to pass data to the controller.
+
+    ie. This is how it will look all together:
+
+        <html ng-app='myApp'>
+            <head>
+                <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js'></script>
+                <script type='text/javascript'>
+                    var myAppModule = angular.module('myApp', []);
+                    myAppModule.controller('studentsController', function ($scope){
+                    $scope.students = [
+                          {name: 'Mike', age: 34},
+                          {name: 'John', age: 24},
+                          {name: 'Trey', age: 24},
+                          {name: 'India', age: 35}
+                    ];
+                    $scope.addStudent = function(){
+                      $scope.students.push($scope.newStudent);
+                      $scope.newStudent = {};
+                    }
+                    });
+                </script>
+            </head>
+            <body>
+                <div ng-controller='studentsController'>
+                    <ul>
+                    <li ng-repeat="student in students">{{ student.name }}, {{ student.age }}</li>
+                    </ul>
+                    <form>
+                    Name: <input type='text' ng-model='newStudent.name'>
+                    Age: <input type='text' ng-model='newStudent.age'>
+                    <input type='submit' value='add new student' ng-click='addStudent()'>
+                    </form>
+                </div>
+            </body>
+        </html>
+
+    * The $scope variable is essential to the whole process.
+        ->  No $scope, no data binding.
+        -> First, we used the ng-repeat directive to cycle through data in $scope.
+        -> Then, we used the ng-model directive to pass a JSON object to our addStudent $scope method using the ng-click directive.
+            -> and the data flowed the opposite way (from view to the controller).
+
+Controller Syntax - (Using this) ~
+    -> An alternate method of creating controllers is using the controller instance as opposed to the $scope object
+    -> Acts the same way but only reason to use this instead:
+        -  Avoid mixing controllers when we want to test controllers.
+
+    ie. (referencing with same code above but using Controller Syntax:)
+
+    <html ng-app='myApp'>
+        <head>
+            <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js'></script>
+            <script type='text/javascript'>
+               var myAppModule = angular.module('myApp', []);
+               myAppModule.controller('studentsController', function (){
+                                                        //$scope has been removed from the callback function parameter.
+                  this.students = [                     // $scope has been replaced with 'this' in the controller code.
+                      {name: 'Mike', age: 34},
+                      {name: 'John', age: 24},
+                      {name: 'Trey', age: 24},
+                      {name: 'India', age: 35}
+                  ];
+                  this.addStudent = function(){         //$scope has been replaced with 'this' in the controller code.
+                    this.students.push(this.newStudent);
+                    this.newStudent = {};
+                  }
+              });
+            </script>
+        </head>
+        <body>
+          <div ng-controller='studentsController as studentsCtrl'>
+                                                // ng-controller from studentsController to studentsController as studentsCtrl
+            <ul>
+                <li ng-repeat="student in studentsCtrl.students">{{ student.name }}, {{ student.age }}</li>
+                                    // ng-repeat has been modified, from the student in students to the student in studentsCtrl.students
+            </ul>
+            <form>
+               Name: <input type='text' ng-model='studentsCtrl.newStudent.name'>
+               Age: <input type='text' ng-model='studentsCtrl.newStudent.age'>
+               <input type='submit' value='add new student' ng-click='studentsCtrl.addStudent()'>
+            </form>
+          </div>
+        </body>
+    </html>
+
+* Notice the differences:
+    1) $scope has been removed from the callback function parameter.
+    2) $scope has been replaced with 'this' in the controller code.
+    3) ng-controller from studentsController to studentsController as studentsCtrl
+        -> We need to include what we call an alias to the controller when we define it on the div
+        (<div ng-controller="sampleController as sampleCtrl"></div>), and use it every time we need to call on that
+        controller's objects (what used to be $scope).
+    4) ng-repeat has been modified, from the student in students to the student in studentsCtrl.students
+    We have to use the alias every time we want to call on a controller key.

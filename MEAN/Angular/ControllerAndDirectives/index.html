@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app= 'app'>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style>
+            .left,
+            .right {
+               display: inline-block;
+               width: 45%;
+               border: 1px solid black;
+               vertical-align: top;
+               max-height: 400px;
+               overflow-y: scroll;
+               padding: 5px;
+            }
+        </style>
+         <script src = 'bower_components/angular/angular.js'></script>
+         <script>
+         var app = angular.module('app', []);
+         app.controller('myController', ['$scope', function($scope){
+             $scope.foods = []; // your name!
+             $scope.addFood = function(){
+                 $scope.foods.push($scope.food);
+                 $scope.food = "";
+             }
+         }]);
+         </script>
+    </head>
+    <body>
+        <div ng-controller = "myController" id = "myController">
+            <center>
+                <h1 style="color: navy">Create your list of Favorite Food!</h1>
+            </center>
+          <div class="left">
+              <center>
+                  <h2><u>Add Food</u></h2>
+                  <form ng-submit="addFood()">
+                      <input type="text" ng-model="food">
+                      <input type="submit" value="Add">
+                  </form>
+                  <p ng-if = "food" style="color:red">
+                    <!-- ng-if inserts a the tag when the strings gets populated at $scope.food when called in {{}}  -->
+                      You are currently typing: <span style="color: blue">{{food}}</span>
+                  </p>
+              </center>
+          </div>
+          <div class="right">
+              <center>
+                  <h2><u>Favorite Food List</u></h2>
+                  <input placeholder="filter..." type="text" ng-model="foodFilter">
+                  <!--foodFilter is a ng-model that serves as a temporary database, disappears when refreshed  -->
+                  <div ng-repeat="food in foods | filter:foodFilter track by $index">
+                      <!-- built in angular filter function on client side/ foods [] displays the list with ng-repeat -->
+                      <p>{{food}}</p>
+                  </div>
+              </center>
+          </div>
+        </div>
+    </body>
+</html>

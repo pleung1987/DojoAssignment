@@ -1,0 +1,104 @@
+Where Angular fits into MEAN~
+
+* Angular development was driven by the fact that web applications that manage large amounts of data need some method
+    for organizing that data.
+    ->  If we use plain JavaScript to organize our data, we could construct our own data structures...
+        -> (using arrays and objects) and methods to interact with those structures (sorts, filters, etc)
+        -> This works for small data sets; but as data sets become larger and when multiple developers work on programs,
+            -> Standardized toolkits make our lives much easier
+            * Angular is one of these TOOLKITS!
+
+Our approach to Angular:
+    * Angular is a tool to take data from your database and control all facets of the CRUD life cycle through the use of powerful
+        HTML tools in the form of 'directives'.
+
+    Advantages:
+        -> We can modularize our code into an MVC-like (a bit more of a Model-Template-View) architecture.
+        -> Angular Controllers control what is rendered onto a page (the view) by interacting with a factory (the model)
+            -> that stores data and communicates with the server via AJAX calls.
+        -> Multi-page web applications create their HTML by assembling and joining it with data on the server.
+            -> The server returns finished pages up to the browser where they are rendered.
+        ->  Most single-page applications, also known as AJAX-based apps, do this as well.
+            -> Angular apps add a client-side ability to hold onto data and the ability to perform logic using controllers.
+
+    Disadvantages:
+        -> Might not work in every client side browser
+
+Example of Angular projects:
+    * The use of angular controllers: Everything in is controlled by an Angular directive called a module.
+
+                var app = angular.module('app', []);
+
+    * views is controlled by an Angular directive called a controller.
+        -> Example of the three views controlled by angular on platform:
+
+                    app.controller('PlayersController', ['$scope', function($scope) {
+                                        //javascript that controls the Player view goes here:
+                    }]);
+                    app.controller('AssociationsController', ['$scope', function($scope) {
+                                        //javascript that controls the Associations view goes here:
+                    }]);
+                    app.controller('TeamsController', ['$scope', function($scope) {
+                                        //javascript that controls the Teams view goes here:
+                    }]);
+
+    * Data are held in the factories.
+        -> factories are singleton objects.
+        -> They are created once per page.
+        -> They hold data and methods for manipulating that data.
+        -> They communicate with the server via $http requests and are injected as dependencies into other Angular directives.
+
+    ie.
+                app.factory('PlayerFactory', ['$http', function($http) {
+              var players = {};
+                                    //object that holds methods and public properties for players.
+                                    //Remember OOP - there are different ways of creating objects and adding methods
+                                    //and properties to that object.
+              return players;
+            }]);
+            app.factory('TeamFactory', ['$http', function($http) {
+              return {
+                                    //object that holds methods and public properties for teams.
+                                    //Remember OOP - there are different ways of creating objects and adding methods
+                                    //and properties to that object.
+              };
+            }]);
+
+Relationships Between Angular Directives~
+    * After an angular module is invoked, it returns an object.
+
+NOTE: To try these code snippets in an HTML file:
+    1) bower install angular
+    2) in your html file's head: <script src = 'bower_components/angular/angular.js'></script>
+    3) The individual snippets can then be put inside a second <script> tag.
+
+* After you create an angular module:
+
+            var app = angular.module('app',[]);
+            console.log(app);
+
+    * Take a look at the object that is returned.
+
+* Similarly, the module methods .controller and .factory add objects to the angular.module generated object.
+* When we create a new property in Angular (in order to gain access to the properties of another object)
+    -> for example:
+
+            app.controller('PlayersController', ['$scope', function($scope) {
+                                    //javascript that controls the Player view goes here:
+            }]);
+
+        *  code creates a new controller.
+            ->   If we want access to other Angular objects, all we do is inject other objects from the app in!
+
+            app.controller('PlayersController', ['$scope', 'newinjectable', function($scope, "custom name of new injectable") {
+                                    //javascript that controls the Player view goes here:
+            }]);
+
+        * Now our PlayersController has access to $scope and newinjectable.
+            -> To use the methods and properties of $scope, we’ll access them using $scope.method or property.
+        * To access newinjectable, which could be a factory, we’ll access it by whatever custom name we gave it and
+            its properties by using a period(.)
+
+    * For example, if the newinjectable custom name is UserFactory, we can do something like UserFactory.addNewUser()
+        -> many of our factories are injected with the $http service object
+        -> This object makes our AJAX calls to the DB similar to jQuery $.get, $.ajax, $.post methods.

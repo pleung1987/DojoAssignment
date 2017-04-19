@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang= 'en' ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <title>First Angular Page</title>
+        <script src="bower_components/angular/angular.js"></script>
+        <script>
+            var app = angular.module('app', []);
+            app.controller('divController',['$scope', function($scope){
+                $scope.myName = 'Patrick'; // your name!
+                $scope.myFavoriteLanguage = 'JavaScript';
+                $scope.myFavoriteJSLibrary = 'Angular';
+            }]);
+        </script>
+    </head>
+    <body>
+        <div ng-controller= "divController">
+            <p>Hello my name is: {{myName}}, my favourite language is {{myFavoriteLanguage}}, and my favourite Library is {{myFavoriteJSLibrary}}</p>
+            <p>or</p>
+            <p>Hello my name is: <span ng-bind="myName"></span>, my favourite language is <span ng-bind="myFavoriteLanguage"></span>, and my favourite Library is <span ng-bind="myFavoriteJSLibrary"></span></p>
+        </div>
+    </body>
+</html>

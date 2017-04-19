@@ -1,0 +1,182 @@
+Overview ~
+* In this chapter, we will be using Angular routes to load partial views.
+
+To do this, we inject a prebuilt module ngRoute into our main module :
+
+    angular.module("OurModuleName", ['ngRoute'])
+
+->  We'll use the providers and services of this prebuilt module in our app!
+
+* What the ngRoute module contains is a number of providers:
+    -> $routeProvider ~ allows us to load our partial views.
+        -> will be using the $routeProvider service and loading controllers that will control the logic of the
+         various views that these routes load.
+
+Video Notes:
+    -> Angular routes allows us to load partials:
+        - loading partials allows us to modularlize our html and separate our different concerns.
+            (keeps our code dry and clean)
+    -> to do this, we need a server up and running, cuz partial are ajax calls that are return from our server.
+        -> we need to use bower init, bower install angular --save and and bower install angular-route --save
+        -> and do npm install express (create the middleware web framework for routing purposes).
+            -> depend on the dependencies needed, npm install accordingly
+        - create a client folder for storing your html files.
+            -> then create a folder inside client called partials and store all your partials inside.
+        - remake back your server.js file outside in the project file
+        - create a app.use route path to your ./client folder and your ./bower_components
+            (server is set up for lightweight use)
+        - inside bower components, input the script source of angular.js and angular-routes.js into your html
+        - in script var app= at angular.module, inject ['ngRoute']
+        - do app.config(function($routeProvider){
+            .when('/, { load the partials}')
+            .when('/different partials',{})
+            .otherwhise({redirectTo:'/'})
+            })
+        - on our div where you want to load your partials, add "ng-view" inside the tag
+        - create links with href=  #!/ -> for partial 1, and #/partial2 depending on which partials you set as the template Url.
+            - the  #!/ is known for the partial call (updated instead of just using #)
+            - the partials are the different pages html you want to load to.
+
+REVIEW:
+MVC Architecture Review~
+    * Model containing data that represents the current state of your application.
+
+    * Controllers that manage the relationship between your model and your views
+        i.e. when data changes, update it on the view side.
+
+    * Views that display the data contained in the models.
+
+Routes ~
+
+Setting up Routes:
+    * Single page applications don't necessarily show just one fixed view.
+        - Using AJAX (Asynchronous JavaScript and XML), we are able to load different partial views within our
+        HTML document.
+    * One way that Angularjs does this is by using the ng-view directive and the $routeProvider service.
+
+Let's set up some basic routing with Angular. There is one caveat:
+    * To use ng-routes with angular, you must be running a server!
+        ->  when we use Angular routing is that angular will request your partial views from a server,
+        therefore we need a server.
+    * Make a simple express server that can retrieve static files from a client folder (where you'd place your
+     index.html) as well as bower_components (to get angular).
+    * The easy way to run it with a server is to put all of these angular files in our static folder (named client)
+     and then use the static content server from your express project.
+    * First install angular and angular-route.
+
+ie. (for our angular-route index.html)
+
+    <!DOCTYPE html>
+    <html ng-app='myApp'>
+        <head>
+            <title></title>
+            <!-- THESE TWO VERSIONS BELOW MUST MATCH (good thing bower will catch that for us, but be aware if you are using CDN's)!!! -->
+            <script src="angular/angular.js"></script>
+            <script src="angular-route/angular-route.js"></script>
+        <script>
+                                                //  inject the ngRoute dependency in the module.
+        var myApp = angular.module('myApp', ['ngRoute']);
+                                                //  use the config method to set up routing:
+        myApp.config(function ($routeProvider) {
+          $routeProvider
+            .when('/',{
+                templateUrl: 'partials/view1.html',
+            })
+            .when('/partial2',{
+                templateUrl: 'partials/view2.html'
+            })
+            .otherwise({
+              redirectTo: '/'
+            });
+        });
+                                                //  build the controllers
+        myApp.controller('view1Controller', function ($scope) {
+          $scope.sports = ['golf', 'basketball', 'hockey', 'tennis', 'football'];
+        });
+        myApp.controller('view2Controller', function ($scope) {
+          $scope.message = 'We are using another controller';
+        });
+        </script>
+        </head>
+        <body>
+        <div ng-app='myApp'>
+            <a href="#!/">Partial 1</a> | <a href="#!/partial2">Partial 2</a>
+            <div ng-view="">
+            </div>
+        </div>
+        </body>
+    </html>
+
+NOTE: that all the links we will use with angular routing start with #!/
+    -> This prevents the browser from redirecting to another page and loading up all the resources
+        (CSS, img, JS) associated with the new URL.
+
+*  Within your client folder, create a new folder called partials.
+    Add two files, view1.html and view2.html :
+
+        <partials/view1.html>
+            <div ng-controller="view1Controller">
+            <ul>
+                <li ng-repeat='sport in sports'>{{ sport }}</li>
+            </ul>
+            </div>
+
+        <partials/view2.html>
+            <div ng-controller="view2Controller">
+                <h2>{{ message }}</h2>
+            </div>
+
+Comments:
+    -> We are able to actively change which controller is being used simply by putting the controller
+        name in the partial we load.
+
+* Alternatively, we can determine the controller using:
+
+         myApp.config(function ($routeProvider) {
+              $routeProvider
+                .when('/',{
+                     templateUrl: 'partials/view1.html',
+                     controller: 'view1Controller'
+                })
+
+*This changes the partial/view1.html to simply:
+          <ul>
+                <li ng-repeat='sport in sports'>{{ sport }}</li>
+          </ul>
+
+    -> Make sure all of the controllers you are using are defined before the template loads.
+    -> Understanding how the Express server must respond to the URL request by angular is crucial and,
+    hopefully, sheds more light on how Express and angular play together.
+
+$location ~
+* We have all of these nice views that a link tag can allow us to navigate through using our usual Angular routing methods...
+    -> great for the standard act of navigating our current apps.
+
+(Based on Partials and Custom Users assignment):
+    -> But what if we want to have our Angular App redirect to the list of users page after clicking Create User button.
+    -> Our onClick function will run creating a user with the correct information.
+        -> Our onClick function will run creating a user with the correct information.
+        -> Once it's done, all it did was update the $scope.users array.
+        -> Our current Customize Users $scope is updated and shows that new user added.
+            ->(But we are still on the same page)
+
+In order to navigate from one partial to another, we have to do only two things:
+    1) Inject $location into our controller like so:
+
+        angular.controller(UsersController, function(UsersFactory, $scope, $location){
+            console.log($location)
+        })
+
+    2) Use $location!!!:
+
+        angular.controller(UsersController, function(UsersFactory, $scope, $location){
+            $scope.createUser = function(){
+            $location.url('/list');
+            }
+        })
+
+DOCUMENTATION:
+    -> The $location service parses the URL in the browser address bar (based on the window.location) and makes
+     the URL available to your application.
+    -> Changes to the URL in the address bar are reflected into $location service and changes to $location are
+    reflected into the browser address bar.

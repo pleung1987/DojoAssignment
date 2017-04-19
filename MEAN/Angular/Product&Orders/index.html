@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang= 'en' ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <title>Controlling products</title>
+        <link rel="stylesheet" href="style.css">
+        <script src='bower_components/angular/angular.js'></script>
+        <script src="main.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <div class="container">
+        <div class="topcontainer" ng-controller="productController" id = "productController">
+            <h2>Products Controller</h2>
+            <div class="top">
+                <form ng-submit= "addproduct()" method="post">
+                    <label for="product">Product Name: </label>
+                    <input type="text" name="product" ng-model="product.name" required>
+                    <!-- as long as the ng-model creates the object name product.firstName, its makes an object name product  -->
+                    <br>
+                    <label for="price">Price: </label>
+                    <input type="number" step="0.01" name="price" ng-model="product.price" required>
+                    <br>
+                    <button type="submit"> Add Product</button>
+                </form>
+            </div>
+            <br>
+            <div class="productList">
+                <table>
+                    <thead>
+                        <th>Name^</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody ng-repeat= "product in products | orderBy: 'price' track by $index">
+                        <tr>
+                            <td>{{product.name}}</td>
+                            <td>{{product.price}}</td>
+                            <td><button ng-click="deleteProduct(product)">Delete Product</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="bottomContainer" ng-controller="ordersController" id="ordersController">
+            <h2>Orders Controller</h2>
+            <table>
+                <thead>
+                    <th>Name^</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </thead>
+                <tbody ng-repeat= "product in products | orderBy: 'quantity' track by $index">
+                    <tr>
+                        <td>{{product.name}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.quantity}}</td>
+                        <td><button ng-click="buyProduct(product)">Buy</button></td>
+                        <!-- buyProduct listens to ng-click action and passes in the product object in the function back from view to controller -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </body>
+</html>

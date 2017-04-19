@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang= "en" ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <title>Partials and Users</title>
+        <link rel="stylesheet" href="/static/CSS/style.css">
+        <script src='angular/angular.js'></script>
+        <script src='angular-route/angular-route.js'></script>
+        <script src='main.js'></script>
+    </head>
+    <body>
+        <center>
+            <h1 style="color: navy">Players and Teams Home Page</h1>
+            <a href="#!/players">Players</a> | <a href="#!/teams">Teams</a> |  <a href="#!/associations">Associations</a>
+        </center>
+        <div ng-view="">
+    <!--on our div where you want to load your partials, add "ng-view" inside the tag  -->
+        </div>
+    </body>
+</html>

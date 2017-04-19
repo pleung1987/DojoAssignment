@@ -1,0 +1,84 @@
+Follow the Getting started of Angular. Assume you understand now how to build the begging of an Angular project...
+
+Directives~
+    * Directives direct something to happen within your HTML.
+
+Compiling Angular~
+    * Angular documentation refers to both templates and views…
+        -> Simply put: angular templates get compiled to angular views by the angular compilers.
+
+Integrating AngularJS to your HTML ~
+    * We recommend that you use bower to get Angular, but you can also get it from a CDN, e.g. google.
+
+Placing the ng-app directive and using Angular ~
+    * To tell our HTML it is being controlled by Angular, we have to use the ng-app directive.
+        ->  This is like the ignition key for angular
+            -> Allows other angular directives to work within the scope of this main directive.
+
+    ie.
+                <html ng-app=''>
+                    <head>
+                      <script src="bower_components/angular/angular.js"></script>
+                    </head>
+                    <body>
+                        <h3>{{ 49567 * 2243 }} </h3>
+                        <h3 ng-bind='49567 * 2243'></h3>    //works same as above for slowing loading browsers
+                    </body>
+                </html>
+
+    * Now everything from the start of the html tag to the end of the html tag is controlled by an ng-app directive.
+    * Directives can take many forms, but most of the standard directives you’ll see are of this form
+        -> These stock directives can also be written as: ngApp, data-ng-app, data-app.
+            -> We prefer the ng-directive-name syntax.
+
+                {{ }} and ng-bind
+
+        * Double brackets are a way to execute Angular code that will be rendered into HTML.
+
+Data binding, ng-init and ng-repeat ~
+    * Perhaps the most powerful tool in angular is data binding.
+        NOTE: Data binding allows angular to keep track of application data as a variable...
+            -> Angular created a variable (object) called $scope for just this purpose.
+
+    Most directives have a scope:
+        * Usually from the tag that they are initially bound to, through the end of that tag.
+            -> The $scope object can hold data related to the directives scope.
+        * Can add data to the $scope object using the ng-init directive.
+
+    ie.
+            <html ng-app=''>
+            <head>
+              <script src="bower_components/angular/angular.js"></script>
+            </head>
+            <body>
+                <div ng-init="students=['Mike', 'John', 'Trey', 'India']">
+                    <ul>
+                        <li ng-repeat="student in students">{{student}}</li>        //loops through the data and presents the students
+                                                                                        individually
+                    </ul>
+                </div>
+            </body>
+            </html>
+
+        * The ng-init directive allows us to initialize data for angular to use.
+            ->  How can we loop through that data?
+                - Answer: The ng-repeat directive!
+                    -> This directive takes any array available to angular and acts as a loop to iterate through it.
+                    -> Angular keeps track of the position of each member of the array behind the scenes!
+
+        * Can also loop through array of objects and use repeat to display seperately:
+        ie.
+        <html ng-app=''>
+            <head>
+                <script src="bower_components/angular/angular.js"></script>
+            </head>
+            <body>
+                <div ng-init="students=[{name: 'Mike', age: 34}, {name: 'John', age: 24}, {name: 'Trey', age: 24}, {name: 'India', age: 35}]">
+                    <ul>
+                        <li ng-repeat="student in students">{{student.name}}, {{student.age}}</li>
+                    </ul>
+                </div>
+            </body>
+        </html>
+
+    NOTE: we can use JSON objects with angular in our ng-repeat directive!

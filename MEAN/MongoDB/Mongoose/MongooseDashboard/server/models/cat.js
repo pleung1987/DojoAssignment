@@ -1,3 +1,5 @@
+//makes your Schema and setting the structure (the blueprint) for your database
+
 var mongoose = require('mongoose');
 
 var CatSchema = new mongoose.Schema({

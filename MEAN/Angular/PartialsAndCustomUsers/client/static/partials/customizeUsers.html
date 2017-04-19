@@ -1,0 +1,36 @@
+<div ng-controller="CustomizeUsersController">
+    <fieldset><legend>User Controller: Create Your User List</legend>
+    <br>
+    <form ng-submit= "adduser()" method="post">
+        <label for="firstName">First Name: </label>
+        <input type="text" name="firstName" ng-model="user.firstName" required>
+        <!-- as long as the ng-model creates the object name product.firstName, its makes an object name product  -->
+        <br>
+        <label for="lastName">Last Name: </label>
+        <input type="text" name="lastName" ng-model="user.lastName" required>
+        <br>
+        <label for="favLang">Farvorite Language: </label>
+        <input type="text" name="favLang" ng-model="user.favLang" required>
+        <button type="submit">Create User</button>
+    </form>
+    <br>
+    <div class="userList">
+        <table>
+            <thead>
+                <th>First Name^</th>
+                <th>Last Name^</th>
+                <th>Fav Language</th>
+                <th>Actions</th>
+            </thead>
+            <tbody ng-repeat= "user in users track by $index">
+                <tr>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.favLang}}</td>
+                    <td><button ng-click="deleteUser(user)">Delete User</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </fieldset>
+</div>

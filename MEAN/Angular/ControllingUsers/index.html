@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang= 'en' ng-app="app">
+    <head>
+        <style media="screen">
+            .container{
+                display: inline-block;
+                width: 40%;
+                border: 1px solid black;
+                vertical-align: top;
+                max-height: 400px;
+                overflow-y: scroll;
+                padding: 5px;
+                margin-left: 50px;
+            }
+        </style>
+        <meta charset="utf-8">
+        <title>Controlling Users</title>
+        <script src='bower_components/angular/angular.js'></script>
+        <script>
+            var app = angular.module('app', []);
+            // Inside the controller
+            app.controller('userController', ['$scope', function($scope){
+                $scope.addUser = function(){
+                    $scope.users.push($scope.user);
+                    console.log("this is the user object created:", $scope.user);
+                    console.log("check if the user object created got into the array: ",$scope.users);
+                    $scope.user = {};
+                    // after new 'user' is created, have to reset user back to an empty array, else all user will copy the name you created
+                }
+                $scope.deleteUser = function(userToDelete){
+                    console.log("This is the userToDelete: ", userToDelete);
+                  $scope.users = $scope.users.filter(function(users){
+                      console.log("these are the users: ", users);
+                      return users !== userToDelete;
+                    //turning users to not equal, thus not having  the userToDelete, which is the clicked user.
+                  })
+                }
+                $scope.users = [
+                    {
+                        firstName: "Patrick",
+                        lastName: "Leung",
+                        favLanguage:"JavaScript"
+                    },
+                    {
+                        firstName: "Ryan",
+                        lastName: "Chan",
+                        favLanguage:"Python"
+                    },
+                    {
+                        firstName: "Gary",
+                        lastName: "Harper",
+                        favLanguage: "Java"
+                    },
+                ]
+            }]);
+        </script>
+    </head>
+    <body>
+        <h2>Users Controller</h2>
+        <div class="container" ng-controller="userController" id = "userController">
+            <div class="top">
+                <form ng-submit= "addUser()" method="post">
+                    <label for="firstName">First Name: </label>
+                    <input type="text" name="firstName" ng-model="user.firstName">
+                    <!-- as long as the ng-model creates the object name user.firstName, its makes an object name user  -->
+                    <br>
+                    <label for="lastName">Last Name: </label>
+                    <input type="text" name="lastName" ng-model="user.lastName">
+                    <br>
+                    <label for="favLanguage">Favorite language: </label>
+                    <input type="text" name="favLanguage" ng-model="user.favLanguage">
+                    <button type="submit"> Create User</button>
+                </form>
+            </div>
+            <br>
+            <div class="studentList">
+                <table>
+                    <thead>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Favorite Language</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat= "user in users track by $index">
+                            <td>{{user.firstName}}</td>
+                            <td>{{user.lastName}}</td>
+                            <td>{{user.favLanguage}}</td>
+                            <td><button ng-click="deleteUser(user)">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

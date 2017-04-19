@@ -1,0 +1,66 @@
+Callbacks and/or Promises ~
+
+*  Callbacks and/or Promises are used to control the timing of code.
+    -> Normally JavaScript will run block by block
+        -> callback/promise moves a piece of code outside of that normal run order.
+    -> These methods can be found in Mongoose queries, Angular controllers, and Angular factories.
+        -> For Angular factories, the promise resolution occurs after the $http.verb(‘route’) with .then.
+
+Analogy:
+    * You are a customer at a donut store and behave like JavaScript.
+        -> Without a callback, you would order a donut, pay and walk out the door.
+            (The server would then set a donut at the counter)
+        -> The callback (and common sense) tells us: wait until the donut is served to the counter and then pay
+         and walk out the door.
+
+Example of Callback:
+
+                    /* Failed Example */
+        function buyDonut(){
+            orderDonut();
+            console.log('pay');
+            console.log('walk out door');
+        }
+                    /* function that gets a donut */
+        function orderDonut(){
+            var x = setTimeout(function () {
+                console.log('donut on counter');
+                }, 10);
+        }
+        buyDonut();
+                    /* Callback Example */
+        function buyDonut2(){
+            orderDonut2(function whatToDoAfterDonutOnCounter(){
+                console.log('pay');
+                console.log('walk out door');
+            });
+        }
+                    /* function that gets a donut */
+        function orderDonut2(callback){
+            var x = setTimeout(function () {
+                console.log('donut is on counter');
+                callback();
+            }, 10);
+        }
+        buyDonut2();
+
+Example of Promise:
+
+        var beginDonutTransaction = new Promise(
+          function(resolve, reject){
+            var x = setTimeout(function () {
+              console.log('donut is on counter');
+              resolve();
+            }, 10);
+          }
+        );
+        beginDonutTransaction
+        .then(function(){
+                                //this is the resolve
+          console.log('pay');
+          console.log('walk out door');
+        })
+        .catch(function(){
+                                //this is the reject
+          console.log("give me my donut!");
+        });

@@ -1,0 +1,17 @@
+{
+  "name": "PartialsAndCustomUsers",
+  "homepage": "https://github.com/pleung1987/DojoAssignment",
+  "authors": [
+    "Patrick Leung <pleung1987@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

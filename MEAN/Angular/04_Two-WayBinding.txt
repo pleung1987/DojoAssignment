@@ -1,0 +1,58 @@
+Data binding~
+* “Data-binding is an automatic way of updating the view whenever the model changes
+    -> as well as updating the model whenever the view changes.
+    -> it eliminates DOM manipulation from the list of things you have to worry about.”
+
+GOAL: to better understand how controllers control data, and how data gets two-way bound.
+
+Run these codes with Angular package:
+
+    <!DOCTYPE html>
+    <html lang="en" ng-app = 'app'>
+        <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <script src = 'bower_components/angular/angular.js'>
+        </script>
+        <script>
+        var app = angular.module('app', []);
+        app.controller('myController', ['$scope', function($scope){
+        //printController will show the current $scope
+        $scope.printController = function(){
+          console.log($scope);
+        }
+        }]);
+        </script>
+        </head>
+        <body>
+        <div ng-controller = "myController" id = "myController">
+          <input type="text" ng-model = 'myModel'>
+          <label>
+            ng-model = "myModel"
+          </label>
+          <p>
+            When we type in our input, the $scope.myModel object is created in our controller (two way binding), even though we didn't declare it in our intial model description
+          </p>
+          <div id ='model' ng-if = "myModel">
+            <span>
+              ***INPUT: {{myModel}}***
+            </span>
+            <b>
+              If you click the button, you will get the $scope object.  Find myModel in it!  Refresh the page and don't enter anything into the input field and see if you can find myModel..., and printController
+            </b>
+          </div>
+          <button ng-click = "printController();">
+            Show our $scope!
+           </button>
+        </div>
+        </body>
+    </html>
+
+
+Important Lessons:
+    * Anything that is inside the DOM element, to which the angular directive is attached, will be watched by angular
+    (generally on the order of 10ms).
+    * If there is a change, Angular adjusts its objects dynamically! (Two way binding!)
+        -> In the above example, we type into the input (a change), Angular adds the model by name to the $scope.
+        -> It checks the ng-if statement and then adds the div with the id=‘model’ to the DOM
+    * When we click the button the ng-click directive is run

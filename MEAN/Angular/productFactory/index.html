@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang= 'en' ng-app="app">
+    <head>
+        <style media="screen">
+            .container{
+                display: inline-block;
+                width: 40%;
+                border: 1px solid black;
+                vertical-align: top;
+                max-height: 400px;
+                overflow-y: scroll;
+                padding: 5px;
+                margin-left: 50px;
+            }
+        </style>
+        <meta charset="utf-8">
+        <title>Controlling products</title>
+        <script src='bower_components/angular/angular.js'></script>
+        <script>
+            var app = angular.module('app', []);
+            //inside the factory
+            app.factory('productFactory', function($http){
+                var factory = {};
+                var products = [
+                    {
+                    name:'Keyboard',
+                    price: 149.99
+                    },
+                    { name:'Mouse',
+                     price: 59.99
+                    },
+                     { name:'Basketball',
+                       price: 21.99
+                    }
+                ];
+                factory.getProducts = function(callback){
+                    callback(products);         //passes the products array to the controller
+                }
+
+                factory.addProduct = function(product){
+                    products.push(product);
+                        // the listened $scope.product gets passed into the products array
+                }
+
+                factory.delete = function(objectToDelete){
+                    console.log("this is the productFactory object to delete:", objectToDelete);
+                    products.splice(products.indexOf(objectToDelete),1);
+                    // splice takes in two argument, 1) the index of the object you want to delete, and the number of the object to delete
+                }
+                return factory;     //have to return the factory {}
+            });
+
+            // Inside the controller
+            app.controller('productController', function($scope, productFactory){
+
+                ($scope.getProducts = function(){               // listens to the call back function to invoke
+                    productFactory.getProducts(function(data){  //call the function from factory
+                        $scope.products = data;     //passing by reference, pointing in array that exist in the factory
+                    })
+                })() //immediate invoked with the callback function created and fetches the products array
+
+                $scope.addproduct = function(){
+                    productFactory.addProduct($scope.product)
+                        //$scope.product listens to the view and we pass the product created to the factory addProduct method
+                    $scope.product = {};        //clears the product object after the passing is done creating and stored to factory
+                }
+
+                $scope.deleteProduct = function(objectToDelete){
+                    console.log("This is the objectToDelete: ", objectToDelete);
+                    productFactory.delete(objectToDelete)
+                    //we are passing in the entire object we want to delete to the product factory
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <h2>Products</h2>
+        <div class="container" ng-controller="productController" id = "productController">
+            <div class="top">
+                <form ng-submit= "addproduct()" method="post">
+                    <label for="product">Product Name: </label>
+                    <input type="text" name="product" ng-model="product.name" required>
+                    <!-- as long as the ng-model creates the object name product.firstName, its makes an object name product  -->
+                    <br>
+                    <label for="price">Price: </label>
+                    <input type="number" step="0.01" name="price" ng-model="product.price">
+                    <br>
+                    <button type="submit"> Add Product</button>
+                </form>
+            </div>
+            <br>
+            <div class="productList">
+                <table>
+                    <thead>
+                        <th>Name^</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody ng-repeat= "product in products | orderBy: 'price' track by $index">
+                        <tr>
+                            <td>{{product.name}}</td>
+                            <td>{{product.price}}</td>
+                            <td><button ng-click="deleteProduct(product)">Delete Product</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
